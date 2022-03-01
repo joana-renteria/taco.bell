@@ -9,7 +9,7 @@
 
 * Errores de usuarie
 [101] -> Campo vacio
-[101] -> No es posible seleccionar ese producto
+[102] -> No es posible seleccionar ese producto
 
 * Errores: Datos erroneos
 [301] -> Usuario o contraseña incorrectos
