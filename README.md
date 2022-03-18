@@ -10,7 +10,7 @@ La célebre cadena de comida rápida Taco Bell está en aumento exponencial en E
 * Se ansía llevar un seguimiento respectivo de los pedidos que solicitan los clientes y asimismo, de quienes y donde reparten dichos pedidos.
 * A la empresa le interesa que la aplicación elija de qué establecimiento se va a hacer el pedido. [Opcional]
   * Mostrar un mapa con el recorrido que se va a hacer para la entrega. [Opcional]
-  * Implementar un sistema de puntuaciones y comentarios. [Opcional]
+* Implementar un sistema de puntuaciones y comentarios. [Opcional]
 * A su vez, la empresa precisa de la obtención de ciertas estadísticas con objeto de mejorar su servicio:
   * Tiempo medio de envío.
   * Productos y combinaciones más solicitadas.
