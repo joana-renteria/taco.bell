@@ -1,5 +1,7 @@
-# Taco Bell
-(ejercicio para clase)
+# Taco Bell #
+## Daniel Barrios · Joana Renteria · Nico Rodriguez ##
+### Reto final ###
+
 La célebre cadena de comida rápida Taco Bell está en aumento exponencial en España, así pues requiere de un nuevo sistema con el fin de gestionar pedidos y stock de los diversos ingredientes. Se solicita que los clientes puedan hacer pedidos a través de la aplicación y que el equipo de administración pueda hacer cambios. A su vez, se requiere que el programa cumpla con ciertas funciones adicionales:
 
 * Un sistema de login (y registro) de usuarios, ya sean clientes o administradores.
