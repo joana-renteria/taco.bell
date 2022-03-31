@@ -38,7 +38,7 @@ class Pedido {
     LocalDate fechaPed
     String codCle
     String codRep
-    Menu menu
+    String codMnu
 }
 
 class Producto {
