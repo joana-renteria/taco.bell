@@ -1,0 +1,112 @@
+@startuml
+
+abstract class Usuarie {
+    String codUsr
+    String passwd
+    String nombre
+    String apellido
+    void login()
+    void register()
+}
+class Administrador {
+    void login()
+    void register()
+    void eliminarPedido()
+    void modificarPedido()
+    void eliminarUsuarie()
+    void modificarUsuarie()
+    void anadirUsuarie()
+}
+
+class Cliente {
+    String correoLogin
+    void login()
+    void register()
+    void realizarPedido()
+    void darseDeBaja()
+    ResultSet consultaPedido(codPed)
+    ResultSet findPedidos()
+}
+
+class Trabajador {
+    String codEst
+    String horario
+    float sueldo
+    void login()
+    void register()
+}
+
+class Repartidor {
+    String codVehiculo
+    ResultSet findPedidosRealizados()
+}
+
+class Auxiliar {
+    String puesto
+    ResultSet findPedidos()
+    ResultSet findPedido(codPed)
+    void actualizarPedido()
+}
+
+class Establecimiento {
+    String codEst
+    String nombre
+    String loc
+}
+
+class Pedido {
+    String codPed
+    LocalDate fechaPed
+    String codCle
+    String codRep
+    Menu menu
+    float calcPrecio()
+}
+
+class Producto {
+    String codPrd
+    float precioBase
+    List ingredientes
+    float calcularPrecio()
+}
+
+class Ingrediente {
+    String codIng
+    float precio
+}
+
+class Menu {
+    String codMnu
+    List codPrds
+    float precio
+    float calcPrecio()
+    void setPrecio(precio)
+}
+
+class Descuento {
+    String codDsc
+    int usos
+    float cantidadDsc
+    LocalDate fechaInicio
+    LocalDate fechaFin
+}
+
+Usuarie <|-- Administrador
+Usuarie <|-- Cliente
+Usuarie <|-- Trabajador
+
+Trabajador <|-- Auxiliar
+Trabajador <|-- Repartidor
+
+Establecimiento "1" -- "*" Trabajador
+
+Cliente "1" -- "*" Pedido
+Pedido "1" -- "1" Menu
+Menu "1" -- "*" Producto
+Producto "1" -- "*" Ingrediente
+
+Pedido "*" -- "1" Repartidor
+
+Menu "1" -- "1" Descuento
+
+@enduml

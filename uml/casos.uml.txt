@@ -1,0 +1,60 @@
+@startuml
+
+left to right direction
+
+skinparam linetype ortho
+
+actor Usuarie as u
+actor Administrador as a
+actor Cliente as c
+actor Trabajador as t
+
+package GestionUsuarie {
+    usecase "Iniciar sesion" as login
+    usecase "Registrarse" as register
+    usecase "Cambiar datos" as modify
+    usecase "Eliminar datos" as delete
+    (login) <. (register) : <<include>>
+}
+
+package GestionAdmin {
+    usecase "Crear descuento" as addDescuento
+    usecase "Modificar descuento" as modDescuento
+    usecase "Eliminar descuento" as rmDescuento
+    usecase "Crear cuenta" as addCuenta
+    usecase "Modificar cuenta" as modCuenta
+    usecase "Eliminar cuenta" as rmCuenta
+}
+
+package GestionCliente {
+    usecase "Crear menu" as addMenu
+    usecase "Realizar pedido" as addPedido
+    (addPedido) <. (addMenu) : <<include>>
+}
+
+package GestionTrabajador {
+    usecase "Entregar pedido" as entrega
+}
+
+a --- addDescuento
+a --- modDescuento
+a --- rmDescuento
+a --- addCuenta
+a --- modCuenta
+a --- rmCuenta
+
+u --- register
+u --- login
+u --- modify
+u --- delete
+
+t --- entrega
+
+c --- addMenu
+c --- addPedido
+
+u <-- a
+u <-- c
+u <-- t
+
+@enduml

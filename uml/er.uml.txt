@@ -1,0 +1,87 @@
+@startuml
+
+abstract class Usuarie {
+    String codUsr
+    String passwd
+    String nombre
+    String apellido
+}
+class Administrador {
+}
+
+class Cliente {
+    String correoLogin
+}
+
+class Trabajador {
+    String codEst
+    String horario
+    float sueldo
+}
+
+class Repartidor {
+    String codVehiculo
+}
+
+class Auxiliar {
+    String puesto
+}
+
+class Establecimiento {
+    String codEst
+    String nombre
+    String loc
+}
+
+class Pedido {
+    String codPed
+    LocalDate fechaPed
+    String codCle
+    String codRep
+    Menu menu
+}
+
+class Producto {
+    String codPrd
+    float precioBase
+    List ingredientes
+}
+
+class Ingrediente {
+    String codIng
+    float precio
+}
+
+class Menu {
+    String codMnu
+    List codPrds
+    float precio
+}
+
+class Descuento {
+    String codDsc
+    int usos
+    float cantidadDsc
+    LocalDate fechaInicio
+    LocalDate fechaFin
+}
+
+Usuarie --|> Administrador
+Usuarie --|> Cliente
+Usuarie --|> Trabajador
+
+Trabajador <|-- Auxiliar
+Trabajador <|-- Repartidor
+
+Establecimiento "1" -- "n" Trabajador
+
+Cliente "1" --> "n" Pedido
+Pedido "1" -- "1" Menu
+Menu "1" --> "n" Producto
+Producto "1" --> "n" Ingrediente
+
+Pedido "n" <-- "1" Repartidor
+
+Menu "1" -- "1" Descuento
+
+@enduml
