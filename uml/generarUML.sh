@@ -1,3 +1,3 @@
 #!/bin/bash
 rm *.png
-plantuml *.txt
+plantuml *.puml

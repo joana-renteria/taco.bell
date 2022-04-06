@@ -1,0 +1,118 @@
+@startuml
+
+package "Model" {
+		class Usuarie {
+		}
+		class Cliente {
+		}
+		class Administrador {
+		}
+		class Auxiliar {
+		}
+		class Repartidor {
+		}
+		class Pedido {
+		}
+		class Producto {
+		}
+		class Menu {
+		}
+		class Descuento {
+		}
+		class Establecimiento {
+		}
+}
+
+package "View" {
+}
+
+package "Controller" {
+		interface Usuariable {
+			login()
+			modificarDatos()
+			findUsuarie()
+			listarUsuaries()
+		}
+		interface Clientable {
+			register()
+			eliminarDatos()
+		}
+		interface Descontable {
+			addDescuento()
+			modDescuento()
+			rmDescuento()
+			findDescuento()
+			listarDescuentos()
+		}
+		interface Pedible {
+			addPedido()
+			modPedido()
+			findPedido()
+			listarPedidos()
+		}
+		interface Establecimientable {
+			addEstableciemiento()
+			modEstableciemiento()
+			rmEstableciemiento()
+			findEstablecimiento()
+			listarEstablecimientos()
+		}
+		interface Menuable {
+			addMenu()
+			rmMenu()
+			findMenu()
+			listarMenus()
+		}
+		interface Productable {
+			addProducto()
+			modProducto()
+			rmProducto()
+			findProducto()
+			listarProductos()
+		}
+		interface Ingredientable {
+			addIngrediente()
+			rmIngrediente()
+			findIngrediente()
+			listarIngredientes()
+		}
+
+		class UsuarieFactory {
+			getUsuarie()
+		}
+		class ProductoFactory {
+			getProducto()
+		}
+		class PedidoFactory {
+			getPedido()
+		}
+		class MenuFactory {
+			getMenu()
+		}
+		class DescuentoFactory {
+			getDescuento()
+		}
+		class EstablecimientoFactory {
+			getEstablecimiento()
+		}
+		class IngredienteFactory {
+			getIngrediente()
+		}
+}
+
+package "MySql" {
+		class Usuarie {
+		}
+		class Pedido {
+		}
+		class Producto {
+		}
+		class Menu {
+		}
+		class Descuento {
+		}
+		class Establecimiento {
+		}
+}
+
+@enduml
