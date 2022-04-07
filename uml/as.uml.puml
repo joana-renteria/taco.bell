@@ -1,41 +1,60 @@
 @startuml
 
+left to right direction
+
+skinparam linetype ortho
+
 package "Model" {
-		class Usuarie {
-		}
-		class Cliente {
-		}
-		class Administrador {
-		}
-		class Auxiliar {
-		}
-		class Repartidor {
-		}
-		class Pedido {
-		}
-		class Producto {
-		}
-		class Menu {
-		}
-		class Descuento {
-		}
-		class Establecimiento {
-		}
+	class Usuarie {
+	}
+	class Cliente {
+	}
+	class Administrador {
+	}
+	class Auxiliar {
+	}
+	class Repartidor {
+	}
+	class Pedido {
+	}
+	class Producto {
+	}
+	class Menu {
+	}
+	class Descuento {
+	}
+	class Establecimiento {
+	}
 }
 
 package "View" {
+	class vLogin
+	class vMenuCliente
+	class vMenuTrabajador
+	class vPedidor
+	class vConsultarPedidos
+	class vModificarDatos
 }
 
 package "Controller" {
+	class ADUsuarie {
+	}
+	class ADProducto {
+	}
+	class ADPedido {
+	}
+	class ADMenu{
+	}
+	class ADDescuento {
+	}
+	class ADEstablecimiento {
+	}
+	package "Interfaces" {
 		interface Usuariable {
 			login()
 			modificarDatos()
 			findUsuarie()
 			listarUsuaries()
-		}
-		interface Clientable {
-			register()
-			eliminarDatos()
 		}
 		interface Descontable {
 			addDescuento()
@@ -70,13 +89,9 @@ package "Controller" {
 			findProducto()
 			listarProductos()
 		}
-		interface Ingredientable {
-			addIngrediente()
-			rmIngrediente()
-			findIngrediente()
-			listarIngredientes()
-		}
+	}
 
+	package "Factorias" {
 		class UsuarieFactory {
 			getUsuarie()
 		}
@@ -95,9 +110,7 @@ package "Controller" {
 		class EstablecimientoFactory {
 			getEstablecimiento()
 		}
-		class IngredienteFactory {
-			getIngrediente()
-		}
+	}
 }
 
 package "MySql" {
@@ -114,5 +127,19 @@ package "MySql" {
 		class Establecimiento {
 		}
 }
+
+ADUsuarie ..> Usuariable
+ADProducto ..> Productable
+ADPedido ..> Pedible
+ADMenu ..> Menuable
+ADDescuento ..> Descontable
+ADEstablecimiento ..> Establecimientable
+
+Usuariable -- UsuarieFactory
+Productable -- ProductoFactory
+Pedible -- PedidoFactory
+Menuable -- MenuFactory
+Descontable -- DescuentoFactory
+Establecimientable -- EstablecimientoFactory
 
 @enduml
