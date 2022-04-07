@@ -37,18 +37,15 @@ package "View" {
 }
 
 package "Controller" {
-	class ADUsuarie {
-	}
-	class ADProducto {
-	}
-	class ADPedido {
-	}
-	class ADMenu{
-	}
-	class ADDescuento {
-	}
-	class ADEstablecimiento {
-	}
+	class ConexionBD
+
+	class ADUsuarie 
+	class ADProducto 
+	class ADPedido 
+	class ADMenu
+	class ADDescuento 
+	class ADEstablecimiento 
+
 	package "Interfaces" {
 		interface Usuariable {
 			login()
@@ -92,22 +89,22 @@ package "Controller" {
 	}
 
 	package "Factorias" {
-		class UsuarieFactory {
+		class UsuarieADFactory {
 			getUsuarie()
 		}
-		class ProductoFactory {
+		class ProductoADFactory {
 			getProducto()
 		}
-		class PedidoFactory {
+		class PedidoADFactory {
 			getPedido()
 		}
-		class MenuFactory {
+		class MenuADFactory {
 			getMenu()
 		}
-		class DescuentoFactory {
+		class DescuentoADFactory {
 			getDescuento()
 		}
-		class EstablecimientoFactory {
+		class EstablecimientoADFactory {
 			getEstablecimiento()
 		}
 	}
@@ -135,11 +132,11 @@ ADMenu ..> Menuable
 ADDescuento ..> Descontable
 ADEstablecimiento ..> Establecimientable
 
-Usuariable -- UsuarieFactory
-Productable -- ProductoFactory
-Pedible -- PedidoFactory
-Menuable -- MenuFactory
-Descontable -- DescuentoFactory
-Establecimientable -- EstablecimientoFactory
+Usuariable -- UsuarieADFactory
+Productable -- ProductoADFactory
+Pedible -- PedidoADFactory
+Menuable -- MenuADFactory
+Descontable -- DescuentoADFactory
+Establecimientable -- EstablecimientoADFactory
 
 @enduml
