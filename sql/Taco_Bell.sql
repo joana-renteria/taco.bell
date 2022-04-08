@@ -184,14 +184,17 @@ CREATE TABLE `pedido` (
   `codCle` varchar(7) NOT NULL,
   `codRep` varchar(7) NOT NULL,
   `codMnu` varchar(10) NOT NULL,
+  `codEst` varchar(7) NOT NULL,
   `fechaPed` date NOT NULL,
   PRIMARY KEY (`codPed`),
   KEY `codMnu` (`codMnu`),
   KEY `codRep` (`codRep`),
   KEY `codCle` (`codCle`),
+  KEY `pedido_ibfk_4` (`codEst`),
   CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`codMnu`) REFERENCES `menu` (`codMnu`) ON DELETE CASCADE,
   CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`codRep`) REFERENCES `repartidor` (`codUsr`) ON DELETE CASCADE,
-  CONSTRAINT `pedido_ibfk_3` FOREIGN KEY (`codCle`) REFERENCES `cliente` (`codUsr`) ON DELETE CASCADE
+  CONSTRAINT `pedido_ibfk_3` FOREIGN KEY (`codCle`) REFERENCES `cliente` (`codUsr`) ON DELETE CASCADE,
+  CONSTRAINT `pedido_ibfk_4` FOREIGN KEY (`codEst`) REFERENCES `establecimiento` (`codEst`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -201,7 +204,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
-INSERT INTO `pedido` VALUES ('PE00000001','CL00004','RE00003','ME00000001','2022-04-09');
+INSERT INTO `pedido` VALUES ('PE00000001','CL00004','RE00003','ME00000001','ES00001','2022-04-09');
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,4 +330,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-08 12:20:35
+-- Dump completed on 2022-04-08 13:59:12
