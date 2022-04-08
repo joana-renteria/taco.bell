@@ -36,6 +36,7 @@ CREATE TABLE `auxiliar` (
 
 LOCK TABLES `auxiliar` WRITE;
 /*!40000 ALTER TABLE `auxiliar` DISABLE KEYS */;
+INSERT INTO `auxiliar` VALUES ('AU00002','Cocina');
 /*!40000 ALTER TABLE `auxiliar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,6 +61,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+INSERT INTO `cliente` VALUES ('CL00004','joana.rente6@tuta.io');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,6 +88,7 @@ CREATE TABLE `descuento` (
 
 LOCK TABLES `descuento` WRITE;
 /*!40000 ALTER TABLE `descuento` DISABLE KEYS */;
+INSERT INTO `descuento` VALUES ('DE00000001',3,2,'2022-04-08','2022-05-27'),('DE00000002',1,2.99,'2022-04-08','2022-05-25');
 /*!40000 ALTER TABLE `descuento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,6 +113,7 @@ CREATE TABLE `establecimiento` (
 
 LOCK TABLES `establecimiento` WRITE;
 /*!40000 ALTER TABLE `establecimiento` DISABLE KEYS */;
+INSERT INTO `establecimiento` VALUES ('ES00001','Avda. Urquijo','Bilbao'),('ES00002','Gran Vía','MADRID');
 /*!40000 ALTER TABLE `establecimiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,9 +125,10 @@ DROP TABLE IF EXISTS `menu`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `menu` (
-  `codMnu` varchar(10) NOT NULL,
+  `codMnu` varchar(10) NOT NULL DEFAULT '',
   `codDsc` varchar(10) DEFAULT NULL,
   `precio` float NOT NULL,
+  `nombre` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`codMnu`),
   KEY `codDsc` (`codDsc`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`codDsc`) REFERENCES `descuento` (`codDsc`) ON DELETE CASCADE
@@ -136,6 +141,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
+INSERT INTO `menu` VALUES ('ME00000001','DE00000001',8.99,'Menú Quesarito y Nachos'),('ME00000002',NULL,8.99,'Menú Qesarito Veggie');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,6 +168,7 @@ CREATE TABLE `menu_producto` (
 
 LOCK TABLES `menu_producto` WRITE;
 /*!40000 ALTER TABLE `menu_producto` DISABLE KEYS */;
+INSERT INTO `menu_producto` VALUES ('ME00000001','PR00000001'),('ME00000002','PR00000002'),('ME00000001','PR00000003'),('ME00000002','PR00000004'),('ME00000001','PR00000007'),('ME00000002','PR00000007');
 /*!40000 ALTER TABLE `menu_producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,6 +201,7 @@ CREATE TABLE `pedido` (
 
 LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
+INSERT INTO `pedido` VALUES ('PE00000001','CL00004','RE00003','ME00000001','2022-04-09');
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,6 +232,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
+INSERT INTO `producto` VALUES ('PR00000001',4.99,'Quesarito','Ternera','Arroz','Queso','Nata agria',NULL,'Comida'),('PR00000002',4.99,'Quesarito Veggie','Veggie','Arroz','Queso','Nata agria',NULL,'Comida'),('PR00000003',1.99,'Nachos','Nachos','Salsa de queso','Salsa picante',NULL,NULL,'Aperitivo'),('PR00000004',3.99,'Chicken Nachos','Nachos','Salsa de queso','Salsa picante','Nuggets',NULL,'Aperitivo'),('PR00000005',2.99,'Patatas Mexican','Patatas fritas','Paprika',NULL,NULL,NULL,'Aperitivo'),('PR00000006',4.99,'Santa Monica','Ternera','Frijoles','Guacamole','Arroz','Pico de gallo','Comida'),('PR00000007',2.99,'Coca-Cola',NULL,NULL,NULL,NULL,NULL,'Bebida'),('PR00000008',3.99,'Nachos Deluxe','Nachos','Salsa de queso','Guacamole','Salsa picante','Nata agria','Aperitivo');
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,6 +257,7 @@ CREATE TABLE `repartidor` (
 
 LOCK TABLES `repartidor` WRITE;
 /*!40000 ALTER TABLE `repartidor` DISABLE KEYS */;
+INSERT INTO `repartidor` VALUES ('RE00003','2003MAR');
 /*!40000 ALTER TABLE `repartidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,6 +287,7 @@ CREATE TABLE `trabajador` (
 
 LOCK TABLES `trabajador` WRITE;
 /*!40000 ALTER TABLE `trabajador` DISABLE KEYS */;
+INSERT INTO `trabajador` VALUES ('AU00002','ES00001','Tarde',1000,'Auxiliar'),('RE00003','ES00001','Tarde',1200,'Repartidor');
 /*!40000 ALTER TABLE `trabajador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,6 +314,7 @@ CREATE TABLE `usuarie` (
 
 LOCK TABLES `usuarie` WRITE;
 /*!40000 ALTER TABLE `usuarie` DISABLE KEYS */;
+INSERT INTO `usuarie` VALUES ('AD00001','abcd*1234','Nicolás','Rodríguez','Administrador'),('AU00002','abcd*1234','Daniel','Barrios','Trabajador'),('CL00004','abcd*1234','Joana','Renteria','Cliente'),('RE00003','abcd*1234','Markelito','Fernández','Trabajador');
 /*!40000 ALTER TABLE `usuarie` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -315,4 +327,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-07 13:20:36
+-- Dump completed on 2022-04-08 12:20:35
