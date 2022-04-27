@@ -53,48 +53,20 @@ public class VMenuCliente extends JDialog {
 		lblNewLabel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		
 		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panel_1.getLayout();
-		flowLayout_1.setVgap(0);
-		flowLayout_1.setHgap(0);
 		contentPanel.add(panel_1);
-		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2);
-		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(new Color(74, 44, 89));
-		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
-		flowLayout.setVgap(175);
-		panel_2.add(panel_3);
+		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_1 = new JLabel("Consultar pedido");
-		panel_3.add(lblNewLabel_1);
-		
-		JPanel panel_4 = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) panel_4.getLayout();
-		flowLayout_2.setVgap(175);
-		panel_2.add(panel_4);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(Color.YELLOW);
-		FlowLayout flowLayout_3 = (FlowLayout) panel_5.getLayout();
-		flowLayout_3.setVgap(0);
-		flowLayout_3.setHgap(100);
-		panel_4.add(panel_5);
+		lblNewLabel_1.setBounds(79, 107, 122, 15);
+		panel_1.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Cambiar y revisar tus datos");
-		panel_5.add(lblNewLabel_2);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBackground(Color.PINK);
-		FlowLayout flowLayout_4 = (FlowLayout) panel_6.getLayout();
-		flowLayout_4.setVgap(0);
-		flowLayout_4.setHgap(100);
-		panel_4.add(panel_6);
+		lblNewLabel_2.setBounds(-25, 452, 195, 15);
+		panel_1.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Salir");
-		panel_6.add(lblNewLabel_3);
+		lblNewLabel_3.setBounds(169, 452, 32, 15);
+		panel_1.add(lblNewLabel_3);
 	}
 
 }
