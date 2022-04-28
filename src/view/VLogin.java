@@ -20,18 +20,19 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.Rectangle;
+import java.io.File;
+
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 
 public class VLogin extends JFrame {
 
+	File fontFile = new File("/resources/iosevka-aile-heavy.ttf");
+
 	private JPanel contentPane;
 	private JTextField txtCorreoElectronico;
 	private JTextField txtContrasea;
-
-	/**
-	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -49,6 +50,13 @@ public class VLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public VLogin() {
+
+		try {
+			Font bigFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+		} catch (Exception e) {
+			System.err.println("Error cargando la tipografia Iosevka Aile Heavy");
+		}
+
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 700);
