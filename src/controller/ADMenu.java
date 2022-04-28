@@ -7,9 +7,19 @@ import datos.Menu;
 
 public class ADMenu extends MasterConnection implements Menuable {
 
+    private final String insertar = "INSERT INTO menu VALUES (?, ?, ?, ?, ?)";
+    private final String borrar = "DELETE FROM menu WHERE codMnu = ?";
+    private final String modificar = "UPDATE FROM menu WHERE codMnu = ? SET usos = ?, cantidadDesc = ?, fechaInicio = ?, fechaFin = ?";
+    private final String buscar = "SELECT * FROM menu";
+
     @Override
     public void crearMenu() {
-        // TODO Auto-generated method stub
+        String pCodMnu = "ME";
+        String numMen = String.valueOf(listarMenu().size());
+        for (int i = 0; i < 8 - numMen.length(); i++)
+            pCodMen += "0";
+
+        pCodMen += numMen;
 
     }
 

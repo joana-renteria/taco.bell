@@ -8,7 +8,7 @@ import controller.interfaces.Descontable;
 import datos.Descuento;
 import resources.Util;
 
-public class ADDescuento extends MasterConnection implements Descontable{
+public class ADDescuento extends MasterConnection implements Descontable {
 
     private final String insertar = "INSERT INTO descuento VALUES (?, ?, ?, ?, ?)";
     private final String borrar = "DELETE FROM descuento WHERE codDsc = ?";
@@ -19,18 +19,19 @@ public class ADDescuento extends MasterConnection implements Descontable{
     public void crearDescuento() {
         String pCodDsc = "DE";
         String numDesc = String.valueOf(listarDescuentos().size());
-        for (int i = 2; i < 8 - numDesc.length(); i++) 
+        for (int i = 0; i < 8 - numDesc.length(); i++)
             pCodDsc += "0";
-        
+
         pCodDsc += numDesc;
 
-        // TODO Leer a traves de la ventana (factorías para aislar) los valore sque introduce el usuarie.
+        // TODO Leer a traves de la ventana (factorías para aislar) los valores que
+        // introduce el usuarie.
         int pUsos = Util.leerInt();
         float pCantidadDsc = Util.leerFloat();
         LocalDate pFechaInicio = Util.leerFechaDMA(), pFechaFin = Util.leerFechaDMA();
 
         openConnection();
-        
+
         try {
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pCodDsc);
@@ -61,7 +62,7 @@ public class ADDescuento extends MasterConnection implements Descontable{
             // TODO tratar excepción.
         }
 
-        closeConnection(); 
+        closeConnection();
     }
 
     @Override
@@ -81,30 +82,30 @@ public class ADDescuento extends MasterConnection implements Descontable{
             // TODO tratar excepción.
         }
 
-        closeConnection(); 
+        closeConnection();
     }
 
     @Override
-    public ArrayList <Descuento> listarDescuentos() {
-        ArrayList <Descuento> pListaDescuento = new ArrayList <Descuento> ();
+    public ArrayList<Descuento> listarDescuentos() {
+        ArrayList<Descuento> pListaDescuento = new ArrayList<Descuento>();
         openConnection();
         try {
             stmt = con.prepareStatement(buscar);
             rs = stmt.executeQuery();
-            while (rs.next()) 
+            while (rs.next())
                 pListaDescuento.add(
-                    new Descuento(
-                        rs.getString(1),
-                        rs.getInt(2),
-                        rs.getFloat(3),
-                        (LocalDate) rs.getObject(4),
-                        (LocalDate) rs.getObject(5)));
+                        new Descuento(
+                                rs.getString(1),
+                                rs.getInt(2),
+                                rs.getFloat(3),
+                                (LocalDate) rs.getObject(4),
+                                (LocalDate) rs.getObject(5)));
 
         } catch (SQLException e) {
             // TODO tratar la excepción.
         }
-        
+
         return pListaDescuento;
     }
-    
+
 }
