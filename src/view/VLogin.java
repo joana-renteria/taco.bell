@@ -20,12 +20,14 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.Rectangle;
+import javax.swing.JSeparator;
+import javax.swing.ImageIcon;
 
 public class VLogin extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtCorreoElectronico;
+	private JTextField txtContrasea;
 
 	/**
 	 * Launch the application.
@@ -58,9 +60,14 @@ public class VLogin extends JFrame {
 		
 		JPanel panelMarca = new JPanel();
 		FlowLayout fl_panelMarca = (FlowLayout) panelMarca.getLayout();
-		fl_panelMarca.setHgap(230);
+		fl_panelMarca.setVgap(180);
+		fl_panelMarca.setHgap(40);
 		panelMarca.setBackground(new Color(118,38,161));
 		contentPane.add(panelMarca);
+		
+		JLabel iconMarca = new JLabel("");
+		iconMarca.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_marca.png")));
+		panelMarca.add(iconMarca);
 		
 		JPanel panelContenidoContainer = new JPanel();
 		panelContenidoContainer.setBackground(Color.WHITE);
@@ -74,14 +81,16 @@ public class VLogin extends JFrame {
 		
 		JPanel panelGreeter = new JPanel();
 		panelGreeter.setBackground(Color.WHITE);
-		FlowLayout fl_panelGreeter = (FlowLayout) panelGreeter.getLayout();
-		fl_panelGreeter.setVgap(80);
 		panelContenido.add(panelGreeter);
+		panelGreeter.setLayout(new BoxLayout(panelGreeter, BoxLayout.X_AXIS));
 		
-		JLabel lblGreeter1 = new JLabel("<html>Â¡Inicia sesiÃ³n en<br>nuestra nueva app!</html>");
+		JLabel lblGreeter1 = new JLabel("<html>¡Inicia sesión en<br>nuestra nueva app!</html>");
 		lblGreeter1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGreeter1.setFont(new Font("Iosevka Aile", Font.BOLD, 38));
 		panelGreeter.add(lblGreeter1);
+		
+		JSeparator separator_2 = new JSeparator();
+		panelGreeter.add(separator_2);
 		
 		JPanel panelLoginContainer = new JPanel();
 		panelLoginContainer.setBackground(Color.WHITE);
@@ -98,28 +107,38 @@ public class VLogin extends JFrame {
 		panelUser.setBackground(Color.WHITE);
 		panelLogin.add(panelUser);
 		
-		textField = new JTextField();
-		textField.setBorder(null);
-		textField.setFont(new Font("Iosevka Aile", Font.PLAIN, 18));
-		textField.setColumns(20);
-		panelUser.add(textField);
+		txtCorreoElectronico = new JTextField();
+		txtCorreoElectronico.setText("Correo Electronico");
+		txtCorreoElectronico.setBorder(null);
+		txtCorreoElectronico.setFont(new Font("Iosevka Aile", Font.PLAIN, 18));
+		txtCorreoElectronico.setColumns(20);
+		panelUser.add(txtCorreoElectronico);
+		
+		JSeparator separator = new JSeparator();
+		panelLogin.add(separator);
 		
 		JPanel panelPass = new JPanel();
 		panelPass.setBackground(Color.WHITE);
 		panelLogin.add(panelPass);
 		panelPass.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		textField_1 = new JTextField();
-		textField_1.setBorder(null);
-		textField_1.setFont(new Font("Iosevka Aile", Font.PLAIN, 18));
-		textField_1.setColumns(20);
-		panelPass.add(textField_1);
+		txtContrasea = new JTextField();
+		txtContrasea.setText("Contrase\u00F1a");
+		txtContrasea.setBorder(null);
+		txtContrasea.setFont(new Font("Iosevka Aile", Font.PLAIN, 18));
+		txtContrasea.setColumns(20);
+		panelPass.add(txtContrasea);
+		
+		JSeparator separator_1 = new JSeparator();
+		panelLogin.add(separator_1);
 		
 		JPanel panelBotones = new JPanel();
+		panelBotones.setBackground(Color.WHITE);
 		panelContenido.add(panelBotones);
 		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.Y_AXIS));
 		
 		JPanel panelEntrar = new JPanel();
+		panelEntrar.setBackground(Color.WHITE);
 		FlowLayout flowLayout = (FlowLayout) panelEntrar.getLayout();
 		panelBotones.add(panelEntrar);
 		
@@ -133,10 +152,18 @@ public class VLogin extends JFrame {
 		btnEntrar.setFont(new Font("Iosevka Aile", Font.BOLD, 16));
 		btnEntrar.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
-		JLabel lblRegister = new JLabel("Â¿AÃºn no te has registrado? Â¡Registrate ya!");
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panel.getLayout();
+		flowLayout_1.setVgap(100);
+		panel.setBackground(Color.WHITE);
+		panelBotones.add(panel);
+		
+		JLabel lblRegister = new JLabel("¿Aún no te has registrado? ¡Registrate ya!");
+		lblRegister.setBackground(Color.WHITE);
 		lblRegister.setForeground(new Color(69, 157, 213));
-		lblRegister.setFont(new Font("Iosevka Aile", Font.BOLD, 17));
-		panelBotones.add(lblRegister);
+		lblRegister.setFont(new Font("Dialog", Font.BOLD, 17));
+		lblRegister.setAlignmentX(0.5f);
+		panel.add(lblRegister);
 	}
 
 }

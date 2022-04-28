@@ -11,8 +11,17 @@ import javax.swing.BoxLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Component;
+import java.awt.Font;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 public class VMenuCliente extends JDialog {
+	
+	// Definir colores
+	private static Color colorMoradoClaro = new Color(118, 38, 161);
+	private static Color colorMoradoOscuro = new Color(73, 44, 89);
+	private static Color colorAzulOscuro = new Color(98, 14, 184);
+	private static Color colorVerdeClaro = new Color(64, 180, 89);
 
 	private final JPanel contentPanel = new JPanel();
 
@@ -37,36 +46,126 @@ public class VMenuCliente extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+		contentPanel.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(118, 38, 161));
-		contentPanel.add(panel);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 350));
+		JPanel panelLeft = new JPanel();
+		panelLeft.setBounds(5, 5, 578, 651);
+		panelLeft.setBackground(new Color(118, 38, 161));
+		contentPanel.add(panelLeft);
+		panelLeft.setLayout(null);
 		
-		JPanel panel_7 = new JPanel();
-		panel.add(panel_7);
-		panel_7.setLayout(new BoxLayout(panel_7, BoxLayout.Y_AXIS));
+		JPanel panelPedidoNuevo = new JPanel();
+		panelPedidoNuevo.setBackground(new Color(118, 38, 161));
+		panelPedidoNuevo.setBounds(0, 0, 577, 651);
+		panelLeft.add(panelPedidoNuevo);
+		panelPedidoNuevo.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 220));
 		
-		JLabel lblNewLabel = new JLabel("Realizar nuevo pedido");
-		panel_7.add(lblNewLabel);
-		lblNewLabel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		JPanel panelContenido1 = new JPanel();
+		panelContenido1.setBackground(new Color(118, 38, 161));
+		panelPedidoNuevo.add(panelContenido1);
+		panelContenido1.setLayout(new BoxLayout(panelContenido1, BoxLayout.Y_AXIS));
 		
-		JPanel panel_1 = new JPanel();
-		contentPanel.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel panelIcono1 = new JPanel();
+		panelIcono1.setBackground(new Color(118, 38, 161));
+		panelContenido1.add(panelIcono1);
 		
-		JLabel lblNewLabel_1 = new JLabel("Consultar pedido");
-		lblNewLabel_1.setBounds(79, 107, 122, 15);
-		panel_1.add(lblNewLabel_1);
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_nuevo_pedido.png")));
+		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIcono1.add(lblNewLabel_4);
 		
-		JLabel lblNewLabel_2 = new JLabel("Cambiar y revisar tus datos");
-		lblNewLabel_2.setBounds(-25, 452, 195, 15);
-		panel_1.add(lblNewLabel_2);
+		JLabel lblPedidoNuevo = new JLabel("Realizar nuevo pedido");
+		lblPedidoNuevo.setForeground(Color.WHITE);
+		lblPedidoNuevo.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		lblPedidoNuevo.setAlignmentY(1.0f);
+		lblPedidoNuevo.setAlignmentX(0.5f);
+		panelContenido1.add(lblPedidoNuevo);
 		
-		JLabel lblNewLabel_3 = new JLabel("Salir");
-		lblNewLabel_3.setBounds(169, 452, 32, 15);
-		panel_1.add(lblNewLabel_3);
+		JPanel panelRight = new JPanel();
+		panelRight.setBounds(592, 5, 587, 651);
+		panelRight.setBackground(Color.WHITE);
+		contentPanel.add(panelRight);
+		panelRight.setLayout(null);
+		
+		JPanel panelConsultaPedidos = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelConsultaPedidos.getLayout();
+		flowLayout.setVgap(70);
+		panelConsultaPedidos.setBackground(colorMoradoOscuro);
+		panelConsultaPedidos.setBounds(0, 0, 587, 313);
+		panelRight.add(panelConsultaPedidos);
+		
+		JPanel panelContenido2 = new JPanel();
+		panelContenido2.setBackground(colorMoradoOscuro);
+		panelConsultaPedidos.add(panelContenido2);
+		panelContenido2.setLayout(new BoxLayout(panelContenido2, BoxLayout.Y_AXIS));
+		
+		JPanel panelIcono2 = new JPanel();
+		panelIcono2.setBackground(colorMoradoOscuro);
+		panelContenido2.add(panelIcono2);
+		
+		JLabel lblNewLabel_4_1 = new JLabel("");
+		lblNewLabel_4_1.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_consulta_pedidos.png")));
+		lblNewLabel_4_1.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIcono2.add(lblNewLabel_4_1);
+		
+		JLabel lblConsultaPedidos = new JLabel("Consultar pedido");
+		lblConsultaPedidos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblConsultaPedidos.setForeground(Color.WHITE);
+		lblConsultaPedidos.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		panelContenido2.add(lblConsultaPedidos);
+		
+		JPanel panelDatos = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panelDatos.getLayout();
+		flowLayout_1.setVgap(110);
+		panelDatos.setBackground(colorAzulOscuro);
+		panelDatos.setBounds(0, 323, 311, 328);
+		panelRight.add(panelDatos);
+		
+		JPanel panelContenido3 = new JPanel();
+		panelContenido3.setBackground(colorAzulOscuro);
+		panelDatos.add(panelContenido3);
+		panelContenido3.setLayout(new BoxLayout(panelContenido3, BoxLayout.Y_AXIS));
+		
+		JPanel panelIcono3 = new JPanel();
+		panelIcono3.setBackground(colorAzulOscuro);
+		panelContenido3.add(panelIcono3);
+		
+		JLabel lblNewLabel_4_2 = new JLabel("");
+		lblNewLabel_4_2.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_datos.png")));
+		lblNewLabel_4_2.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIcono3.add(lblNewLabel_4_2);
+		
+		JLabel lblDatos = new JLabel("Cambiar y revisar tus datos");
+		lblDatos.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblDatos.setForeground(Color.WHITE);
+		lblDatos.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		panelContenido3.add(lblDatos);
+		
+		JPanel panelSalir = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panelSalir.getLayout();
+		flowLayout_2.setVgap(100);
+		panelSalir.setBackground(colorVerdeClaro);
+		panelSalir.setBounds(321, 324, 266, 327);
+		panelRight.add(panelSalir);
+		
+		JPanel panelContenido4 = new JPanel();
+		panelContenido4.setBackground(colorVerdeClaro);
+		panelSalir.add(panelContenido4);
+		panelContenido4.setLayout(new BoxLayout(panelContenido4, BoxLayout.Y_AXIS));
+		
+		JPanel panelIcono4 = new JPanel();
+		panelIcono4.setBackground(colorVerdeClaro);
+		panelContenido4.add(panelIcono4);
+		
+		JLabel lblNewLabel_4_3 = new JLabel("");
+		lblNewLabel_4_3.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_salir.png")));
+		lblNewLabel_4_3.setHorizontalAlignment(SwingConstants.CENTER);
+		panelIcono4.add(lblNewLabel_4_3);
+		
+		JLabel lblSalir = new JLabel("Salir");
+		lblSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblSalir.setForeground(Color.WHITE);
+		lblSalir.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		panelContenido4.add(lblSalir);
 	}
-
 }
