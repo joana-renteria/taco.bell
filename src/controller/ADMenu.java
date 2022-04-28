@@ -17,9 +17,9 @@ public class ADMenu extends MasterConnection implements Menuable {
         String pCodMnu = "ME";
         String numMen = String.valueOf(listarMenu().size());
         for (int i = 0; i < 8 - numMen.length(); i++)
-            pCodMen += "0";
+            pCodMnu += "0";
 
-        pCodMen += numMen;
+            pCodMnu += numMen;
 
     }
 
@@ -43,6 +43,12 @@ public class ADMenu extends MasterConnection implements Menuable {
 
     @Override
     public ArrayList<Menu> listarMenu() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Menu buscarMenu(String pCodMnu) {
         // TODO Auto-generated method stub
         return null;
     }

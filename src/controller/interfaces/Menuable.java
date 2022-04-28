@@ -9,5 +9,6 @@ public interface Menuable {
     public void borrarMenu();
     public void modificarMenu();
     public Menu buscarMenu();
+    public Menu buscarMenu(String pCodMnu);
     public ArrayList <Menu> listarMenu();
 }
