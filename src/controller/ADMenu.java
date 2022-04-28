@@ -162,5 +162,4 @@ public class ADMenu extends MasterConnection implements Menuable {
         closeConnection();
         return pListaMenu;
     }
-
 }
