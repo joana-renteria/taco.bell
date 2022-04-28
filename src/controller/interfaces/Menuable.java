@@ -6,8 +6,8 @@ import datos.Menu;
 
 public interface Menuable {
     public void crearMenu();
-    public void borrarMenu();
-    public void modificarMenu();
-    public Menu buscarMenu();
+    public void borrarMenu(Menu pMenu);
+    public void modificarMenu(Menu pMenu);
+    public Menu buscarMenu(String pCodMnu);
     public ArrayList <Menu> listarMenu();
 }

@@ -18,14 +18,13 @@ public class ADDescuento extends MasterConnection implements Descontable {
     @Override
     public void crearDescuento() {
         String pCodDsc = "DE";
-        String numDesc = String.valueOf(listarDescuentos().size());
-        for (int i = 0; i < 8 - numDesc.length(); i++)
+        String numDsc = String.valueOf(listarDescuentos().size());
+        for (int i = 0; i < 8 - numDsc.length(); i++)
             pCodDsc += "0";
 
-        pCodDsc += numDesc;
+        pCodDsc += numDsc;
 
-        // TODO Leer a traves de la ventana (factorías para aislar) los valores que
-        // introduce el usuarie.
+        // TODO Leer a traves de la ventana (factorías para aislar) los valores que introduce el usuarie.
         int pUsos = Util.leerInt();
         float pCantidadDsc = Util.leerFloat();
         LocalDate pFechaInicio = Util.leerFechaDMA(), pFechaFin = Util.leerFechaDMA();
