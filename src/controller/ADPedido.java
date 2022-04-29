@@ -20,7 +20,7 @@ public class ADPedido extends MasterConnection implements Pedible {
     @Override
     public void crearPedido() {
         String pCodPed = "ES";
-        String numPed = String.valueOf(listarPedidos().size());
+        String numPed = String.valueOf(listarPedidos().size()+1);
         for (int i = 0; i < 5 - numPed.length(); i++)
             pCodPed += "0";
 
