@@ -1,6 +1,6 @@
 package users;
 
-public class Trabajador extends Usuarie {
+public abstract class Trabajador extends Usuarie {
     private String codEst;
     private String horario;
     private float sueldo;
