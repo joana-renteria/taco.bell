@@ -29,7 +29,7 @@ public class ADDescuento extends MasterConnection implements Descontable {
         float pCantidadDsc = Util.leerFloat();
         LocalDate pFechaInicio = Util.leerFechaDMA(), pFechaFin = Util.leerFechaDMA();
 
-        openConnection();
+        openConnection();   
 
         try {
             stmt = con.prepareStatement(insertar);
