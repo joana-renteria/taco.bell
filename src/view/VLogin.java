@@ -11,8 +11,6 @@ import javax.swing.JSplitPane;
 import javax.swing.BoxLayout;
 import java.awt.Color;
 import javax.swing.JTextField;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -20,14 +18,11 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.Rectangle;
-import java.io.File;
 
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 
 public class VLogin extends JFrame {
-
-	File fontFile = new File("/resources/iosevka-aile-heavy.ttf");
 
 	private JPanel contentPane;
 	private JTextField txtCorreoElectronico;
@@ -37,6 +32,7 @@ public class VLogin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					cargarTipografia();
 					VLogin frame = new VLogin();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -45,17 +41,16 @@ public class VLogin extends JFrame {
 			}
 		});
 	}
+	
+	public static void cargarTipografia() {
+		Fuentes fe = new Fuentes();
+		fe.cargarTipografia();
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public VLogin() {
-
-		try {
-			Font bigFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-		} catch (Exception e) {
-			System.err.println("Error cargando la tipografia Iosevka Aile Heavy");
-		}
 
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,9 +87,9 @@ public class VLogin extends JFrame {
 		panelContenido.add(panelGreeter);
 		panelGreeter.setLayout(new BoxLayout(panelGreeter, BoxLayout.X_AXIS));
 		
-		JLabel lblGreeter1 = new JLabel("<html>�Inicia sesi�n en<br>nuestra nueva app!</html>");
+		JLabel lblGreeter1 = new JLabel("<html><p text-align='center'>¡Inicia sesión en<br>nuestra nueva app!</p></html>");
 		lblGreeter1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGreeter1.setFont(new Font("Iosevka Aile", Font.BOLD, 38));
+		lblGreeter1.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 38));
 		panelGreeter.add(lblGreeter1);
 		
 		JSeparator separator_2 = new JSeparator();
@@ -118,7 +113,7 @@ public class VLogin extends JFrame {
 		txtCorreoElectronico = new JTextField();
 		txtCorreoElectronico.setText("Correo Electronico");
 		txtCorreoElectronico.setBorder(null);
-		txtCorreoElectronico.setFont(new Font("Iosevka Aile", Font.PLAIN, 18));
+		txtCorreoElectronico.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
 		txtCorreoElectronico.setColumns(20);
 		panelUser.add(txtCorreoElectronico);
 		
@@ -133,7 +128,7 @@ public class VLogin extends JFrame {
 		txtContrasea = new JTextField();
 		txtContrasea.setText("Contrase\u00F1a");
 		txtContrasea.setBorder(null);
-		txtContrasea.setFont(new Font("Iosevka Aile", Font.PLAIN, 18));
+		txtContrasea.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
 		txtContrasea.setColumns(20);
 		panelPass.add(txtContrasea);
 		
@@ -157,7 +152,7 @@ public class VLogin extends JFrame {
 		btnEntrar.setBorder(null);
 		btnEntrar.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnEntrar.setForeground(Color.WHITE);
-		btnEntrar.setFont(new Font("Iosevka Aile", Font.BOLD, 16));
+		btnEntrar.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 20));
 		btnEntrar.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
 		JPanel panel = new JPanel();
@@ -166,10 +161,10 @@ public class VLogin extends JFrame {
 		panel.setBackground(Color.WHITE);
 		panelBotones.add(panel);
 		
-		JLabel lblRegister = new JLabel("�A�n no te has registrado? �Registrate ya!");
+		JLabel lblRegister = new JLabel("ï¿½Aï¿½n no te has registrado? ï¿½Registrate ya!");
 		lblRegister.setBackground(Color.WHITE);
 		lblRegister.setForeground(new Color(69, 157, 213));
-		lblRegister.setFont(new Font("Dialog", Font.BOLD, 17));
+		lblRegister.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 17));
 		lblRegister.setAlignmentX(0.5f);
 		panel.add(lblRegister);
 	}
