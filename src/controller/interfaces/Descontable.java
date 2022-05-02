@@ -5,7 +5,7 @@ import datos.Descuento;
 
 public interface Descontable {
     public void crearDescuento();
-    public void borrarDescuento();
-    public void modificarDescuento();
+    public void borrarDescuento(String pCodDsc);
+    public void modificarDescuento(Descuento pDescuento);
     public ArrayList <Descuento> listarDescuentos();
 }

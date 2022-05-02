@@ -2,7 +2,7 @@ package datos;
 
 import java.time.LocalDate;
 
-public class Descuento {
+public class Descuento implements Comparable <Descuento> {
 
     private final String codDsc;
     private int usos;
@@ -54,5 +54,10 @@ public class Descuento {
     }
     public void setFechaFin(LocalDate pFin) {
         fechaFin = pFin;
+    }
+
+    @Override
+    public int compareTo(Descuento pDescuento) {
+        return codDsc.compareTo(pDescuento.getCodDsc());
     }
 }

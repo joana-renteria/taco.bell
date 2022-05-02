@@ -5,7 +5,7 @@ import datos.Establecimiento;
 
 public interface Establecimientable {
     public void crearEstablecimiento();
-    public void borrarEstablecimiento();
-    public void modificarEstablecimiento();
+    public void borrarEstablecimiento(String pCodEst);
+    public void modificarEstablecimiento(Establecimiento pEstablecimiento);
     public ArrayList <Establecimiento> listarEstablecimientos(); 
 }
