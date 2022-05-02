@@ -30,12 +30,18 @@ public class VMenuCliente extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
+			cargarTipografia();
 			VMenuCliente dialog = new VMenuCliente();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void cargarTipografia() {
+		Fuentes fe = new Fuentes();
+		fe.cargarTipografia();
 	}
 
 	/**
@@ -76,7 +82,7 @@ public class VMenuCliente extends JDialog {
 		
 		JLabel lblPedidoNuevo = new JLabel("Realizar nuevo pedido");
 		lblPedidoNuevo.setForeground(Color.WHITE);
-		lblPedidoNuevo.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		lblPedidoNuevo.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		lblPedidoNuevo.setAlignmentY(1.0f);
 		lblPedidoNuevo.setAlignmentX(0.5f);
 		panelContenido1.add(lblPedidoNuevo);
@@ -111,7 +117,7 @@ public class VMenuCliente extends JDialog {
 		JLabel lblConsultaPedidos = new JLabel("Consultar pedido");
 		lblConsultaPedidos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblConsultaPedidos.setForeground(Color.WHITE);
-		lblConsultaPedidos.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		lblConsultaPedidos.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 28));
 		panelContenido2.add(lblConsultaPedidos);
 		
 		JPanel panelDatos = new JPanel();
@@ -138,7 +144,7 @@ public class VMenuCliente extends JDialog {
 		JLabel lblDatos = new JLabel("Cambiar y revisar tus datos");
 		lblDatos.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblDatos.setForeground(Color.WHITE);
-		lblDatos.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		lblDatos.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
 		panelContenido3.add(lblDatos);
 		
 		JPanel panelSalir = new JPanel();
@@ -165,7 +171,7 @@ public class VMenuCliente extends JDialog {
 		JLabel lblSalir = new JLabel("Salir");
 		lblSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblSalir.setForeground(Color.WHITE);
-		lblSalir.setFont(new Font("Source Sans Pro", Font.PLAIN, 22));
+		lblSalir.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelContenido4.add(lblSalir);
 	}
 }
