@@ -1,8 +1,17 @@
 package controller.interfaces;
 
+import java.util.ArrayList;
+import users.Usuarie;
+
 public interface Usuariable {
-    public void crearUsuario();
-    public void borrarUsuario();
-    public void modificarUsuario();
-    public void listarUsuarios(); // util para administrador.
+
+    // se crean los distintos tipos de usuaries.
+    
+    public void crearUsuarie();
+    // los usuarios se borran a través de su código.
+    public void borrarUsuarie(String pCodUsr);
+    public void modificarUsuarie(Usuarie pUsuarie);
+
+    public ArrayList <Usuarie> listarUsuaries();
+    public int numeroDeUsuaries();
 }

@@ -87,7 +87,7 @@ public class VLogin extends JFrame {
 		panelContenido.add(panelGreeter);
 		panelGreeter.setLayout(new BoxLayout(panelGreeter, BoxLayout.X_AXIS));
 		
-		JLabel lblGreeter1 = new JLabel("<html><p text-align='center'>�Inicia sesi�n en<br>nuestra nueva app!</p></html>");
+		JLabel lblGreeter1 = new JLabel("<html><p text-align='center'>¡Inicia sesión en<br>nuestra nueva app!</p></html>");
 		lblGreeter1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGreeter1.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 38));
 		panelGreeter.add(lblGreeter1);
@@ -161,7 +161,7 @@ public class VLogin extends JFrame {
 		panel.setBackground(Color.WHITE);
 		panelBotones.add(panel);
 		
-		JLabel lblRegister = new JLabel("�A�n no te has registrado? �Registrate ya!");
+		JLabel lblRegister = new JLabel("ï¿½Aï¿½n no te has registrado? ï¿½Registrate ya!");
 		lblRegister.setBackground(Color.WHITE);
 		lblRegister.setForeground(new Color(69, 157, 213));
 		lblRegister.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 17));

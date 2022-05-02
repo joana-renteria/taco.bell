@@ -7,9 +7,8 @@ public class Cliente extends Usuarie {
 
     // Constructors.
     public Cliente(
-    String pCodUsr, String pCorreoLogin) {
+    String pCodUsr) {
         super(pCodUsr);
-        correoLogin = pCorreoLogin;
     }
 
     public Cliente(
