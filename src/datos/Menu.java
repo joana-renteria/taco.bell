@@ -1,5 +1,5 @@
 package datos;
-import controller.factorias.*;
+
 public class Menu {
 
     private final String codMnu;
@@ -64,14 +64,10 @@ public class Menu {
 
     // Methods.
 
-    public void calcularPrecio() {
+    public float calcularPrecio() {
         float sum = 0;
-        Producto pProd;
-        for (int i = 0; i < 3; i++) {
-            pProd = ProductoADFactory.getAccessProductos().buscarProducto(codPrds[i]);
-            sum += pProd.getPrecio();
-        }
-        precio = sum;
+        // TODO usar el controlador para acceder a los productos y sumar el precio.
+        return sum;
     }
 
 }

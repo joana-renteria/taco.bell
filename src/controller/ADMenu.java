@@ -117,7 +117,6 @@ public class ADMenu extends MasterConnection implements Menuable {
 
     @Override
     public Menu buscarMenu(String pCodMnu) {
-        openConnection();
         Menu mnuAux = null;
         String[] codPrdsAux = new String[3];
         // TODO agregar productos al array
@@ -136,8 +135,6 @@ public class ADMenu extends MasterConnection implements Menuable {
         } catch (SQLException e) {
 
         }
-        
-        closeConnection();
         return mnuAux;
     }
 
@@ -159,7 +156,7 @@ public class ADMenu extends MasterConnection implements Menuable {
                     rs.getString(4)
                 ));
         } catch (SQLException e) {
-            // TODO tratar la excepción.
+
         }
 
         closeConnection();

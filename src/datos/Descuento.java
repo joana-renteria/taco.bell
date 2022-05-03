@@ -60,4 +60,10 @@ public class Descuento implements Comparable <Descuento> {
     public int compareTo(Descuento pDescuento) {
         return codDsc.compareTo(pDescuento.getCodDsc());
     }
+
+    @Override
+    public String toString() {
+        return codDsc + " " + usos + " " + cantidadDsc + " " +
+        fechaInicio.toString() + " " + fechaFin.toEpochDay();
+    }
 }
