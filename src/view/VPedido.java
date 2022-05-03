@@ -17,20 +17,34 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
+import java.util.Vector;
 import java.awt.GridBagLayout;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+
+import datos.Producto;
+import datos.Menu;
 
 public class VPedido extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	
+	private JTable tablaProductos;
+	private int menu = 0;
+	
 	private float descuento = 0;
 	private float precioTotal = 0;
+	
+	private Object[][] carrito;
 
 	// Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
 	private static Color colorMoradoOscuro = new Color(73, 44, 89);
 	private static Color colorAzulOscuro = new Color(98, 14, 184);
+	private static Color colorAzulClaro = new Color(21, 131, 170);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
+	private JTable tablePrecios;
 	
 	/**
 	 * Launch the application.
@@ -46,9 +60,29 @@ public class VPedido extends JDialog {
 		}
 	}
 
-	public static void cargarTipografia() {
+	private static void cargarTipografia() {
 		Fuentes fe = new Fuentes();
 		fe.cargarTipografia();
+	}
+	
+	private JTable cargarDatos(int menu) {
+		Object[][] listadoProductos = null;
+		String[] titulo = null;
+		
+		if(menu == 0) {}
+		else if(menu == 1) {}
+		else if(menu == 2) {}
+		else if(menu == 3) {}
+		else {}
+
+		return new JTable(listadoProductos, titulo);	
+	}
+	
+	private JTable actualizarPedido() {
+		Object[][] listadoCarrito = null;
+		String[] titulo = null;
+
+		return new JTable(listadoCarrito, titulo);	
 	}
 
 	/**
@@ -78,6 +112,9 @@ public class VPedido extends JDialog {
 		panelMenu.add(panelMenuFondo);
 		
 		JPanel panelVolver = new JPanel();
+		FlowLayout flowLayout_6 = (FlowLayout) panelVolver.getLayout();
+		flowLayout_6.setVgap(0);
+		flowLayout_6.setHgap(0);
 		panelVolver.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelVolver);
 		
@@ -182,12 +219,13 @@ public class VPedido extends JDialog {
 		JPanel panelProductos = new JPanel();
 		panelProductos.setBounds(347, 118, 832, 537);
 		contentPanel.add(panelProductos);
-		GridBagLayout gbl_panelProductos = new GridBagLayout();
-		gbl_panelProductos.columnWidths = new int[]{0};
-		gbl_panelProductos.rowHeights = new int[]{0};
-		gbl_panelProductos.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panelProductos.rowWeights = new double[]{Double.MIN_VALUE};
-		panelProductos.setLayout(gbl_panelProductos);
+		panelProductos.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		panelProductos.add(scrollPane);
+		
+		tablaProductos = cargarDatos(menu);
+		scrollPane.setViewportView(tablaProductos);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
@@ -200,12 +238,41 @@ public class VPedido extends JDialog {
 		panelPedido.setBounds(5, 118, 320, 537);
 		contentPanel.add(panelPedido);
 		
-		JButton btnNewButton = new JButton("TOTAL: " + precioTotal + " \u20AC");
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.setBackground(colorVerdeClaro);
-		btnNewButton.setBorder(null);
-		btnNewButton.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
-		btnNewButton.setBounds(10, 466, 300, 60);
-		panelPedido.add(btnNewButton);
+		JButton btnPedir = new JButton("TOTAL: " + precioTotal + " \u20AC");
+		btnPedir.setForeground(Color.WHITE);
+		btnPedir.setBackground(colorVerdeClaro);
+		btnPedir.setBorder(null);
+		btnPedir.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
+		btnPedir.setBounds(10, 466, 300, 60);
+		panelPedido.add(btnPedir);
+		
+		JPanel panelSeleccion = new JPanel();
+		panelSeleccion.setBounds(10, 11, 300, 355);
+		panelPedido.add(panelSeleccion);
+		panelSeleccion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		tablePrecios = actualizarPedido();
+
+		tablePrecios.setBackground(Color.WHITE);
+		panelSeleccion.add(tablePrecios);
+		
+		JPanel panelDescuento = new JPanel();
+		panelDescuento.setBounds(10, 377, 300, 78);
+		panelPedido.add(panelDescuento);
+		panelDescuento.setLayout(null);
+		
+		JLabel lblDescuento = new JLabel("Descuento");
+		lblDescuento.setHorizontalAlignment(SwingConstants.LEFT);
+		lblDescuento.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
+		lblDescuento.setForeground(colorAzulClaro);
+		lblDescuento.setBounds(10, 11, 146, 56);
+		panelDescuento.add(lblDescuento);
+		
+		JLabel lblDescuentoCantidad = new JLabel("0");
+		lblDescuentoCantidad.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDescuentoCantidad.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
+		lblDescuentoCantidad.setForeground(colorAzulClaro);
+		lblDescuentoCantidad.setBounds(197, 11, 93, 56);
+		panelDescuento.add(lblDescuentoCantidad);
 	}
 }
