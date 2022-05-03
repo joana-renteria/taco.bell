@@ -18,7 +18,7 @@ public class ADDescuento extends MasterConnection implements Descontable {
     @Override
     public void crearDescuento() {
         String pCodDsc = "DE";
-        String numDsc = String.valueOf(listarDescuentos().size());
+        String numDsc = String.valueOf(listarDescuentos().size()+1);
         for (int i = 0; i < 8 - numDsc.length(); i++)
             pCodDsc += "0";
 

@@ -55,11 +55,4 @@ public class Pedido {
     public void setMenu(Menu pMenu) {
         menu = pMenu;
     }   
-
-    // Methods
-    public float calcularPrecio() {
-        float sum = 0;
-        // TODO
-        return sum;
-    }
 }

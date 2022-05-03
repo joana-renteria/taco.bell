@@ -17,7 +17,7 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
     @Override
     public void crearEstablecimiento() {
         String pCodEst = "ES";
-        String numEst = String.valueOf(listarEstablecimientos().size());
+        String numEst = String.valueOf(listarEstablecimientos().size()+1);
         for (int i = 0; i < 5 - numEst.length(); i++)
             pCodEst += "0";
 
