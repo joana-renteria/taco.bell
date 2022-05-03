@@ -15,16 +15,22 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Component;
+import javax.swing.JSeparator;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
 
 public class VPedido extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	
+	private float descuento = 0;
+	private float precioTotal = 0;
 
 	// Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
 	private static Color colorMoradoOscuro = new Color(73, 44, 89);
 	private static Color colorAzulOscuro = new Color(98, 14, 184);
-	private static Color colorVerdeClaro = new Color(64, 180, 89);
+	private static Color colorVerdeClaro = new Color(30, 180, 132);
 	
 	/**
 	 * Launch the application.
@@ -53,9 +59,12 @@ public class VPedido extends JDialog {
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		contentPanel.setLayout(null);
 		
 		JPanel panelMenu = new JPanel();
+		panelMenu.setBackground(new Color(240, 240, 240));
+		panelMenu.setBounds(5, 5, 1174, 110);
+		panelMenu.setAlignmentY(Component.TOP_ALIGNMENT);
 		FlowLayout flowLayout = (FlowLayout) panelMenu.getLayout();
 		flowLayout.setHgap(0);
 		flowLayout.setVgap(0);
@@ -72,9 +81,11 @@ public class VPedido extends JDialog {
 		panelVolver.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelVolver);
 		
-		JLabel lblNewLabel_8 = new JLabel("");
-		lblNewLabel_8.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
-		panelVolver.add(lblNewLabel_8);
+		JButton btnAtras = new JButton("");
+		btnAtras.setBorder(null);
+		btnAtras.setBackground(colorMoradoClaro);
+		btnAtras.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
+		panelVolver.add(btnAtras);
 
 		JPanel panelMenus = new JPanel();
 		panelMenus.setBackground(colorMoradoClaro);
@@ -168,8 +179,33 @@ public class VPedido extends JDialog {
 		lblNewLabel_3.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelBebida.add(lblNewLabel_3);
 		
-		JPanel panel_4 = new JPanel();
-		contentPanel.add(panel_4);
+		JPanel panelProductos = new JPanel();
+		panelProductos.setBounds(347, 118, 832, 537);
+		contentPanel.add(panelProductos);
+		GridBagLayout gbl_panelProductos = new GridBagLayout();
+		gbl_panelProductos.columnWidths = new int[]{0};
+		gbl_panelProductos.rowHeights = new int[]{0};
+		gbl_panelProductos.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelProductos.rowWeights = new double[]{Double.MIN_VALUE};
+		panelProductos.setLayout(gbl_panelProductos);
+		
+		JSeparator separator = new JSeparator();
+		separator.setForeground(Color.DARK_GRAY);
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(335, 118, 2, 537);
+		contentPanel.add(separator);
+		
+		JPanel panelPedido = new JPanel();
+		panelPedido.setLayout(null);
+		panelPedido.setBounds(5, 118, 320, 537);
+		contentPanel.add(panelPedido);
+		
+		JButton btnNewButton = new JButton("TOTAL: " + precioTotal + " \u20AC");
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setBackground(colorVerdeClaro);
+		btnNewButton.setBorder(null);
+		btnNewButton.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
+		btnNewButton.setBounds(10, 466, 300, 60);
+		panelPedido.add(btnNewButton);
 	}
-
 }
