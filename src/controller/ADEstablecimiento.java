@@ -9,20 +9,14 @@ import resources.Util;
 
 public class ADEstablecimiento extends MasterConnection implements Establecimientable {
 
-    private final String insertar = "INSERT INTO establecimiento VALUES (?, ?, ?)";
-    private final String borrar = "DELETE FROM establecimiento WHERE codEst = ?";
-    private final String modificar = "UPDATE FROM establecimiento WHERE codEst = ? SET nombre = ?, loc = ?";
-    private final String buscar = "SELECT * FROM establecimiento";
-
     @Override
     public void crearEstablecimiento() {
         String pCodEst = "ES";
-        String numEst = String.valueOf(listarEstablecimientos().size()+1);
+        String numEst = String.valueOf(listarEstablecimientos().size());
         for (int i = 0; i < 5 - numEst.length(); i++)
             pCodEst += "0";
 
         pCodEst += numEst;
-        // TODO Leer a traves de la ventana (factorías para aislar) los valores que
         // introduce el usuarie.
         String pNombre = Util.introducirCadena();
         String pLoc = Util.introducirCadena();
@@ -94,4 +88,8 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         return pListaEstableciento;
     }
 
+    private final String insertar = "INSERT INTO establecimiento VALUES (?, ?, ?)";
+    private final String borrar = "DELETE FROM establecimiento WHERE codEst = ?";
+    private final String modificar = "UPDATE FROM establecimiento WHERE codEst = ? SET nombre = ?, loc = ?";
+    private final String buscar = "SELECT * FROM establecimiento";
 }
