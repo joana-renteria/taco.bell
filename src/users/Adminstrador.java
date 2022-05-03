@@ -29,6 +29,8 @@ public class Adminstrador extends Usuarie {
         
     }
 
-
-    
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

@@ -40,4 +40,11 @@ public abstract class Trabajador extends Usuarie {
     public void setSueldo(float pSueldo) {
         sueldo = pSueldo;
     }
+
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString() + " " + codEst + " " + horario + " " + sueldo;
+    }
 }

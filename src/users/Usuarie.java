@@ -53,4 +53,9 @@ public abstract class Usuarie {
     public void register() {
         
     }
+
+    @Override
+    public String toString() {
+        return codUsr + " " + passwd + " " + nombre + " " + apellido;
+    }
 }

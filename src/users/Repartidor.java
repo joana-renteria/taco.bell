@@ -25,4 +25,8 @@ public class Repartidor extends Trabajador {
         codVehiculo = pCodVehiculo;
     }
     
+    @Override
+    public String toString() {
+        return super.toString() + " " + codVehiculo;
+    }
 }

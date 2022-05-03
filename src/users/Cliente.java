@@ -46,4 +46,9 @@ public class Cliente extends Usuarie {
          * consultar todos los pedidos correspondientes al cliente*/ 
         return null;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " " + correoLogin;
+    }
 }

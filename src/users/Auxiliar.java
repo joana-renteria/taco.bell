@@ -41,4 +41,10 @@ public class Auxiliar extends Trabajador {
     public void actualizarPedido() {
         // TODO
     }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString() + " " + puesto;
+    }
 }

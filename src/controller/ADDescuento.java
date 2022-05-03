@@ -112,10 +112,25 @@ public class ADDescuento extends MasterConnection implements Descontable {
         return pListaDescuento;
     }
 
+    private int numeroDeUsuaries() {
+        openConnection();
+        int pTotal = 0;
+        try {
+            stmt = con.prepareStatement(cantidadDescuentos);
+                rs = stmt.executeQuery();
+                rs.next();
+            pTotal = rs.getInt(1);
+        } catch (SQLException sqle) {
+            //TODO: handle exception
+        }
+        closeConnection();
+        return pTotal;
+    }
+
     @Override
     public String generateCodigo() {
         String pCodDsc = "DE";
-        String numDsc = String.valueOf(listarDescuentos().size() + 1);
+        String numDsc = String.valueOf(numeroDeUsuaries() + 1);
         for (int i = 0; i < 8 - numDsc.length(); i++)
             pCodDsc += "0";
 
@@ -129,4 +144,5 @@ public class ADDescuento extends MasterConnection implements Descontable {
     private final String modificar = "UPDATE FROM descuento WHERE codDsc = ? SET usos = ?, cantidadDesc = ?, fechaInicio = ?, fechaFin = ?";
     private final String listarTodo = "SELECT * FROM descuento";
     private final String buscar = "SELECT * FROM descuento WHERE codDsc = ?";
+    private final String cantidadDescuentos = "SELECT COUNT(*) FROM descuento";
 }
