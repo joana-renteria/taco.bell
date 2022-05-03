@@ -49,11 +49,4 @@ public class Producto {
     public void setIngredientes(String[] pIngredientes) {
         ingredientes = pIngredientes;
     }
-
-    // Methods.
-    public float calcularPrecio() {
-        float sum = 0;
-        // TODO usar el controlador para acceder a los productos y sumar el precio.
-        return sum;
-    }
 }
