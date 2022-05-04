@@ -140,50 +140,51 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             switch (type) {
                 case "Cliente" :
                     stmt = con.prepareStatement(modificarCliente);
-                    stmt.setString(1,pCodUsr);
-                    stmt.setString(2, ((Cliente) pUsuarie).getCorreoLogin());
+                    stmt.setString(2,pCodUsr);
+                    stmt.setString(1, ((Cliente) pUsuarie).getCorreoLogin());
                         stmt.executeUpdate();
                     break;
                 case "Auxiliar" : // modificar de auxiliar.
                     stmt = con.prepareStatement(modificarAuxiliar);
-                    stmt.setString(1,pCodUsr);
-                    stmt.setString(2, ((Auxiliar) pUsuarie).getPuesto());
+                    stmt.setString(2,pCodUsr);
+                    stmt.setString(1, ((Auxiliar) pUsuarie).getPuesto());
                         stmt.executeUpdate();
                     // modificar de trabajador
                     stmt = con.prepareStatement(modificarTrabajador);
-                    stmt.setString(1,pCodUsr);
-                    stmt.setString(2, ((Auxiliar) pUsuarie).getCodEst());
-                    stmt.setString(3, ((Auxiliar) pUsuarie).getHorario());
-                    stmt.setFloat(4, ((Auxiliar) pUsuarie).getSueldo());
-                    stmt.setString(5, type);
+                    stmt.setString(5,pCodUsr);
+                    stmt.setString(1, ((Auxiliar) pUsuarie).getCodEst());
+                    stmt.setString(2, ((Auxiliar) pUsuarie).getHorario());
+                    stmt.setFloat(3, ((Auxiliar) pUsuarie).getSueldo());
+                    stmt.setString(4, type);
                         stmt.executeUpdate();
                     break;
                 case "Repartidor" : // modificar de repartidor.
                     stmt = con.prepareStatement(modificarRepartidor);
-                    stmt.setString(1,pCodUsr);
-                    stmt.setString(2, ((Repartidor) pUsuarie).getCodVehiculo());
+                    stmt.setString(2,pCodUsr);
+                    stmt.setString(1, ((Repartidor) pUsuarie).getCodVehiculo());
                         stmt.executeUpdate();
                     // modificar de trabajador.
                     stmt = con.prepareStatement(modificarTrabajador);
-                    stmt.setString(1,pCodUsr);
-                    stmt.setString(2, ((Repartidor) pUsuarie).getCodEst());
-                    stmt.setString(3, ((Repartidor) pUsuarie).getHorario());
-                    stmt.setFloat(4, ((Repartidor) pUsuarie).getSueldo());
-                    stmt.setString(5, type);
+                    stmt.setString(5,pCodUsr);
+                    stmt.setString(1, ((Repartidor) pUsuarie).getCodEst());
+                    stmt.setString(2, ((Repartidor) pUsuarie).getHorario());
+                    stmt.setFloat(3, ((Repartidor) pUsuarie).getSueldo());
+                    stmt.setString(4, type);
                         stmt.executeUpdate();
                     break;
             }
 
             stmt = con.prepareStatement(modificar);
-            stmt.setString(1,pCodUsr);
-            stmt.setString(2, pUsuarie.getPasswd());
-            stmt.setString(3, pUsuarie.getNombre());
-            stmt.setString(4, pUsuarie.getApellido());
-            stmt.setString(5, type);
+            stmt.setString(5,pCodUsr);
+            stmt.setString(1, pUsuarie.getPasswd());
+            stmt.setString(2, pUsuarie.getNombre());
+            stmt.setString(3, pUsuarie.getApellido());
+            stmt.setString(4, type);
                 stmt.executeUpdate();
+    
 
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            System.out.println("Excepción grabando usuarie" + pUsuarie);
         }
         closeConnection();
     }
@@ -283,6 +284,25 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
     }
 
     @Override
+    public String [] codigosUsuaries() {
+        String [] codsUsr = new String [numeroDeUsuaries()];
+        openConnection();
+
+        try {
+            stmt = con.prepareStatement(listarCodigos);
+            rs = stmt.executeQuery();
+
+            for (int i = 0; i < codsUsr.length && rs.next(); i++) 
+                codsUsr[i] = rs.getString(1);
+
+        } catch (Exception e) {
+            return null;
+        }
+        closeConnection();
+        return codsUsr;
+    }
+
+    @Override
     public int numeroDeUsuaries() {
         openConnection();
         int pTotal = 0;
@@ -291,7 +311,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                 rs = stmt.executeQuery();
                 rs.next();
             pTotal = rs.getInt(1);
-        } catch (Exception e) {
+        } catch (SQLException sqle) {
             //TODO: handle exception
         }
         closeConnection();
@@ -302,7 +322,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
      * @param pCodUsr es el prefijo del código.
      */
     public String crearCodigo(String pCodUsr) {
-        String numUsers = String.valueOf(numeroDeUsuaries()) + 1;
+        String numUsers = String.valueOf(numeroDeUsuaries() + 1);
         for (int i = 0; i < 5 - numUsers.length(); i++) 
             pCodUsr += "0";
             
@@ -325,15 +345,15 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         "DELETE FROM usuarie WHERE codUsr = ?";
 
     private final String modificar = 
-        "UPDATE FROM usuarie WHERE codUsr = ? SET usos = ?, cantidadDesc = ?, fechaInicio = ?, fechaFin = ?";
+        "UPDATE usuarie SET passwd = ?, nombre = ?, apellido = ?, tipo = ? WHERE codUsr = ?";
     private final String modificarCliente = 
-        "UPDATE FROM cliente WHERE codUsr = ? SET correoLogin = ?";
+        "UPDATE cliente SET correoLogin = ? WHERE codUsr = ?";
     private final String modificarTrabajador = 
-        "UPDATE FROM trabajador WHERE codUsr = ? SET codEst = ?, horario = ?, sueldo = ?, tipo = ?";
+        "UPDATE trabajador SET codEst = ?, horario = ?, sueldo = ?, tipo = ? WHERE codUsr = ?";
     private final String modificarAuxiliar = 
-        "UPDATE FROM auxiliar WHERE codUsr = ? SET puesto = ?";
+        "UPDATE auxiliar SET puesto = ? WHERE codUsr = ?";
     private final String modificarRepartidor = 
-        "UPDATE FROM repartidor WHERE codUsr = ? SET codVehiculo = ?";
+        "UPDATE repartidor SET codVehiculo = ? WHERE codUsr = ?";
 
     private final String buscar = 
         "SELECT * FROM usuarie WHERE codUsr = ?";
@@ -341,6 +361,9 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         "SELECT codVehiculo FROM repartidor WHERE codUsr = ?";
     private final String buscarAuxiliar = 
         "SELECT puesto FROM auxiliar WHERE codUsr = ?";
+
+    private final String listarCodigos = 
+        "SELECT codUsr from usuarie";
 
     private final String cantidadUsers = 
         "SELECT COUNT(*) FROM usuarie";

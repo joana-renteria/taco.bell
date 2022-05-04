@@ -24,6 +24,17 @@ public class Repartidor extends Trabajador {
     public void setCodVehiculo(String pCodVehiculo) {
         codVehiculo = pCodVehiculo;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Repartidor pRepartidor;
+        if (super.equals(obj) && obj instanceof Repartidor) {
+            pRepartidor = (Repartidor) obj;
+            return pRepartidor.getCodVehiculo().equals(codVehiculo);
+        }
+        else
+            return false;
+    }
     
     @Override
     public String toString() {

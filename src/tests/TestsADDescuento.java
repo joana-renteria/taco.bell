@@ -54,7 +54,7 @@ public class TestsADDescuento {
         // deberia ser el mismo objeto al compararlos.
         assertEquals(pDescuento.compareTo(buscar), 0);
     }
-
+    
     public void testDeleteDescuento() {
         // se busca el descuento por código.
         String pCodDsc = "DE00000000";

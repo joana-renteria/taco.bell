@@ -55,6 +55,21 @@ public abstract class Usuarie {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        Usuarie pUsuarie;
+        
+        if (obj instanceof Usuarie) {
+            pUsuarie = (Usuarie) obj;
+            return pUsuarie.getCodUsr().equals(codUsr) 
+                && pUsuarie.getPasswd().equals(passwd) 
+                && pUsuarie.getNombre().equals(nombre) 
+                && pUsuarie.getApellido().equals(apellido);
+        }
+        else 
+            return false;
+    }
+    
+    @Override
     public String toString() {
         return codUsr + " " + passwd + " " + nombre + " " + apellido;
     }

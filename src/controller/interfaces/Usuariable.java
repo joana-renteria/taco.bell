@@ -10,6 +10,7 @@ public interface Usuariable {
     public void borrarUsuarie(String pCodUsr);
     public void modificarUsuarie(Usuarie pUsuarie);
     public Usuarie buscarUsuarie(String pCodUsr);
+    public String [] codigosUsuaries();
     public int numeroDeUsuaries();
     public String crearCodigo(String pCodUsr);
 }

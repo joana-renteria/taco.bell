@@ -43,6 +43,17 @@ public class Auxiliar extends Trabajador {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        Auxiliar pAuxiliar;
+        if (super.equals(obj) && obj instanceof Auxiliar) {
+            pAuxiliar = (Auxiliar) obj;
+            return pAuxiliar.getPuesto().equals(puesto);
+        }
+        else
+            return false;
+    }
+
+    @Override
     public String toString() {
         // TODO Auto-generated method stub
         return super.toString() + " " + puesto;

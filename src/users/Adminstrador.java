@@ -30,6 +30,14 @@ public class Adminstrador extends Usuarie {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (super.equals(obj)) 
+            return false;
+        else 
+            return false;
+    }
+
+    @Override
     public String toString() {
         return super.toString();
     }

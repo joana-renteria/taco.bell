@@ -2,6 +2,8 @@ package users;
 
 import java.sql.ResultSet;
 
+import com.mysql.cj.xdevapi.Client;
+
 public class Cliente extends Usuarie {
     private String correoLogin;
 
@@ -45,6 +47,19 @@ public class Cliente extends Usuarie {
         /* Usa el codigo de usuarie para 
          * consultar todos los pedidos correspondientes al cliente*/ 
         return null;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        Cliente pCliente;
+        
+        if (super.equals(obj)) {
+            pCliente = (Cliente) obj;
+            return pCliente.getCorreoLogin().equals(correoLogin);
+        }
+        else
+            return false;
     }
 
     @Override
