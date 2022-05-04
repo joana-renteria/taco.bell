@@ -5,53 +5,27 @@ import java.util.ArrayList;
 
 import controller.interfaces.Menuable;
 import datos.Menu;
-import resources.Util;
 
 public class ADMenu extends MasterConnection implements Menuable {
 
-    private final String insertar = "INSERT INTO menu VALUES (?, ?, ?, ?)";
-    private final String insertarNM = "INSERT INTO menu_producto VALUES (?, ?)";
-    private final String borrar = "DELETE FROM menu WHERE codMnu = ?";
-    private final String borrarNM = "DELETE FROM menu WHERE codMnu = ?";
-    private final String modificar = "UPDATE menu SET codDsc = ?, precio = ?, nombre = ? WHERE codMnu = ?";
-    private final String modificarNM = "UPDATE MENU_PRODUCTO SET CodPrd = ?, CodMnu = ? WHERE CodMnu = ? && CodPrd = ?";
-    private final String buscar = "SELECT * FROM menu WHERE CodMnu = ?";
-    private final String listar = "SELECT * FROM menu";
-
     @Override
-    public void crearMenu() {
-        String pCodMnu = "ME";
-        String numMnu = String.valueOf(listarMenu().size());
-        for (int i = 0; i < 8 - numMnu.length(); i++)
-            pCodMnu += "0";
-
-        pCodMnu += numMnu;
-
-        // TODO Leer a traves de la ventana (factorías para aislar) los valores que
-        // introduce el usuarie.
-        String pcodDsc = Util.introducirCadena();
-        float pPrecio = Util.leerFloat();
-        String pNombre = Util.introducirCadena();
-        String[] pCodPrds = new String[3];
-        for (int i = 0; i < 3; i++) {
-            pCodPrds[i] = Util.introducirCadena();
-        }
+    public void grabarMenu(Menu pMenu) {
         openConnection();
 
         try {
             stmt = con.prepareStatement(insertar);
-            stmt.setString(1, pCodMnu);
-            stmt.setString(2, pcodDsc);
-            stmt.setFloat(3, pPrecio);
-            stmt.setString(4, pNombre);
+            stmt.setString(1, pMenu.getCodMnu());
+            stmt.setString(2, pMenu.getCodDsc());
+            stmt.setFloat(3, pMenu.getPrecio());
+            stmt.setString(4, pMenu.getNombre());
             // ejecución del comando.
             stmt.executeUpdate();
 
             // meter datos en menu_producto
             for (int i = 0; i < 3; i++) {
                 stmt = con.prepareStatement(insertarNM);
-                stmt.setString(1, pCodMnu);
-                stmt.setString(2, pCodPrds[i]);
+                stmt.setString(1, pMenu.getCodMnu());
+                stmt.setString(2, pMenu.getCodPrds()[i]);
                 // ejecución del comando.
                 stmt.executeUpdate();
             }
@@ -117,6 +91,7 @@ public class ADMenu extends MasterConnection implements Menuable {
 
     @Override
     public Menu buscarMenu(String pCodMnu) {
+        openConnection();
         Menu mnuAux = null;
         String[] codPrdsAux = new String[3];
         // TODO agregar productos al array
@@ -135,11 +110,12 @@ public class ADMenu extends MasterConnection implements Menuable {
         } catch (SQLException e) {
 
         }
+        closeConnection();
         return mnuAux;
     }
 
     @Override
-    public ArrayList<Menu> listarMenu() {
+    public ArrayList<Menu> listarMenus() {
         ArrayList<Menu> pListaMenu = new ArrayList<Menu>();
         String[] codPrdsAux = new String[3];
         openConnection();
@@ -162,4 +138,24 @@ public class ADMenu extends MasterConnection implements Menuable {
         closeConnection();
         return pListaMenu;
     }
+
+	@Override
+	public String generateCodigo() {
+		String pCodMnu = "ME";
+        String numMnu = String.valueOf(listarMenus().size()+1);
+        for (int i = 0; i < 8 - numMnu.length(); i++)
+            pCodMnu += "0";
+
+        pCodMnu += numMnu;
+		return pCodMnu;
+	}
+    
+    private final String insertar = "INSERT INTO menu VALUES (?, ?, ?, ?)";
+    private final String insertarNM = "INSERT INTO menu_producto VALUES (?, ?)";
+    private final String borrar = "DELETE FROM menu WHERE codMnu = ?";
+    private final String borrarNM = "DELETE FROM menu WHERE codMnu = ?";
+    private final String modificar = "UPDATE menu SET codDsc = ?, precio = ?, nombre = ? WHERE codMnu = ?";
+    private final String modificarNM = "UPDATE MENU_PRODUCTO SET CodPrd = ?, CodMnu = ? WHERE CodMnu = ? && CodPrd = ?";
+    private final String buscar = "SELECT * FROM menu WHERE CodMnu = ?";
+    private final String listar = "SELECT * FROM menu";
 }

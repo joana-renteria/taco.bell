@@ -5,29 +5,18 @@ import java.util.ArrayList;
 
 import controller.interfaces.Establecimientable;
 import datos.Establecimiento;
-import resources.Util;
 
 public class ADEstablecimiento extends MasterConnection implements Establecimientable {
 
     @Override
-    public void crearEstablecimiento() {
-        String pCodEst = "ES";
-        String numEst = String.valueOf(listarEstablecimientos().size());
-        for (int i = 0; i < 5 - numEst.length(); i++)
-            pCodEst += "0";
-
-        pCodEst += numEst;
-        // introduce el usuarie.
-        String pNombre = Util.introducirCadena();
-        String pLoc = Util.introducirCadena();
-
+    public void grabarEstablecimiento(Establecimiento pEstablecimiento) {
         openConnection();
 
         try {
             stmt = con.prepareStatement(insertar);
-            stmt.setString(1, pCodEst);
-            stmt.setString(2, pNombre);
-            stmt.setString(3, pLoc);
+            stmt.setString(1, pEstablecimiento.getCodEst());
+            stmt.setString(2, pEstablecimiento.getNombre());
+            stmt.setString(3, pEstablecimiento.getLoc());
             // ejecución del comando.
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -70,11 +59,34 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
     }
 
     @Override
+    public Establecimiento buscarPorCodigo(String pCodEst) {
+        openConnection();
+        Establecimiento pEstablecimiento = null;
+        try {
+            stmt = con.prepareStatement(buscar);
+            System.out.println(1);
+            stmt.setString(1, pCodEst);
+            System.out.println(2);
+            rs = stmt.executeQuery();
+            System.out.println(3);
+            rs.next();
+            pEstablecimiento = new Establecimiento(
+                rs.getString(1),
+                rs.getString(2),
+                rs.getString(3));
+        } catch (Exception e) {
+            System.out.println(6);
+            //TODO: handle exception
+        }
+        return pEstablecimiento;
+    }
+
+    @Override
     public ArrayList<Establecimiento> listarEstablecimientos() {
         ArrayList<Establecimiento> pListaEstableciento = new ArrayList<Establecimiento>();
         openConnection();
         try {
-            stmt = con.prepareStatement(buscar);
+            stmt = con.prepareStatement(listar);
             rs = stmt.executeQuery();
             while (rs.next())
                 pListaEstableciento.add(
@@ -87,9 +99,20 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         }
         return pListaEstableciento;
     }
+    public String generateCodigo() {
+        String pCodEst = "ES";
+        String numEst = String.valueOf(listarEstablecimientos().size()+1);
+        for (int i = 0; i < 5 - numEst.length(); i++)
+            pCodEst += "0";
+
+        pCodEst += numEst;
+
+        return pCodEst;
+    }
 
     private final String insertar = "INSERT INTO establecimiento VALUES (?, ?, ?)";
     private final String borrar = "DELETE FROM establecimiento WHERE codEst = ?";
     private final String modificar = "UPDATE FROM establecimiento WHERE codEst = ? SET nombre = ?, loc = ?";
-    private final String buscar = "SELECT * FROM establecimiento";
+    private final String listar = "SELECT * FROM establecimiento";
+    private final String buscar = "SELECT * FROM establecimiento WHERE codEst = ?";
 }

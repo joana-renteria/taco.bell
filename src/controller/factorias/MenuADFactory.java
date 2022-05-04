@@ -7,7 +7,7 @@ public abstract class MenuADFactory {
 
     private static Menuable m = new ADMenu();
 
-    public static Menuable getAccessMenus() {
+    public static Menuable getAccessMenu() {
         return m;
     }
 }

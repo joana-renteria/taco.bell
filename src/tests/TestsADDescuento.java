@@ -48,19 +48,32 @@ public class TestsADDescuento {
                 .buscarPorCodigo(pCodDsc);
         // deberia ser el mismo objeto al compararlos.
         assertEquals(pDescuento.compareTo(buscar), 0);
+        DescuentoADFactory
+            .getAccessDescuento()
+                .borrarDescuento(pCodDsc);
     }
 
     @Test
     public void testDeleteDescuento() {
-        String pCodDsc = "DE00000010";
-        Descuento pDescuento =  
-            DescuentoADFactory
-                .getAccessDescuento()
-                    .buscarPorCodigo(pCodDsc);
+        // crear un descuento con datos.
+        String pCodDsc = DescuentoADFactory.getAccessDescuento().generateCodigo();
+        Descuento pDescuento = 
+            new Descuento(
+                pCodDsc,
+                5,
+                6,
+                LocalDate.now(),
+                LocalDate.now().plusDays(90));
+        // grabado en la base de datos.
+        DescuentoADFactory
+            .getAccessDescuento()
+                .grabarDescuento(pDescuento);
         DescuentoADFactory
             .getAccessDescuento()
                 .borrarDescuento(pCodDsc);
 
-        assertNull(DescuentoADFactory.getAccessDescuento().buscarPorCodigo(pCodDsc));
+        assertNull(DescuentoADFactory
+            .getAccessDescuento()
+                .buscarPorCodigo(pCodDsc));
     }
 }
