@@ -1,6 +1,6 @@
 package datos;
 
-public class Establecimiento {
+public class Establecimiento implements Comparable <Establecimiento>{
     private final String codEst;
     private String nombre;
     private String loc;
@@ -34,4 +34,18 @@ public class Establecimiento {
     public void setLoc(String pLoc) {
         loc = pLoc;
     }
+
+    public int compareTo(Establecimiento pEstablecimiento) {
+        return codEst.compareTo(pEstablecimiento.getCodEst());
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " codEst='" + getCodEst() + "'" +
+            ", nombre='" + getNombre() + "'" +
+            ", loc='" + getLoc() + "'" +
+            "}";
+    }
+    
 }

@@ -40,6 +40,7 @@ public class TestsADDescuento {
         DescuentoADFactory
             .getAccessDescuento()
                 .grabarDescuento(pDescuento);
+
         // comprobar los cambios.
         assertEquals(buscar(pCodDsc), pDescuento);
     }

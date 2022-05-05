@@ -1,6 +1,6 @@
 package datos;
 
-public class Producto {
+public class Producto implements Comparable <Producto> {
     private final String codPrd;
     private float precio;
     private String nombre;
@@ -41,5 +41,10 @@ public class Producto {
         float sum = 0;
         // TODO usar el controlador para acceder a los productos y sumar el precio.
         return sum;
+    }
+    @Override
+    public int compareTo(Producto o) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

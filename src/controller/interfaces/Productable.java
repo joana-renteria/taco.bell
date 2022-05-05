@@ -10,4 +10,5 @@ public interface Productable {
     public Producto buscarProducto(String pCodPrd);
     public ArrayList <Producto> listarProducto();
     public ArrayList <Producto> listarProducto(String pTipo);
+    public String generateCodigo();
 }

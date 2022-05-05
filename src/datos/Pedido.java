@@ -2,12 +2,13 @@ package datos;
 
 import java.time.LocalDate;
 
-public class Pedido {
+public class Pedido implements Comparable <Pedido>{
 
     private final String codPed; 
     private LocalDate fechaPed; 
     private String codCle; // código cliente
     private String codRep; // código repartidor
+    private String codEst; // código establecimiento
     private Menu menu; 
     
     // Constructors.
@@ -17,11 +18,12 @@ public class Pedido {
 
     public Pedido(
     String pCodPed, LocalDate pFechaPed, 
-    String pCodCle, String pCodRep, Menu pMenu) {
+    String pCodCle, String pCodRep, String pcodEst, Menu pMenu) {
         codPed = pCodPed;
         fechaPed = pFechaPed;
         codCle = pCodCle;
         codRep = pCodRep;
+        codEst = pcodEst;
         menu = pMenu;
     }
 
@@ -38,6 +40,9 @@ public class Pedido {
     public String getCodRep() {
         return codRep;
     }
+    public String getCodEst() {
+        return codEst;
+    }
     public Menu getMenu() {
         return menu;
     }
@@ -52,6 +57,9 @@ public class Pedido {
     public void setCodRep(String pCodRep) {
         codRep = pCodRep;
     }
+    public void setCodEst(String pCodEst) {
+        codEst = pCodEst;
+    }
     public void setMenu(Menu pMenu) {
         menu = pMenu;
     }   
@@ -62,4 +70,24 @@ public class Pedido {
         // TODO
         return sum;
     }
+
+    @Override
+    public int compareTo(Pedido pPedido) {
+        return codPed.compareTo(pPedido.getCodPed());
+    }
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " codPed='" + getCodPed() + "'" +
+            ", fechaPed='" + getFechaPed() + "'" +
+            ", codCle='" + getCodCle() + "'" +
+            ", codRep='" + getCodRep() + "'" +
+            ", codEst='" + getCodEst() + "'" +
+            ", menu='" + getMenu() + "'" +
+            "}";
+    }
+    
+    
 }
