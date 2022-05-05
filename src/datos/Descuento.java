@@ -64,6 +64,20 @@ public class Descuento implements Comparable <Descuento> {
     @Override
     public String toString() {
         return codDsc + " " + usos + " " + cantidadDsc + " " +
-        fechaInicio.toString() + " " + fechaFin.toEpochDay();
+        fechaInicio.toString() + " " + fechaFin.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Descuento) {
+            Descuento pDescuento = (Descuento) obj;
+            return pDescuento.getCodDsc().equals(codDsc)
+            && pDescuento.getUsos() == usos
+            && pDescuento.getCantidadDsc() == cantidadDsc
+            && pDescuento.getFechaInicio().compareTo(fechaInicio) == 0
+            && pDescuento.getFechaFin().compareTo(fechaFin) == 0;
+        }
+        else
+            return false;
+    }   
 }

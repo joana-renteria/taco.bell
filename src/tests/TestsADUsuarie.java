@@ -2,17 +2,20 @@ package tests;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
 import users.*;
 import controller.factorias.UsuarieADFactory;
 
 public class TestsADUsuarie {
-    // el código que se usa debe conservarse.
+    // conservar el código del Usuarie creado.
+    private String type = "Auxiliar";
     private String pCodUsr =
         UsuarieADFactory
             .getAccessUsuaries()
-                .crearCodigo("AU");
-
-    /**Un método auxiliar para ahorrar toda la sentencia.
+                .crearCodigo(type
+                    .substring(0, 2)
+                        .toUpperCase());
+    /**Un método especial para ahorrar toda la sentencia.
      * Usando la factoría, se busca en la base de datos.
      * @param pCodUsr
      */
@@ -26,7 +29,7 @@ public class TestsADUsuarie {
      */
     //@Test
     //@Before
-    public void testAddUsuarie() {        
+    public void testAddUsuarie() {    
         // usuarie a grabar.
         Usuarie pUsuarie = 
             new Auxiliar(
@@ -46,19 +49,21 @@ public class TestsADUsuarie {
         assertEquals(pUsuarie, buscar(pCodUsr));
        // si no da errores, coincide cuando se busca por código.
     }
-
+    /**Se usa el usuarie creado antes para modificarlo
+     * y testar los cambios.
+     */
     //@Test
     public void testModificarUsuarie() {
-        // se usa el mismo usuarie de antes para modificarlo.
         Usuarie pUsuarie = buscar(pCodUsr);
-        System.out.println(pUsuarie);
         // se comprueba que se instancia del tipo correcto.
         assertTrue(pUsuarie instanceof Auxiliar);
         assertEquals(pCodUsr, pUsuarie.getCodUsr());
         // se modifica el objeto usuarie.
         pUsuarie.setNombre("Frank");
-        pUsuarie.setNombre("Zappa");
+        pUsuarie.setApellido("Zappa");
         pUsuarie.setPasswd("59'Chevy");
+        ((Auxiliar) pUsuarie).setSueldo(1940);
+        ((Auxiliar) pUsuarie).setPuesto("WOIFTM");
         // se updatea en la base de datos.
         UsuarieADFactory
             .getAccessUsuaries()
@@ -67,7 +72,9 @@ public class TestsADUsuarie {
         assertEquals(pUsuarie, buscar(pCodUsr));
         // si no da errores, de nuevo se observa que ha cambiado en la BD.
     }
-
+    /**Se comprueba que el borrado de usuarie se hace 
+     * de forma efectiva, usando el mismo objeto de antes.
+     */
     //@Test
     public void testBorrarUsuarie() {
         // se comprueba que se encuentra en la base de datos.
@@ -76,14 +83,13 @@ public class TestsADUsuarie {
         UsuarieADFactory
             .getAccessUsuaries()
                 .borrarUsuarie(pCodUsr);
-        // comprobar los cambios.
+        // no debería poderse encontrar.
         assertNull(buscar(pCodUsr));
-        // si no se encuentra es porque se ha borrado.
     }
     /**Sistema manual que muestra todos los códigos encontrados
      * en la base de datos.
      */
-    //@Test
+    // @Test
     public void testListarUsuaries() {
         String [] codes = 
             UsuarieADFactory
@@ -96,20 +102,17 @@ public class TestsADUsuarie {
         assertEquals(codes[3], buscar(codes[3]).getCodUsr());
         // para asegurarlo, se muestran por pantalla.
         for (String pointer : codes) 
-            System.out.println(buscar(pointer));
+            if (!pointer.equals(pCodUsr))
+                System.out.println(buscar(pointer));
+            else
+                System.out.println("* " + buscar(pointer)); // sumarle un string.
 
         System.out.print("\n");
+        
     }
-    /**Se comprueba que el numero de usuarios es
-     * el correcto. (rows de usuarie)
+    /**Se comprueban todos los tests de 
+     * forma secuencial.
      */
-    public void numeroDeUsuaries() {
-        System.out.println(
-            UsuarieADFactory
-                .getAccessUsuaries()
-                    .numeroDeUsuaries());
-    } 
-
     @Test
     public void testTodo() {
         testListarUsuaries();
