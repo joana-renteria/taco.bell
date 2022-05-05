@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.junit.Test;
 
+import controller.factorias.MenuADFactory;
 import controller.factorias.PedidoADFactory;
 import datos.Pedido;
 
@@ -29,12 +31,16 @@ public class TestsADPedido {
     @Test
     public void testCrearPedido() {
         // crear un pedido con datos.
-        String pCodEst = PedidoADFactory.getAccessPedido().generateCodigo();
+        String pCodPed = PedidoADFactory.getAccessPedido().generateCodigo();
+        System.out.println(pCodPed);
         Pedido pPedido = 
             new Pedido(
-                pCodEst,
-                "Urquijo Bell",
-                "Alameda Urquijo");
+                pCodPed,
+                LocalDate.now(),
+                "CL00004",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("CL%"), (buscar CLIENTE)
+                "RE00003",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("RE%"), (buscar REPARTIDOR)
+                "ES00001",
+                MenuADFactory.getAccessMenu().buscarMenu("ME00000001"));
                 System.out.println(pPedido.toString());
         // grabado en la base de datos.
         PedidoADFactory
@@ -43,22 +49,26 @@ public class TestsADPedido {
         // comprobar que contiene el valor.
         Pedido buscar = 
             PedidoADFactory.getAccessPedido() // busqueda de un código.
-                .buscarPorCodigo(pCodEst);
+                .buscarPorCodigo(pCodPed);
                 // deberia ser el mismo objeto al compararlos.
         assertEquals(pPedido.compareTo(buscar), 0);
         PedidoADFactory
             .getAccessPedido()
-                .borrarPedido(pCodEst);
+                .borrarPedido(pCodPed);
     }
     @Test
     public void testDeletePedido() {
         // crear un pedido con datos.
-        String pCodEst = PedidoADFactory.getAccessPedido().generateCodigo();
+        String pCodPed = PedidoADFactory.getAccessPedido().generateCodigo();
+        System.out.println(pCodPed);
         Pedido pPedido = 
             new Pedido(
-                pCodEst,
-                "Urquijo Bell",
-                "Alameda Urquijo");
+                pCodPed,
+                LocalDate.now(),
+                "CL00004",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("CL%"), (buscar CLIENTE)
+                "RE00003",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("RE%"), (buscar REPARTIDOR)
+                "ES00001",
+                MenuADFactory.getAccessMenu().buscarMenu("ME00000001"));
                 System.out.println(pPedido.toString());
         // grabado en la base de datos.
         PedidoADFactory
@@ -67,8 +77,8 @@ public class TestsADPedido {
         // comprobar que contiene el valor.
         PedidoADFactory
             .getAccessPedido()
-                .borrarPedido(pCodEst);
+                .borrarPedido(pCodPed);
 
-        assertNull(PedidoADFactory.getAccessPedido().buscarPorCodigo(pCodEst));
+        assertNull(PedidoADFactory.getAccessPedido().buscarPorCodigo(pCodPed));
     }
 }

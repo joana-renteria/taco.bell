@@ -64,18 +64,14 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         Establecimiento pEstablecimiento = null;
         try {
             stmt = con.prepareStatement(buscar);
-            System.out.println(1);
             stmt.setString(1, pCodEst);
-            System.out.println(2);
             rs = stmt.executeQuery();
-            System.out.println(3);
             rs.next();
             pEstablecimiento = new Establecimiento(
                 rs.getString(1),
                 rs.getString(2),
                 rs.getString(3));
         } catch (Exception e) {
-            System.out.println(6);
             //TODO: handle exception
         }
         return pEstablecimiento;

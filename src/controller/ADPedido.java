@@ -1,13 +1,11 @@
 package controller;
 
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 import controller.factorias.MenuADFactory;
 import controller.interfaces.Pedible;
+import datos.Menu;
 import datos.Pedido;
 
 public class ADPedido extends MasterConnection implements Pedible {
@@ -22,11 +20,13 @@ public class ADPedido extends MasterConnection implements Pedible {
             stmt.setString(2, pPedido.getCodCle());
             stmt.setString(3, pPedido.getCodRep());
             stmt.setString(4, pPedido.getMenu().getCodMnu());
-            stmt.setObject(5, pPedido.getFechaPed());
+            stmt.setString(5, pPedido.getCodEst());
+            stmt.setObject(6, pPedido.getFechaPed());
             // ejecución del comando.
             stmt.executeUpdate();
         } catch (SQLException e) {
             // TODO tratar excepción.
+            e.printStackTrace();
         }
         closeConnection();
     }
@@ -57,7 +57,8 @@ public class ADPedido extends MasterConnection implements Pedible {
             stmt.setString(2, pPedido.getCodCle());
             stmt.setString(3, pPedido.getCodRep());
             stmt.setString(4, pPedido.getMenu().getCodMnu());
-            stmt.setObject(5, pPedido.getFechaPed());
+            stmt.setString(5, pPedido.getCodEst());
+            stmt.setObject(6, pPedido.getFechaPed());
             // ejecución del comando.
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -74,26 +75,18 @@ public class ADPedido extends MasterConnection implements Pedible {
         Pedido pPedido = null;
         try {
             stmt = con.prepareStatement(buscar);
-            System.out.println(1);
             stmt.setString(1, pCodPed);
-            System.out.println(2);
             rs = stmt.executeQuery();
-            System.out.println(3);
             rs.next();
-            LocalDate auxDate;
-            ZoneId defaultZoneId = ZoneId.systemDefault();
-            Instant instant = rs.getDate(2).toInstant();
-            auxDate = instant.atZone(defaultZoneId).toLocalDate();
             pPedido = new Pedido(
-                rs.getString(1),
-                auxDate,
-                rs.getString(3),
-                rs.getString(4),
-                (Menu)rs.getObject(5)
-                );
+                    rs.getString(1),
+                    rs.getDate(6).toLocalDate(),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(5),
+                    (Menu) MenuADFactory.getAccessMenu().buscarMenu(rs.getString(4)));
         } catch (Exception e) {
-            System.out.println(6);
-            //TODO: handle exception
+            // TODO
         }
         return pPedido;
     }
@@ -103,36 +96,40 @@ public class ADPedido extends MasterConnection implements Pedible {
         ArrayList<Pedido> pListaPedidos = new ArrayList<Pedido>();
         openConnection();
         try {
-            stmt = con.prepareStatement(buscar);
+            stmt = con.prepareStatement(listar);
             rs = stmt.executeQuery();
-            while (rs.next())
+            while (rs.next()) {
                 pListaPedidos.add(
                         new Pedido(
                                 rs.getString(1),
-                                (LocalDate) rs.getObject(2),
-                                rs.getString(3), 
+                                rs.getDate(6).toLocalDate(),
+                                rs.getString(2),
+                                rs.getString(3),
                                 rs.getString(5),
                                 MenuADFactory.getAccessMenu().buscarMenu(rs.getString(4))));
+            }
         } catch (SQLException e) {
             // TODO tratar la excepción.
         }
         return pListaPedidos;
-    }    
-    
+    }
+
     @Override
     public String generateCodigo() {
-        String pCodPed = "ES";
+        String pCodPed = "PE";
         String numPed = String.valueOf(listarPedidos().size()+1);
-        for (int i = 0; i < 5 - numPed.length(); i++)
+        System.out.println("a="+numPed);
+        for (int i = 0; i < 8 - numPed.length(); i++)
             pCodPed += "0";
 
         pCodPed += numPed;
         return pCodPed;
     }
 
-    private final String insertar = "INSERT INTO pedido VALUES (?, ?, ?, ?, ?)";
+    private final String insertar = "INSERT INTO pedido VALUES (?, ?, ?, ?, ?, ?)";
     private final String borrar = "DELETE FROM pedido WHERE codPed = ?";
-    private final String modificar = "UPDATE FROM pedido WHERE codPed = ? SET nombre = ?, loc = ?";
-    private final String buscar = "SELECT * FROM pedido";
-    
+    private final String modificar = "UPDATE FROM pedido WHERE codPed = ? SET codCle = ?, codRep = ?, codMnu = ?, codEst = ?, fechaPed = ?";
+    private final String buscar = "SELECT * FROM pedido WHERE codPed = ?";
+    private final String listar = "SELECT * FROM pedido";
+
 }
