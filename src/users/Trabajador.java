@@ -40,4 +40,24 @@ public abstract class Trabajador extends Usuarie {
     public void setSueldo(float pSueldo) {
         sueldo = pSueldo;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Trabajador pTrabajador;
+
+        if (super.equals(obj) && obj instanceof Trabajador ) {
+            pTrabajador = (Trabajador) obj;
+            return pTrabajador.getCodEst().equals(codEst)
+                && pTrabajador.getHorario().equals(horario)
+                && pTrabajador.getSueldo() == sueldo;
+        }
+        else
+            return false;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString() + " " + codEst + " " + horario + " " + sueldo;
+    }
 }

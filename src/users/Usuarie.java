@@ -22,7 +22,7 @@ public abstract class Usuarie {
     // Getters.
     public String getCodUsr() {
         return codUsr;
-    }
+    } 
     public String getPasswd() {
         return passwd;
     }
@@ -52,5 +52,23 @@ public abstract class Usuarie {
 
     public void register() {
         
+    }
+
+    @Override
+    public boolean equals(Object obj) {        
+        if (obj instanceof Usuarie) {
+            Usuarie pUsuarie = (Usuarie) obj;
+            return pUsuarie.getCodUsr().equals(codUsr) 
+                && pUsuarie.getPasswd().equals(passwd)
+                && pUsuarie.getNombre().equals(nombre) 
+                && pUsuarie.getApellido().equals(apellido);
+        }
+        else 
+            return false;
+    }
+    
+    @Override
+    public String toString() {
+        return codUsr + " " + passwd + " " + nombre + " " + apellido;
     }
 }

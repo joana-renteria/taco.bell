@@ -42,19 +42,13 @@ public abstract class GenerateUsers {
         pRepartidor.setCodVehiculo(pCodVehiculo);
         return pRepartidor;
     }
-    /**Crea de manera automática el código. 
-     * El prefijo del mismo se envía como parámetro.
-     */
-    private static String crearCodigo(String pCodUsr) {
-        String numUsers = 
-            String.valueOf(
-                UsuarieADFactory.getAccessUsuaries()
-                    .numeroDeUsuaries()) + 1;
-        for (int i = 0; i < 5 - numUsers.length(); i++) 
-            pCodUsr += "0";
-
-        return pCodUsr += numUsers;
+    
+    private static String crearCodigo(String pPrefix) {
+        return UsuarieADFactory
+            .getAccessUsuaries()
+                .crearCodigo(pPrefix);
     }
+
     /**Crea, instancia y añade los datos comunes 
      * a todos los objetos de clases que implementen 
      * @Usuarie
