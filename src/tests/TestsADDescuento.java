@@ -4,7 +4,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import datos.Descuento;
 import controller.factorias.DescuentoADFactory;
@@ -40,6 +40,7 @@ public class TestsADDescuento {
         DescuentoADFactory
             .getAccessDescuento()
                 .grabarDescuento(pDescuento);
+
         // comprobar los cambios.
         assertEquals(buscar(pCodDsc), pDescuento);
     }
@@ -81,7 +82,7 @@ public class TestsADDescuento {
      * la base de datos.
      */
     public void testListarDescuentos() {
-        HashMap <String,Descuento> descuentos =
+        TreeMap <String,Descuento> descuentos =
             DescuentoADFactory
                 .getAccessDescuento()
                     .listarDescuentos();

@@ -1,6 +1,6 @@
 package datos;
 
-public class Menu {
+public class Menu implements Comparable <Menu> {
 
     private final String codMnu;
     private String codDsc;
@@ -68,6 +68,20 @@ public class Menu {
         float sum = 0;
         // TODO usar el controlador para acceder a los productos y sumar el precio.
         return sum;
+    }
+    public int compareTo(Menu pMenu) {
+        return codMnu.compareTo(pMenu.getCodMnu());
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " codMnu='" + getCodMnu() + "'" +
+            ", codDsc='" + getCodDsc() + "'" +
+            ", codPrds='" + getCodPrds() + "'" +
+            ", precio='" + getPrecio() + "'" +
+            ", nombre='" + getNombre() + "'" +
+            "}";
     }
 
 }

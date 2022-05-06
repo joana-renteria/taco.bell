@@ -7,7 +7,7 @@ public abstract class EstablecimientoADFactory {
     
     private static Establecimientable e = new ADEstablecimiento();
 
-    public static Establecimientable getAccessEstablecimientos() {
+    public static Establecimientable getAccessEstablecimiento() {
         return e;
     }
 }

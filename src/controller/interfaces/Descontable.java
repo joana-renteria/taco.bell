@@ -1,6 +1,6 @@
 package controller.interfaces;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 import datos.Descuento;
 
@@ -9,6 +9,6 @@ public interface Descontable {
     public void borrarDescuento(String pCodDsc);
     public void modificarDescuento(Descuento pDescuento);
     public Descuento buscarPorCodigo(String pCodDsc);
-    public HashMap <String, Descuento> listarDescuentos();
+    public TreeMap <String, Descuento> listarDescuentos();
     public String generateCodigo();
 }
