@@ -36,7 +36,8 @@ public class VPedido extends JDialog {
 	private float descuento = 0;
 	private float precioTotal = 0;
 	
-	private Object[][] carrito;
+	private ArrayList<Menu> carritoMenus;
+	private ArrayList<Producto> carritoProductos;
 
 	// Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
@@ -60,27 +61,64 @@ public class VPedido extends JDialog {
 		}
 	}
 
+	/**
+	 * Carga la tipografia Iosevka Aile Heavy
+	 *
+	 */
 	private static void cargarTipografia() {
 		Fuentes fe = new Fuentes();
 		fe.cargarTipografia();
 	}
 	
+	/**
+	 * Carga de selecciones para los distintos menus
+	 *
+	 * <p> Necesario para cargar los distintos productos/menus disponibles segun pestaña elegida.
+	 *
+	 * @param menu	indica la pestaña seleccionada
+	 * @return	tabla con los productos disponibles
+	 */
 	private JTable cargarDatos(int menu) {
-		Object[][] listadoProductos = null;
-		String[] titulo = null;
+		Object[][] listado = null;
+		String[] titulo = {""};
 		
+		// menus
 		if(menu == 0) {}
+		// comida
 		else if(menu == 1) {}
+		// aperitivos
 		else if(menu == 2) {}
+		// bebidas
 		else if(menu == 3) {}
+		// error
 		else {}
 
 		return new JTable(listadoProductos, titulo);	
 	}
 	
+	/**
+	 * Actualizar pedido actual segun listas
+	 *
+	 * <p> Lee la listas de productos y menus y devuelve una tabla con el listado.
+	 *
+	 * @return	tabla con listado de pedidos
+	 */
 	private JTable actualizarPedido() {
 		Object[][] listadoCarrito = null;
 		String[] titulo = null;
+
+		int listSize = carritoMenus.length() + carritoProductos.length();
+		int menuSize = carritoMenus.length();
+		listadoCarrito = new Object[listSize][2];
+
+		for(int i = 0; i < listSize; i++) {
+			if(i > menuSize) {
+				listadoCarrito[i][0] = carritoMenus.get(i).getNombre();
+				listadoCarrito[i][1] = carritoMenus.get(i).getPrecio();
+			} else {
+				listadoCarrito[i][0] = carritoProductos.get(i-menuSize).getNombre();
+				listadoCarrito[i][1] = carritoProductos.get(i-menuSize).getPrecio();
+		}
 
 		return new JTable(listadoCarrito, titulo);	
 	}
