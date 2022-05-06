@@ -1,13 +1,11 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
-import javax.swing.JSplitPane;
 import javax.swing.BoxLayout;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -17,13 +15,13 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Component;
-import java.awt.Rectangle;
 
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 
 public class VLogin extends JFrame {
 
+	private static final long serialVersionUID = -8877946520751179327L;
 	private JPanel contentPane;
 	private JTextField txtCorreoElectronico;
 	private JTextField txtContrasea;
@@ -142,7 +140,6 @@ public class VLogin extends JFrame {
 		
 		JPanel panelEntrar = new JPanel();
 		panelEntrar.setBackground(Color.WHITE);
-		FlowLayout flowLayout = (FlowLayout) panelEntrar.getLayout();
 		panelBotones.add(panelEntrar);
 		
 		JButton btnEntrar = new JButton("Entrar");

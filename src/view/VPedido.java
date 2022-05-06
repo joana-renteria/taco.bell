@@ -1,13 +1,11 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -18,10 +16,7 @@ import java.awt.Component;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.Vector;
-import java.awt.GridBagLayout;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
 import datos.Producto;
@@ -29,12 +24,17 @@ import datos.Menu;
 
 public class VPedido extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3378271115951639896L;
+
 	private final JPanel contentPanel = new JPanel();
 	
 	private JTable tablaProductos;
 	private int menu = 0;
 	
-	private float descuento = 0;
+	//private float descuento = 0;
 	private float precioTotal = 0;
 	
 	private ArrayList<Menu> carritoMenus;
@@ -42,8 +42,6 @@ public class VPedido extends JDialog {
 
 	// Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
-	private static Color colorMoradoOscuro = new Color(73, 44, 89);
-	private static Color colorAzulOscuro = new Color(98, 14, 184);
 	private static Color colorAzulClaro = new Color(21, 131, 170);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
 	private JTable tablePrecios;
@@ -94,7 +92,7 @@ public class VPedido extends JDialog {
 		// error
 		else {}
 
-		return new JTable(listadoProductos, titulo);	
+		return new JTable(listado, titulo);	
 	}
 	
 	/**
@@ -115,8 +113,8 @@ public class VPedido extends JDialog {
 			.mapToDouble(p -> p.getPrecio())
 			.sum();
 
-		int listSize = carritoMenus.length() + carritoProductos.length();
-		int menuSize = carritoMenus.length();
+		int listSize = carritoMenus.size() + carritoProductos.size();
+		int menuSize = carritoMenus.size();
 		listadoCarrito = new Object[listSize][2];
 
 		for(int i = 0; i < listSize; i++) {
@@ -126,7 +124,10 @@ public class VPedido extends JDialog {
 			} else {
 				listadoCarrito[i][0] = carritoProductos.get(i-menuSize).getNombre();
 				listadoCarrito[i][1] = carritoProductos.get(i-menuSize).getPrecio();
+			}
 		}
+		
+		precioTotal = precioMenus + precioProductos;
 
 		return new JTable(listadoCarrito, titulo);	
 	}

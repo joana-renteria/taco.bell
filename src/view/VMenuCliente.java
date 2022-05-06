@@ -3,7 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -17,8 +16,9 @@ import javax.swing.SwingConstants;
 
 public class VMenuCliente extends JDialog {
 	
+	private static final long serialVersionUID = -8955757198366800331L;
+
 	// Definir colores
-	private static Color colorMoradoClaro = new Color(118, 38, 161);
 	private static Color colorMoradoOscuro = new Color(73, 44, 89);
 	private static Color colorAzulOscuro = new Color(98, 14, 184);
 	private static Color colorVerdeClaro = new Color(64, 180, 89);
