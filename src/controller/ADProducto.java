@@ -41,5 +41,11 @@ public class ADProducto extends MasterConnection implements Productable {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public String generateCodigo() {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }
