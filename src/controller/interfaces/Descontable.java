@@ -1,6 +1,7 @@
 package controller.interfaces;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+
 import datos.Descuento;
 
 public interface Descontable {
@@ -8,6 +9,6 @@ public interface Descontable {
     public void borrarDescuento(String pCodDsc);
     public void modificarDescuento(Descuento pDescuento);
     public Descuento buscarPorCodigo(String pCodDsc);
-    public ArrayList <Descuento> listarDescuentos();
+    public HashMap <String, Descuento> listarDescuentos();
     public String generateCodigo();
 }

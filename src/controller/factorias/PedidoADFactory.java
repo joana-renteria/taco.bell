@@ -7,7 +7,7 @@ public abstract class PedidoADFactory {
 
     private static Pedible p = new ADPedido();
 
-    public static Pedible getAccessPedidos() {
+    public static Pedible getAccessPedido() {
         return p;
     }
 }

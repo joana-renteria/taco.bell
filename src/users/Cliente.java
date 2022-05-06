@@ -1,6 +1,8 @@
 package users;
 
-import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import datos.Pedido;
 
 public class Cliente extends Usuarie {
     private String correoLogin;
@@ -36,14 +38,30 @@ public class Cliente extends Usuarie {
     public void darseDeBaja() {
 
     }
-    public ResultSet consultaPedido(String pCodPedido) {
-        // TODO ¿seguro que este método debe devolver un ResultSets?
+    public Pedido consultaPedido(String pCodPedido) {
+        // TODO ¿seguro que este método debe devolver un ArrayList <Pedido>s?
         return null;
     }
-    public ResultSet findPedidos() {
+    public ArrayList <Pedido> getTodosLosPedidos() {
         // TODO
         /* Usa el codigo de usuarie para 
          * consultar todos los pedidos correspondientes al cliente*/ 
         return null;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {        
+        if (super.equals(obj)) {
+            Cliente pCliente = (Cliente) obj;
+            return pCliente.getCorreoLogin().equals(correoLogin);
+        }
+        else
+            return false;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " " + correoLogin;
     }
 }
