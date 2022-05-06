@@ -72,9 +72,15 @@ public class VConsultaPedido extends JDialog {
 		JPanel panelMenuFondo = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panelMenuFondo.getLayout();
 		flowLayout_1.setVgap(28);
-		flowLayout_1.setHgap(256);
+		flowLayout_1.setHgap(220);
 		panelMenuFondo.setBackground(colorMoradoClaro);
 		panelMenu.add(panelMenuFondo);
+		
+		JButton btnAtras = new JButton("");
+		panelMenuFondo.add(btnAtras);
+		btnAtras.setBorder(null);
+		btnAtras.setBackground(colorMoradoClaro);
+		btnAtras.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
 		
 		JPanel panelVolver = new JPanel();
 		FlowLayout flowLayout_6 = (FlowLayout) panelVolver.getLayout();
@@ -83,23 +89,17 @@ public class VConsultaPedido extends JDialog {
 		panelVolver.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelVolver);
 		
-		JButton btnAtras = new JButton("");
-		btnAtras.setBorder(null);
-		btnAtras.setBackground(colorMoradoClaro);
-		btnAtras.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
-		panelVolver.add(btnAtras);
+		JLabel lblNewLabel = new JLabel("Consulta de pedidos");
+		panelMenuFondo.add(lblNewLabel);
+		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 42));
 
 		JPanel panelMenus = new JPanel();
 		panelMenus.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelMenus);
 		panelMenus.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JLabel lblNewLabel = new JLabel("Consulta de pedidos");
-		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 42));
-		panelMenus.add(lblNewLabel);
 		
 		JPanel panelContenido = new JPanel();
 		panelContenido.setBounds(5, 126, 1169, 524);
