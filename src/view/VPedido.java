@@ -44,7 +44,6 @@ public class VPedido extends JDialog {
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
 	private static Color colorAzulClaro = new Color(21, 131, 170);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
-	private JTable tablePrecios;
 	
 	/**
 	 * Launch the application.
@@ -128,8 +127,8 @@ public class VPedido extends JDialog {
 		}
 		
 		precioTotal = precioMenus + precioProductos;
-
-		return new JTable(listadoCarrito, titulo);	
+		
+		return null; //provisional
 	}
 
 	/**
@@ -268,12 +267,6 @@ public class VPedido extends JDialog {
 		contentPanel.add(panelProductos);
 		panelProductos.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		panelProductos.add(scrollPane);
-		
-		tablaProductos = cargarDatos(menu);
-		scrollPane.setViewportView(tablaProductos);
-		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
 		separator.setOrientation(SwingConstants.VERTICAL);
@@ -297,11 +290,6 @@ public class VPedido extends JDialog {
 		panelSeleccion.setBounds(10, 11, 300, 355);
 		panelPedido.add(panelSeleccion);
 		panelSeleccion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		tablePrecios = actualizarPedido();
-
-		tablePrecios.setBackground(Color.WHITE);
-		panelSeleccion.add(tablePrecios);
 		
 		JPanel panelDescuento = new JPanel();
 		panelDescuento.setBounds(10, 377, 300, 78);
