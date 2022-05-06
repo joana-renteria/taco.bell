@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.GridBagLayout;
 import javax.swing.JTable;
@@ -106,6 +107,13 @@ public class VPedido extends JDialog {
 	private JTable actualizarPedido() {
 		Object[][] listadoCarrito = null;
 		String[] titulo = null;
+		
+		float precioProductos = (float) carritoProductos.stream()
+			.mapToDouble(p -> p.getPrecio())
+			.sum();
+		float precioMenus = (float) carritoMenus.stream()
+			.mapToDouble(p -> p.getPrecio())
+			.sum();
 
 		int listSize = carritoMenus.length() + carritoProductos.length();
 		int menuSize = carritoMenus.length();
@@ -175,7 +183,7 @@ public class VPedido extends JDialog {
 		panelMenus.add(panel);
 		
 		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_placeholder.png")));
+		lblNewLabel_4.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_menus.png")));
 		panel.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel = new JLabel("Menus");
@@ -198,7 +206,7 @@ public class VPedido extends JDialog {
 		panelComida.add(panel_1);
 		
 		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_placeholder.png")));
+		lblNewLabel_5.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_comida.png")));
 		panel_1.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_1 = new JLabel("Comida");
@@ -221,7 +229,7 @@ public class VPedido extends JDialog {
 		panelAperitivos.add(panel_2);
 		
 		JLabel lblNewLabel_6 = new JLabel("");
-		lblNewLabel_6.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_placeholder.png")));
+		lblNewLabel_6.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_aperitivos.png")));
 		panel_2.add(lblNewLabel_6);
 		
 		JLabel lblNewLabel_2 = new JLabel("Aperitivos");
@@ -244,7 +252,7 @@ public class VPedido extends JDialog {
 		panelBebida.add(panel_3);
 		
 		JLabel lblNewLabel_7 = new JLabel("");
-		lblNewLabel_7.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_placeholder.png")));
+		lblNewLabel_7.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_bebidas.png")));
 		panel_3.add(lblNewLabel_7);
 		
 		JLabel lblNewLabel_3 = new JLabel("Bebida");
