@@ -68,7 +68,7 @@ public class ADProducto extends MasterConnection implements Productable {
     }
 
     @Override
-    public Producto buscarProducto(String pCodPrd) {
+    public Producto buscarProductoPorCodigo(String pCodPrd) {
         Producto pProducto = null;
         openConnection();
         try {

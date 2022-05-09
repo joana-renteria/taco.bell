@@ -5,17 +5,19 @@ import java.time.LocalDate;
 public class Descuento implements Comparable <Descuento> {
 
     private final String codDsc;
-    private int usos;
+    private float usos;
     private float cantidadDsc;
     private LocalDate fechaInicio, fechaFin;
 
-    // Constructor.
+    /**Constructor solo con el 
+     * @param pCodDsc codigo del descuento.
+     */
     public Descuento(String pCodDsc) {
         codDsc = pCodDsc;
     }
 
     public Descuento(
-    String pCodDsc, int pUsos, float pCantidadDsc,
+    String pCodDsc, float pUsos, float pCantidadDsc,
     LocalDate pInicio, LocalDate pFin) {
         codDsc = pCodDsc;
         usos = pUsos;
@@ -28,7 +30,7 @@ public class Descuento implements Comparable <Descuento> {
     public String getCodDsc() {
         return codDsc;
     }
-    public int getUsos() {
+    public float getUsos() {
         return usos;
     }
     public float getCantidadDsc() {
@@ -43,7 +45,7 @@ public class Descuento implements Comparable <Descuento> {
     }
 
     // Setters.
-    public void setUsos(int pUsos) {
+    public void setUsos(float pUsos) {
         usos = pUsos;
     }
     public void setCantidadDsc(float pCantidadDsc) {

@@ -4,17 +4,41 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.TreeMap;
+
+import org.junit.Before;
+import org.junit.runner.RunWith;
 
 import datos.Descuento;
 import controller.factorias.DescuentoADFactory;
 
+@RunWith(OrderedRunner.class)
 public class TestsADDescuento {
     // conservar el código del Descuento creado.
-    private String pCodDsc = 
+    private final static String pCodDsc = 
         DescuentoADFactory
             .getAccessDescuento()
                 .generateCodigo();
+    // un Descuento auxiliar.
+    private Descuento descuento = null;
+    /**GEnera una lista con todos los productos.
+     * Cada vez que se llama se genera de nuevo.
+     */
+    private TreeMap <String, Descuento> descuentos = 
+        DescuentoADFactory
+            .getAccessDescuento()
+                .listarDescuentos();
+
+    /**Método auxiliar que muestra la tabla. 
+    * Se ejecuta antes de cada test individual.
+    */
+    @Before
+    public void mostrarTablaCompleta() {
+        descuentos.values().stream()
+            .forEach(d -> System.out.println(d));
+        System.out.println("\n");
+    }
     /**Un método auxiliar para ahorrar la sentencia.
      * Usando la factoría se busca el Descuento por código.
      * @param pCodDsc
@@ -22,7 +46,43 @@ public class TestsADDescuento {
     private Descuento buscar(String pCodDsc) {
         return DescuentoADFactory
                 .getAccessDescuento() // busqueda de un código.
-                    .buscarPorCodigo(pCodDsc);
+                    .buscarDescuentoPorCodigo(pCodDsc);
+    }
+    /**Se comprueba la búsqueda de un descuento
+     * en la base de datos. El código debe coincidir.
+     */
+    @Test
+    @Order (order = 0)
+    public void testBuscarDescuento() {
+        int totalDescuentos = DescuentoADFactory
+            .getAccessDescuento()
+                .totalDescuentos(),
+            nDescuentoRandom = 
+            new Random().nextInt(totalDescuentos) + 1;
+        // se genera un código aleatorio.
+        String codDscRandom = "DE000000";
+
+        if (nDescuentoRandom < 10) 
+            codDscRandom += "0" + nDescuentoRandom;
+        else
+            codDscRandom += nDescuentoRandom;
+        // se comprueba que se genera el descuento con el codigo.
+        assertEquals(
+            codDscRandom,
+            buscar(codDscRandom).getCodDsc());
+    }
+    /**Se comprueba que el método equals
+     * @see Descuento equals() 
+     * hace la comparacion de forma esperada.
+     */
+    public void testEqualsDescuento() {
+        descuento = 
+            new Descuento(
+                "DE00000001",
+                3,
+                (float) 2,
+                LocalDate.of(2022, 4, 8),
+                LocalDate.of(2022, 5, 27));
     }
     /**Se añade un usuarie de prueba.
      * Después se comprueba que se ha grabado.
@@ -77,34 +137,5 @@ public class TestsADDescuento {
                 .borrarDescuento(pCodDsc);
         // ahora no debería poder encontrar dicho descuento.
         assertNull(buscar(pCodDsc));
-    }
-    /**Mostrar por pantalla todos los descuentos de 
-     * la base de datos.
-     */
-    public void testListarDescuentos() {
-        TreeMap <String,Descuento> descuentos =
-            DescuentoADFactory
-                .getAccessDescuento()
-                    .listarDescuentos();
-        // comprobar que la lista se ha creado debidamente.
-        assertNotNull(descuentos);
-        // printear la lista por pantalla.
-        for (String pointer : descuentos.keySet()) 
-            if (!pointer.equals(pCodDsc))
-                System.out.println(buscar(pointer));
-            else
-                System.out.println("* " + buscar(pointer)); 
-        System.out.print("\n");
-    }
-
-    @Test
-    public void testTodo() {
-        testListarDescuentos();
-            testAddDescuento();
-        testListarDescuentos();
-            testModificarDescuento();
-        testListarDescuentos();
-            testBorrarDescuento();
-        testListarDescuentos();
     }
 }

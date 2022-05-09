@@ -22,7 +22,6 @@ public class ADDescuento extends MasterConnection implements Descontable {
         } catch (SQLException sqle) {
             // TODO tratar excepción.
         }
-
         closeConnection();
     }
 
@@ -53,14 +52,13 @@ public class ADDescuento extends MasterConnection implements Descontable {
         } catch (SQLException sqle) {
             // TODO tratar excepción.
         }
-
         closeConnection();
     }
 
     @Override
-    public Descuento buscarPorCodigo(String pCodDsc) {
-        openConnection();
+    public Descuento buscarDescuentoPorCodigo(String pCodDsc) {
         Descuento pDescuento = null;
+        openConnection();
         try {
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodDsc);
@@ -76,6 +74,7 @@ public class ADDescuento extends MasterConnection implements Descontable {
         } catch (SQLException e) {
             //TODO: handle exception
         }
+        closeConnection();
         return pDescuento;
     }
 
@@ -110,13 +109,18 @@ public class ADDescuento extends MasterConnection implements Descontable {
     @Override
     public String generateCodigo() {
         String pCodDsc = "DE";
-        String numDsc = String.valueOf(cantidadTotal("descuento") + 1);
+        String numDsc = String.valueOf(totalDescuentos() + 1);
         for (int i = 0; i < 8 - numDsc.length(); i++)
             pCodDsc += "0";
 
         pCodDsc += numDsc;
 
         return pCodDsc;
+    }
+
+    @Override
+    public int totalDescuentos() {
+        return cantidadTotal("descuento");
     }
 
     private final String insertar = "INSERT INTO descuento VALUES (?, ?, ?, ?, ?)";

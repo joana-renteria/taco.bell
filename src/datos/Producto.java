@@ -1,10 +1,10 @@
 package datos;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Producto {
+
     private final String codPrd;
     private float precio;
     private String nombre;
@@ -26,7 +26,7 @@ public class Producto {
         codPrd = pCodPrd;
         precio = pPrecio;
         nombre = pNombre;
-        tipo = pTipo;
+        tipo = upperAndLower(pTipo);
     }
     /**Consctructor completo. Incluye todos los datos
      * de la clase, incluyendo la lista.
@@ -37,9 +37,10 @@ public class Producto {
     String [] pIngredientes, String pTipo) {
         this(pCodPrd, pPrecio, pNombre, pTipo);
 
-        int bond = (pIngredientes.length <= ingredientes.length) ? pIngredientes.length : 5;
+        int bond = (pIngredientes.length <= ingredientes.length) ? pIngredientes.length : ingredientes.length;
         for (int i = 0; i < bond; i++) 
-            ingredientes[i] = pIngredientes[i];
+            if (pIngredientes[i] != null)
+                ingredientes[i] = upperAndLower(pIngredientes[i]);
     }
 
     // Getters.
@@ -64,11 +65,12 @@ public class Producto {
         precio = pPrecio;
     }
     public void setNombre(String pNombre) {
-        nombre = pNombre;
+        nombre = upperAndLower(pNombre);
     }   
     /**Método especial para añadir la cantidad justa
      * de ingredientes a la lista.*/
     public void addIngrediente(String pIngrediente) {
+        pIngrediente = upperAndLower(pIngrediente);
         for (int i = 0; i < ingredientes.length; i++) 
             if (ingredientes[i] == null) {
                 ingredientes[i] = pIngrediente;
@@ -88,7 +90,7 @@ public class Producto {
     }
 
     public void setTipo(String pTipo) {
-        tipo = pTipo;
+        tipo = upperAndLower(pTipo);
     }
 
     // Métodos especiales.
@@ -99,42 +101,51 @@ public class Producto {
             return pProducto.getCodPrd().equals(codPrd)
                 && pProducto.getPrecio() == precio
                 && pProducto.getNombre().equalsIgnoreCase(nombre)
-                && true//compareIngredientes(pProducto.getIngredientes())
+                && compareIngredientes(pProducto.getIngredientes())
                 && pProducto.getTipo().equalsIgnoreCase(tipo);
         }
         else
             return false;
     }
-
-    /**Método interno para comparar ambas listas de ingredientes.
-     * El tamaño de la lista será 5, pues es el máximo permitido
-     * por el constructor.
-     * @param pIngredientes
-     */
+    
     public boolean compareIngredientes(String [] pIngredientes) {
         List <String> 
-            ingList1 = Arrays.asList(ingredientes),
-            ingList2 = Arrays.asList(pIngredientes);
-            
+            l1 = new ArrayList<String> (),
+            l2 = new ArrayList<String> ();
         
-        ingList1.stream()
-            .sorted((i1, i2) -> i1.compareToIgnoreCase(i2));
-        ingList2.stream()
-            .sorted((i1, i2) -> i1.compareToIgnoreCase(i2));
+        for (String s : ingredientes) 
+            if (s !=  null)
+                l1.add(s.toLowerCase());
 
-        ingList1.stream()
-            .forEach(i -> i.toLowerCase());
-        ingList2.stream()
-            .forEach(i -> i.toLowerCase());
+        for (String s : pIngredientes) 
+            if (s !=  null)
+                l2.add(s.toLowerCase());
 
-        for (String i : ingList1)
-            if (!ingList2.contains(i))
+        for (String s : l1) 
+            if (!l2.contains(s))
                 return false;
-        
-        
-        return ingList1.equals(ingList2);
+
+        return true;
     }
 
+    /** Simplemente formatea el texto introducido
+     * como parametro. Se reutiliza.
+     */
+    private String upperAndLower(String pString) {
+        pString = pString.substring(0, 1).toUpperCase() +  
+            pString.substring(1).toLowerCase();
+
+        if (pString.contains(" "))
+            for (int i = 0; i < pString.length(); i++) 
+                if (pString.charAt(i) == ' '
+                && i != pString.length() - 2)
+                    pString = 
+                        pString.substring(0, i + 1) + 
+                        Character.toUpperCase(pString.charAt(i + 1)) +
+                        pString.substring(i + 2, pString.length());
+        
+        return pString;
+    }
 
 
     @Override
@@ -143,10 +154,9 @@ public class Producto {
 
         for (String s : ingredientes) 
             if (s != null)
-                ingredientesTexto += s + " ";
+                ingredientesTexto += upperAndLower(s) + " ";
 
-        return codPrd + " " + precio + " " + nombre + " " 
-            + ingredientesTexto + " " + tipo;
+        return codPrd + " " + precio + " " + upperAndLower(nombre) + " " 
+            + ingredientesTexto + " " + upperAndLower(tipo);
     }
-   
 }

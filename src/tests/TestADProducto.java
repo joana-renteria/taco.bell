@@ -1,17 +1,12 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-import java.util.TreeMap;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
+import java.util.TreeMap;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import datos.Producto;
@@ -24,7 +19,7 @@ public class TestADProducto {
         ProductoADFactory
             .getAccessProductos()
                 .generateCodigo();
-    // producto auxiliar para todos los métodos.
+    // producto auxiliar.
     private Producto producto = null;
     /**Genera una lista con los productos.
      * Cada vez que se llama se genera de nuevo, 
@@ -45,11 +40,12 @@ public class TestADProducto {
     /**Un método auxiliar para poder buscar
      * de forma más cómoda en la base de datos
      * a través del código, y ahorrar la sentencia.
+     * @param pCodPrd
      */
     private Producto buscar(String pCodPrd) {
         return ProductoADFactory
             .getAccessProductos()
-                .buscarProducto(pCodPrd);
+                .buscarProductoPorCodigo(pCodPrd);
     }
     /**Se comprueba la búsqueda de un producto 
      * en la base de datos. El código coincide.
@@ -67,9 +63,9 @@ public class TestADProducto {
         String codPrdRandom = "PR000000" ;
 
         if (nProductoRandom < 10) 
-            codPrdRandom += "0" + totalProductos;
+            codPrdRandom += "0" + nProductoRandom;
         else
-            codPrdRandom += totalProductos;
+            codPrdRandom += nProductoRandom;
         // se comprueba que se genera el producto correcto.
         assertEquals(
             codPrdRandom,
@@ -86,7 +82,8 @@ public class TestADProducto {
         String [] pIngredientes = // diferencias de case y de orden.
             {"Arroz", "quEsO", "naTa aGria", "veGGie"};
 
-        Producto producto1 =
+        Producto 
+            producto1 =
             new Producto(
                 "PR00000002", 
                 (float) 4.99, 
@@ -94,7 +91,7 @@ public class TestADProducto {
                 pIngredientes,
                 "comIdA"),
         // se busca el producto real en la base de datos.
-        producto2 = 
+            producto2 = 
             buscar("PR00000002");
 
         assertNotNull(producto2);
@@ -184,10 +181,6 @@ public class TestADProducto {
     @Test
     @Order (order = 5)
     public void testListarProductos() {
-        TreeMap <String, Producto> productos = 
-            ProductoADFactory
-                .getAccessProductos()
-                    .listarProductos();
         // se comprueba que contiene x elementos.
         assertEquals(
             productos.size(),
@@ -199,7 +192,7 @@ public class TestADProducto {
     @Test
     public void testProductoCompareIngredientes() {
         String [] pIngredientes = // diferencias de case y de orden.
-            {"Arroz", "quEsO", "naTa aGria", "veGGie"};
+            {"aRrOz", "quEsO", "veGGie", "naTa aGria"};
 
         Producto producto1 =
             new Producto(
@@ -209,31 +202,15 @@ public class TestADProducto {
                 pIngredientes,
                 "comIdA"),
         // se busca el producto real en la base de datos.
-        producto2 = 
-            buscar("PR00000002");
+        producto2 = new Producto(
+            "PR00000002", 
+            (float) 4.99, 
+            "QUESarITo VeggiE", 
+            pIngredientes,
+            "COmiDa");           
 
         assertNotNull(producto2);
-        //assertEquals(producto2, buscar("PR00000002"));
-
-        /*
-        assertTrue(
-            producto1.compareIngredientes(pIngredientes)
-        );
-
-        List <String> iL = 
-            Arrays.asList(pIngredientes);
-
-        iL.stream()
-            .sorted((i1, i2) -> i1.compareToIgnoreCase(i2));
-    
-        String iAux = null;
-        for (String i : iL) {
-            iAux = i.toLowerCase();
-            iL.remove(i);
-            iL.add(iAux);
-        }
-
-        iL.stream()
-            .forEach(i1 -> System.out.println(i1));*/
+        assertEquals(producto1, producto2);
+        assertEquals(producto2, buscar("PR00000002"));
     }
 }

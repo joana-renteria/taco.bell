@@ -35,7 +35,7 @@ public class TestsADMenu {
         Menu pMenu = 
             new Menu(
                 pCodMnu,
-                DescuentoADFactory.getAccessDescuento().buscarPorCodigo("DE00000001").getCodDsc(),
+                DescuentoADFactory.getAccessDescuento().buscarDescuentoPorCodigo("DE00000001").getCodDsc(),
                 ing,
                 (float)2.99,
                 "Menu auxiliar");
@@ -63,7 +63,7 @@ public class TestsADMenu {
         Menu pMenu = 
             new Menu(
                 pCodMnu,
-                DescuentoADFactory.getAccessDescuento().buscarPorCodigo("DE00000001").getCodDsc(),
+                DescuentoADFactory.getAccessDescuento().buscarDescuentoPorCodigo("DE00000001").getCodDsc(),
                 ing,
                 (float)2.99,
                 "Menu auxiliar");

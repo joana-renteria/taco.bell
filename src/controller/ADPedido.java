@@ -86,8 +86,9 @@ public class ADPedido extends MasterConnection implements Pedible {
                     rs.getString(5),
                     (Menu) MenuADFactory.getAccessMenu().buscarMenu(rs.getString(4)));
         } catch (SQLException sqle) {
-            
+
         }
+            
         return pPedido;
     }
 
