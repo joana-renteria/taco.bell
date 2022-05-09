@@ -1,0 +1,15 @@
+* Errores internos
+[001] -> Error de conexion con la base de datos
+[002] -> Acceso denegado a la base de datos
+[011] -> Codigo no valido
+[021] -> Tipo de producto erroneo
+[031] -> Error al abrir la ventana
+
+[404] -> No existe
+
+* Errores de usuarie
+[101] -> Campo vacio
+[101] -> No es posible seleccionar ese producto
+
+* Errores: Datos erroneos
+[301] -> Usuario o contraseña incorrectos
