@@ -189,6 +189,31 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         closeConnection();
     }
     
+    public Usuarie buscarCliente(String pCorreo) {
+        Usuarie pUsuarie = null;
+        openConnection();
+        try {
+            stmt = con.prepareStatement(buscarCliente);
+            stmt.setString(1, pCorreo);
+            rs = stmt.executeQuery();
+            rs.next();
+            pUsuarie = new Cliente(rs.getString(1));
+            ((Cliente)pUsuarie).setCorreoLogin(rs.getString(2));
+            stmt = con.prepareStatement(buscar);
+            stmt.setString(1, pUsuarie.getCodUsr());
+            rs = stmt.executeQuery();
+            rs.next();
+            pUsuarie.setPasswd(rs.getString(2));
+            pUsuarie.setNombre(rs.getString(3));
+            pUsuarie.setApellido(rs.getString(4));
+        } catch (SQLException e) {
+
+        }
+
+        closeConnection();
+        return pUsuarie;
+    }
+
     @Override
     public Usuarie buscarUsuarie(String pCodUsr) {
         Usuarie pUsuarie = null;
@@ -357,6 +382,8 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
 
     private final String buscar = 
         "SELECT * FROM usuarie WHERE codUsr = ?";
+    private final String buscarCliente = 
+        "SELECT * FROM cliente WHERE correoLogin = ?";
     private final String buscarRepartidor = 
         "SELECT codVehiculo FROM repartidor WHERE codUsr = ?";
     private final String buscarAuxiliar = 
