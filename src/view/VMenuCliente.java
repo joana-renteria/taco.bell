@@ -3,9 +3,18 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import users.Usuarie;
+
 import javax.swing.BoxLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -13,22 +22,24 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import java.awt.Point;
 
-public class VMenuCliente extends JDialog {
+public class VMenuCliente extends JDialog implements ActionListener {
 	
 	private static final long serialVersionUID = -8955757198366800331L;
+	private static Point point = new Point(0, 0);
 
 	// Definir colores
 	private static Color colorMoradoOscuro = new Color(73, 44, 89);
 	private static Color colorAzulOscuro = new Color(98, 14, 184);
 	private static Color colorVerdeClaro = new Color(64, 180, 89);
-
+	
 	private final JPanel contentPanel = new JPanel();
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			cargarTipografia();
 			VMenuCliente dialog = new VMenuCliente();
@@ -37,7 +48,7 @@ public class VMenuCliente extends JDialog {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	public static void cargarTipografia() {
 		Fuentes fe = new Fuentes();
@@ -47,7 +58,8 @@ public class VMenuCliente extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VMenuCliente() {
+	public VMenuCliente(Usuarie pCliente) {
+		this.setUndecorated(true);
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -173,5 +185,25 @@ public class VMenuCliente extends JDialog {
 		lblSalir.setForeground(Color.WHITE);
 		lblSalir.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelContenido4.add(lblSalir);
+
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				point.x = e.getX();
+				point.y = e.getY();
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				Point p = getLocation();
+				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
+			}
+		});
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

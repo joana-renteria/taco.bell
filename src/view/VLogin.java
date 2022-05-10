@@ -41,8 +41,6 @@ public class VLogin extends JFrame implements ActionListener {
 	private JTextField txtCorreoElectronico;
 	private JPasswordField txtContrasea;
 	private JButton btnEntrar;
-	private boolean flagCorreo = false;
-	private boolean flagContra = false;
 	private static Point point = new Point(0, 0);
 
 	public static void main(String[] args) {
@@ -219,6 +217,7 @@ public class VLogin extends JFrame implements ActionListener {
 
 		btnEntrar = new JButton("Entrar");
 		btnEntrar.setMargin(new Insets(20, 20, 20, 20));
+		//Color c=new Color(1f,0f,0f,.5f );
 		btnEntrar.setBackground(new Color(118, 38, 161));
 		panelEntrar.add(btnEntrar);
 		btnEntrar.setBorder(null);
@@ -227,6 +226,7 @@ public class VLogin extends JFrame implements ActionListener {
 		btnEntrar.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 20));
 		btnEntrar.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		btnEntrar.addActionListener(this);
+		btnEntrar.setOpaque(false);
 
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panel.getLayout();
@@ -256,7 +256,7 @@ public class VLogin extends JFrame implements ActionListener {
 				if (userAux == null) {
 					userAux = UsuarieADFactory.getAccessUsuaries().buscarUsuarie(txtCorreoElectronico.getText());
 					if (userAux != null && userAux.getPasswd().equals(myPass)) {
-						this.dispose(); // TODO Llamar a ventana cliente
+						this.dispose(); // TODO Llamar a ventana admin
 					}
 					else { // TODO Error correcto
 						JOptionPane.showMessageDialog(this,
@@ -266,7 +266,10 @@ public class VLogin extends JFrame implements ActionListener {
 					}
 				} else { 
 					if (userAux.getPasswd().equals(myPass)) {
-						this.dispose(); // TODO Llamar a ventana admin
+						System.out.println("Cliente");
+						VMenuCliente vMC = new VMenuCliente(userAux);
+						this.dispose();
+						vMC.setVisible(true);
 					}
 					else // TODO Error correcto
 						JOptionPane.showMessageDialog(this,
