@@ -14,7 +14,7 @@ public class ADDescuento extends MasterConnection implements Descontable {
         try {
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pDescuento.getCodDsc());
-            stmt.setInt(2, pDescuento.getUsos());
+            stmt.setFloat(2, pDescuento.getUsos());
             stmt.setFloat(3, pDescuento.getCantidadDsc());
             stmt.setObject(4, pDescuento.getFechaInicio());
             stmt.setObject(5, pDescuento.getFechaFin());
@@ -44,7 +44,7 @@ public class ADDescuento extends MasterConnection implements Descontable {
         try {
             stmt = con.prepareStatement(modificar);
             stmt.setString(5, pDescuento.getCodDsc());
-            stmt.setInt(1, pDescuento.getUsos());
+            stmt.setFloat(1, pDescuento.getUsos());
             stmt.setFloat(2, pDescuento.getCantidadDsc());
             stmt.setObject(3, pDescuento.getFechaInicio());
             stmt.setObject(4, pDescuento.getFechaFin());

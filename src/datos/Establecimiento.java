@@ -1,6 +1,8 @@
 package datos;
 
-public class Establecimiento implements Comparable <Establecimiento>{
+import java.text.Normalizer;
+
+public class Establecimiento implements Comparable <Establecimiento> {
     private final String codEst;
     private String nombre;
     private String loc;
@@ -35,17 +37,25 @@ public class Establecimiento implements Comparable <Establecimiento>{
         loc = pLoc;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Establecimiento) {
+            Establecimiento pEstablecimiento = (Establecimiento) obj;
+            return pEstablecimiento.getCodEst().equals(codEst)
+            && pEstablecimiento.getNombre().equalsIgnoreCase(nombre)
+            && pEstablecimiento.getLoc().equalsIgnoreCase(loc);
+        }
+
+        return false;
+    }
+
+    @Override
     public int compareTo(Establecimiento pEstablecimiento) {
         return codEst.compareTo(pEstablecimiento.getCodEst());
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " codEst='" + getCodEst() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            ", loc='" + getLoc() + "'" +
-            "}";
+        return codEst + " " + nombre + " " + loc;
     }
-    
 }

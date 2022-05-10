@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -21,9 +22,11 @@ public class TestADProducto {
                 .generateCodigo();
     // producto auxiliar.
     private Producto producto = null;
-    /**Genera una lista con los productos.
-     * Cada vez que se llama se genera de nuevo, 
-     * por lo que siempre está actualizada.*/
+   /**Genera una lista con todos los descuentos.
+     * Cada vez que se llama por primera vez en un 
+     * método se genera de nuevo, por lo que 
+     * siempre se mantiene actualizada.
+     */
     private TreeMap <String, Producto> productos = 
         ProductoADFactory
             .getAccessProductos()
@@ -37,10 +40,9 @@ public class TestADProducto {
             .forEach(p -> System.out.println(p));
         System.out.println("\n");
     }
-    /**Un método auxiliar para poder buscar
-     * de forma más cómoda en la base de datos
-     * a través del código, y ahorrar la sentencia.
-     * @param pCodPrd
+    /**Un método auxiliar para ahorrar la sentencia.
+     * Usando la factoría se busca el Producto por código.
+     * @param codPrd
      */
     private Producto buscar(String pCodPrd) {
         return ProductoADFactory
@@ -58,7 +60,7 @@ public class TestADProducto {
             .getAccessProductos()
                 .totalProductos(),
             nProductoRandom = 
-                new Random().nextInt(totalProductos) + 1;
+            new Random().nextInt(totalProductos) + 1;
         // se genera un código aleatorio.
         String codPrdRandom = "PR000000" ;
 
@@ -78,27 +80,31 @@ public class TestADProducto {
     @Test
     @Order (order = 1)
     public void testEqualsProducto() {
-        // se genera un producto con diferencias pero equivalente.
-        String [] pIngredientes = // diferencias de case y de orden.
-            {"Arroz", "quEsO", "naTa aGria", "veGGie"};
-
-        Producto 
-            producto1 =
+        // lista de ingredientes en distinto orden.
+        String []
+            pIngredientes1 = 
+            {"Arroz", "quEsO", "naTa aGria", "veGGie"},
+            pIngredientes2 = 
+            {"quEsO", "aRRoZ", "veGGie", "NATa AgRIA"};
+        // se generan dos productos con diferencias pero equivalentes.
+        producto =
             new Producto(
-                "PR00000002", 
-                (float) 4.99, 
-                "quEsaRitO veGGie", 
-                pIngredientes,
-                "comIdA"),
-        // se busca el producto real en la base de datos.
-            producto2 = 
-            buscar("PR00000002");
+            "PR00000002", 
+            (float) 4.99, 
+            "quEsaRitO veGGie", 
+            pIngredientes1,
+            "comIdA");
 
-        assertNotNull(producto2);
+        Producto producto2 = 
+            new Producto(
+            "PR00000002", 
+            (float) 4.99, 
+            "qUeSARitO VeggiE", 
+            pIngredientes2,
+            "comIdA");
         // se observa que la comparación funciona.
-        assertEquals(producto1, producto2);
-        assertTrue(producto2.equals(producto1));
-        System.out.println(producto1 + "\n" + producto2 + "\n\n");
+        assertEquals(producto2, producto);
+        assertTrue(producto2.equals(producto));
     }
     /**Se añade un producto de prueba, y se comprueba que 
      * se ha grabado correctamente.
@@ -109,16 +115,16 @@ public class TestADProducto {
         String [] pIngredientes = {"Carne", "Queso", "Arroz", "Tomate"};
         producto = 
             new Producto(
-                pCodPrd,
-                795/100, 
-                "Quesarito",
-                pIngredientes,
-                "Comida");
-
+            pCodPrd,
+            795/100, 
+            "Quesarito y Taco",
+            pIngredientes,
+            "Comida");
+        // añadir a la base de datos.
         ProductoADFactory
             .getAccessProductos()
                 .grabarProducto(producto);
-        // se observa que el producto está en la tabla.
+        // comprobar los cambios.
         assertEquals(buscar(pCodPrd), producto);
     }
     /**Se modifica el producto creado en el test
@@ -127,8 +133,7 @@ public class TestADProducto {
     @Test
     @Order (order = 3)
     public void testModificarProducto() {                    
-        producto = 
-            buscar(pCodPrd);
+        producto = buscar(pCodPrd);
         
         assertNotNull(producto);
         assertEquals(pCodPrd, producto.getCodPrd());
@@ -140,10 +145,8 @@ public class TestADProducto {
         ProductoADFactory
             .getAccessProductos()
                 .modificarProducto(producto);
-        // el producto se encuentra en la tabla.
-        assertEquals(
-            producto,
-            buscar(pCodPrd));
+        // el producto modificado se encuentra en la tabla.
+        assertEquals(producto, buscar(pCodPrd));
     }
     /**Se elimina el producto creado anteriormente
      * y se comprueba que ya no está almacenado.
@@ -151,14 +154,11 @@ public class TestADProducto {
     @Test
     @Order (order = 4)
     public void testDeleteProducto() {
-        producto = 
-            buscar(pCodPrd);
+        producto = buscar(pCodPrd);
 
         assertNotNull(producto);
-        assertEquals(
-            pCodPrd,
-            producto.getCodPrd());
-        // almacenar la cantidad de productos en total.
+        assertEquals(pCodPrd, producto.getCodPrd());
+        // conservar la cantidad de productos en total.
         int total = ProductoADFactory
             .getAccessProductos()
                 .totalProductos();
@@ -176,17 +176,36 @@ public class TestADProducto {
                     .totalProductos());
     }
     /**Se comprueba que el TreeMap se genera 
-     * correctamente mirando el tamaño.
+     * correctamente mirando el tamaño, y comprobando
+     * todos los elementos..
      */
     @Test
     @Order (order = 5)
     public void testListarProductos() {
+        int total = ProductoADFactory
+            .getAccessProductos()
+                .totalProductos();
         // se comprueba que contiene x elementos.
         assertEquals(
-            productos.size(),
-            ProductoADFactory
-                .getAccessProductos()
-                    .totalProductos());
+            total,
+            productos.size());
+        /**Se comprueba que todas las 
+         * claves del TreeMap están contenidas en los 
+         * productos
+         */
+        assertEquals(
+            total,
+            productos.values().stream()
+            .filter(p -> productos.keySet().contains(p.getCodPrd()))
+            .collect(Collectors.toList()).size());
+        /**Se comprueba que todos los productos se han
+         * generado correctamente, uno a uno.
+         */
+        productos.keySet().stream()
+            .forEach(k -> {
+                assertTrue(productos.containsValue(buscar(k)));
+                System.out.println(productos.containsKey(k));
+            });
     }
 
     @Test
@@ -196,11 +215,11 @@ public class TestADProducto {
 
         Producto producto1 =
             new Producto(
-                "PR00000002", 
-                (float) 4.99, 
-                "quEsaRitO veGGie", 
-                pIngredientes,
-                "comIdA"),
+            "PR00000002", 
+            (float) 4.99, 
+            "quEsaRitO veGGie", 
+            pIngredientes,
+            "comIdA"),
         // se busca el producto real en la base de datos.
         producto2 = new Producto(
             "PR00000002", 

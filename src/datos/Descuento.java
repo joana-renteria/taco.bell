@@ -76,8 +76,8 @@ public class Descuento implements Comparable <Descuento> {
             return pDescuento.getCodDsc().equals(codDsc)
             && pDescuento.getUsos() == usos
             && pDescuento.getCantidadDsc() == cantidadDsc
-            && pDescuento.getFechaInicio().compareTo(fechaInicio) == 0
-            && pDescuento.getFechaFin().compareTo(fechaFin) == 0;
+            && pDescuento.getFechaInicio().equals(fechaInicio)
+            && pDescuento.getFechaFin().equals(fechaFin);
         }
         else
             return false;

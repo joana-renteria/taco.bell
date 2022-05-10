@@ -3,7 +3,7 @@ package datos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Producto {
+public class Producto implements Comparable <Producto> {
 
     private final String codPrd;
     private float precio;
@@ -158,5 +158,9 @@ public class Producto {
 
         return codPrd + " " + precio + " " + upperAndLower(nombre) + " " 
             + ingredientesTexto + " " + upperAndLower(tipo);
+    }
+    @Override
+    public int compareTo(Producto pProducto) {// TODO Auto-generated method stub
+        return pProducto.getCodPrd().compareTo(codPrd);
     }
 }
