@@ -23,6 +23,8 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Point;
+import javax.swing.JButton;
+import java.awt.Cursor;
 
 public class VMenuCliente extends JDialog implements ActionListener {
 	
@@ -59,15 +61,16 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	 * Create the dialog.
 	 */
 	public VMenuCliente(Usuarie pCliente) {
+		cargarTipografia();
 		this.setUndecorated(true);
-		setBounds(100, 100, 1200, 700);
+		setBounds(100, 100, 1185, 686);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
 		JPanel panelLeft = new JPanel();
-		panelLeft.setBounds(5, 5, 578, 651);
+		panelLeft.setBounds(5, 30, 578, 651);
 		panelLeft.setBackground(new Color(118, 38, 161));
 		contentPanel.add(panelLeft);
 		panelLeft.setLayout(null);
@@ -99,8 +102,15 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		lblPedidoNuevo.setAlignmentX(0.5f);
 		panelContenido1.add(lblPedidoNuevo);
 		
+		JButton btnNuevoPedido = new JButton("Realizar Pedido Nuevo");
+		btnNuevoPedido.setOpaque(false);
+		btnNuevoPedido.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNuevoPedido.setBorder(null);
+		btnNuevoPedido.setBounds(0, 0, 578, 651);
+		panelLeft.add(btnNuevoPedido);
+		
 		JPanel panelRight = new JPanel();
-		panelRight.setBounds(592, 5, 587, 651);
+		panelRight.setBounds(592, 30, 587, 651);
 		panelRight.setBackground(Color.WHITE);
 		contentPanel.add(panelRight);
 		panelRight.setLayout(null);
@@ -185,6 +195,46 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		lblSalir.setForeground(Color.WHITE);
 		lblSalir.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelContenido4.add(lblSalir);
+		
+		JButton btnConsulta = new JButton("Consultar Pedidos");
+		btnConsulta.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+		btnConsulta.setBounds(0, 0, 587, 313);
+		panelRight.add(btnConsulta);
+		
+		JButton btnDatos = new JButton("Cambiar y revisar tus datos");
+		btnDatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnDatos.setOpaque(false);
+		btnDatos.setBounds(0, 324, 311, 327);
+		panelRight.add(btnDatos);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSalir.setOpaque(false);
+		btnSalir.setBounds(321, 324, 266, 327);
+		panelRight.add(btnSalir);
+		
+		JPanel panelBotonesSuperiores = new JPanel();
+		FlowLayout fl_panelBotonesSuperiores = (FlowLayout) panelBotonesSuperiores.getLayout();
+		fl_panelBotonesSuperiores.setHgap(20);
+		fl_panelBotonesSuperiores.setAlignment(FlowLayout.RIGHT);
+		panelBotonesSuperiores.setBounds(1061, 0, 124, 29);
+		contentPanel.add(panelBotonesSuperiores);
+		
+		JButton btnMinimizar = new JButton("");
+		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMinimizar.setBorder(null);
+		btnMinimizar.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_minimizar_inactive.png")));
+		panelBotonesSuperiores.add(btnMinimizar);
+		
+		JButton btnX = new JButton("");
+		btnX.setBorder(null);
+		btnX.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_x_inactive.png")));
+		panelBotonesSuperiores.add(btnX);
+		
+		JPanel panelSuperior = new JPanel();
+		panelSuperior.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+		panelSuperior.setBounds(0, 0, 1061, 29);
+		contentPanel.add(panelSuperior);
 
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -205,5 +255,4 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
