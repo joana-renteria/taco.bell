@@ -1,9 +1,12 @@
 package datos;
 
+import exceptions.GestorExcepciones;
+
 public class Producto implements Comparable <Producto> {
     private final String codPrd;
     private float precio;
     private String nombre;
+    private String tipo;
     
     // Constructors.
     public Producto(String pCodPrd) {
@@ -11,10 +14,12 @@ public class Producto implements Comparable <Producto> {
     }
     public Producto(
     String pCodPrd, 
-    float pPrecio, String pNombre) {
+    float pPrecio,
+    String pNombre, String pTipo) {
         codPrd = pCodPrd;
         precio = pPrecio;
         nombre = pNombre;
+        tipo   = pTipo;
     }
 
     // Getters.
@@ -27,6 +32,9 @@ public class Producto implements Comparable <Producto> {
     public String getNombre() {
         return nombre;
     }
+    public String getTipo() {
+    	return tipo;
+    }
 
     // Setters.
     public void setPrecio(float pPrecio) {
@@ -35,6 +43,15 @@ public class Producto implements Comparable <Producto> {
     public void setNombre(String pNombre) {
         nombre = pNombre;
     }   
+
+    public void setTipo(String pTipo) throws GestorExcepciones {
+    	if(pTipo.equals("Comida")
+    			|| pTipo.equals("Aperitivo")
+    			|| pTipo.equals("Bebida"))
+    		tipo = pTipo;
+    	else
+    		throw new GestorExcepciones(021);
+    }
 
     // Methods.
     public float calcularPrecio() {
