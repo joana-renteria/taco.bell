@@ -32,11 +32,12 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	private static final long serialVersionUID = -8955757198366800331L;
 	private static Point point = new Point(0, 0);
 	private static JButton btnX;
-	private static JButton btnMinimizar;
 	private static JButton btnSalir;
 	private static JButton btnConsulta;
 	private static JButton btnDatos;
 	private static JButton btnNuevoPedido;
+	private static VLogin vLogin;
+	private static Usuarie pCliente;
 
 	// Definir colores
 	private static Color colorMoradoOscuro = new Color(73, 44, 89);
@@ -81,8 +82,11 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public VMenuCliente(VLogin vL, Usuarie pCliente) {
+	public VMenuCliente(VLogin vL, Usuarie pUsuarie) {
 		super(vL,"Taco Bell", true);
+		vLogin = vL;
+		pCliente = pUsuarie;
+
 		cargarTipografia();
 		this.setUndecorated(true);
 		setBounds(100, 100, 1185, 686);
@@ -223,6 +227,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		btnConsulta.setOpaque(false);
 		btnConsulta.setBounds(0, 0, 587, 313);
 		panelRight.add(btnConsulta);
+		btnConsulta.addActionListener(this);
 		
 		btnDatos = new JButton("Cambiar y revisar tus datos");
 		btnDatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -235,6 +240,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		btnSalir.setOpaque(false);
 		btnSalir.setBounds(321, 324, 266, 327);
 		panelRight.add(btnSalir);
+		btnSalir.addActionListener(this);
 		
 		JPanel panelBotonesSuperiores = new JPanel();
 		FlowLayout fl_panelBotonesSuperiores = (FlowLayout) panelBotonesSuperiores.getLayout();
@@ -242,12 +248,6 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		fl_panelBotonesSuperiores.setAlignment(FlowLayout.RIGHT);
 		panelBotonesSuperiores.setBounds(1061, 0, 124, 29);
 		contentPanel.add(panelBotonesSuperiores);
-		
-		btnMinimizar = new JButton("");
-		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnMinimizar.setBorder(null);
-		btnMinimizar.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_minimizar_inactive.png")));
-		panelBotonesSuperiores.add(btnMinimizar);
 		
 		btnX = new JButton("");
 		btnX.setBorder(null);
@@ -279,11 +279,10 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		if (e.getSource().equals(btnX)){
 			this.dispose();
 		}
-		if (e.getSource().equals(btnMinimizar)) {
-			
-		}
 		if (e.getSource().equals(btnConsulta)) {
-
+			VConsultaPedido vConsultaPedido = new VConsultaPedido(this,pCliente);
+			this.dispose();
+			vConsultaPedido.setVisible(true);
 		}
 		if (e.getSource().equals(btnNuevoPedido)) {
 
@@ -292,7 +291,8 @@ public class VMenuCliente extends JDialog implements ActionListener {
 
 		}
 		if (e.getSource().equals(btnSalir)) {
-
+			this.dispose();
+			vLogin.setVisible(true);
 		}
 	}
 }

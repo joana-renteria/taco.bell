@@ -7,6 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import users.Usuarie;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -18,7 +21,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class VConsultaPedido extends JDialog {
+public class VConsultaPedido extends JDialog implements ActionListener {
 
 	/**
 	 * 
@@ -28,8 +31,11 @@ public class VConsultaPedido extends JDialog {
 	
 	//Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
+
 	private JTable table;
 	private JTable table_1;
+	private JButton btnAtras;
+	private VMenuCliente vMenuCliente;
 
 	/**
 	 * Launch the application.
@@ -37,7 +43,8 @@ public class VConsultaPedido extends JDialog {
 	public static void main(String[] args) {
 		try {
 			cargarTipografia();
-			VConsultaPedido dialog = new VConsultaPedido();
+			VMenuCliente vMenuCliente = null;
+			VConsultaPedido dialog = new VConsultaPedido(vMenuCliente, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -53,7 +60,10 @@ public class VConsultaPedido extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VConsultaPedido() {
+	public VConsultaPedido(VMenuCliente vMC, Usuarie pUsuarie) {
+		super(vMC,"Taco Bell", true);
+		vMenuCliente = vMC;
+
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,11 +86,12 @@ public class VConsultaPedido extends JDialog {
 		panelMenuFondo.setBackground(colorMoradoClaro);
 		panelMenu.add(panelMenuFondo);
 		
-		JButton btnAtras = new JButton("");
+		btnAtras = new JButton("");
 		panelMenuFondo.add(btnAtras);
 		btnAtras.setBorder(null);
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
+		btnAtras.addActionListener(this);
 		
 		JPanel panelVolver = new JPanel();
 		FlowLayout flowLayout_6 = (FlowLayout) panelVolver.getLayout();
@@ -111,10 +122,6 @@ public class VConsultaPedido extends JDialog {
 		btnPedidosCurso.setBorder(null);
 		btnPedidosCurso.setForeground(Color.WHITE);
 		btnPedidosCurso.setBackground(colorMoradoClaro);
-		btnPedidosCurso.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnPedidosCurso.setBounds(65, 131, 178, 118);
 		panelContenido.add(btnPedidosCurso);
 		
@@ -145,5 +152,14 @@ public class VConsultaPedido extends JDialog {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panelInfoPedido.add(scrollPane_1);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnAtras)) {
+			this.dispose();
+			vMenuCliente.setVisible(true);
+		}
+		
 	}
 }
