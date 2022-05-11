@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.MenuADFactory;
+import controller.factorias.ProductoADFactory;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -19,10 +20,14 @@ import java.awt.Component;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
 import datos.Producto;
+import exceptions.GestorExcepciones;
 import datos.Menu;
 
 public class VPedido extends JDialog {
@@ -78,21 +83,53 @@ public class VPedido extends JDialog {
 	 *
 	 * @param menu	indica la pestaña seleccionada
 	 * @return	tabla con los productos disponibles
+	 * @throws GestorExcepciones 
 	 */
-	private JTable cargarDatos(int menu) {
-		Object[][] listado = null;
-		String[] titulo = {""};
+	private JTable cargarDatos(int menu) throws GestorExcepciones {
 		
+		List<NombrePrecio<String,Float>> nombrePrecio = null;
+
 		// menus
-		if(menu == 0) {}
+		if(menu == 0) {
+			List<Menu> menues = MenuADFactory.getAccessMenu().listarMenus();
+			nombrePrecio = menues.stream()
+					.map(p -> 
+						new NombrePrecio(p.getNombre(), p.getPrecio()))
+				.collect(Collectors.toList());
+		}
 		// comida
-		else if(menu == 1) {}
+		else if(menu == 1) {
+			List<Producto> comidas = ProductoADFactory.getAccessProductos().listarProducto("Comida");
+			nombrePrecio = comidas.stream()
+					.map(p -> 
+						new NombrePrecio(p.getNombre(), p.getPrecio()))
+					.collect(Collectors.toList());
+		}
 		// aperitivos
-		else if(menu == 2) {}
+		else if(menu == 2) {
+			List<Producto> aperitivos = ProductoADFactory.getAccessProductos().listarProducto("Aperitivo");
+			nombrePrecio = aperitivos.stream()
+					.map(p -> 
+						new NombrePrecio(p.getNombre(), p.getPrecio()))
+					.collect(Collectors.toList());
+		}
 		// bebidas
-		else if(menu == 3) {}
+		else if(menu == 3) {
+			List<Producto> bebidas = ProductoADFactory.getAccessProductos().listarProducto("Bebida");
+			nombrePrecio = bebidas.stream()
+					.map(p -> 
+						new NombrePrecio(p.getNombre(), p.getPrecio()))
+					.collect(Collectors.toList());
+		}
 		// error
-		else {}
+		else throw new GestorExcepciones(011);
+
+		Object[][] listado = new Object[nombrePrecio.size()][2];
+		for(int i = 0; i < nombrePrecio.size(); i++) {
+			listado[i][0] = nombrePrecio.get(i).getFst();
+			listado[i][1] = nombrePrecio.get(i).getSnd();
+		}
+		String[] titulo = {""};
 
 		return new JTable(listado, titulo);	
 	}

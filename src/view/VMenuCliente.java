@@ -38,7 +38,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	private static JButton btnDatos;
 	private static JButton btnNuevoPedido;
 	private static VLogin vLogin;
-	private static Usuarie pCliente;
+	private static Usuarie pUsuarie;
 
 	// Definir colores
 	private static Color colorMoradoOscuro = new Color(73, 44, 89);
@@ -83,7 +83,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public VMenuCliente(VLogin vL, Usuarie pUsuarie) {
+	public VMenuCliente(VLogin vL, Usuarie pCliente) {
 		super(vL,"Taco Bell", true);
 		vLogin = vL;
 		pCliente = pUsuarie;
@@ -292,7 +292,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 			this.dispose();
 		}
 		if (e.getSource().equals(btnConsulta)) {
-			VConsultaPedido vConsultaPedido = new VConsultaPedido(this,pCliente);
+			VConsultaPedido vConsultaPedido = new VConsultaPedido(this, pUsuarie);
 			this.dispose();
 			vConsultaPedido.setVisible(true);
 		}
