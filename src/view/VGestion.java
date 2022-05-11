@@ -2,11 +2,19 @@ package view;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+//import java.awt.event.MouseAdapter;
+//import java.awt.event.MouseEvent;
+//import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import users.Usuarie;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -15,8 +23,9 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
+//import java.awt.Point;
 
-public class VGestion extends JDialog {
+public class VGestion extends JDialog implements ActionListener {
 
 	/**
 	 * 
@@ -30,6 +39,13 @@ public class VGestion extends JDialog {
 	private static Color colorRojoClaro = new Color(215, 7, 81);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
 	private static Color colorAzulClaro = new Color(21, 101, 170);
+
+	//private static Point point = new Point(0, 0);
+	private static JButton btnAtras;
+	private static JButton btnPedir;
+	private static JButton btnNewButton;
+	private static JButton btnEliminar; 
+	private static VLogin vLogin;
 	
 	/**
 	 * Launch the application.
@@ -37,7 +53,7 @@ public class VGestion extends JDialog {
 	public static void main(String[] args) {
 		try {
 			cargarTipografia();
-			VGestion dialog = new VGestion();
+			VGestion dialog = new VGestion(null, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -57,12 +73,16 @@ public class VGestion extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VGestion() {
+	public VGestion(VLogin vL, Usuarie pUsuarie) {
+		super(vL, "Taco Bell",true);
+		vLogin = vL;
+
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
+		this.setUndecorated(true);
 		
 		JPanel panelMenu = new JPanel();
 		panelMenu.setBackground(new Color(240, 240, 240));
@@ -87,7 +107,7 @@ public class VGestion extends JDialog {
 		panelVolver.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelVolver);
 		
-		JButton btnAtras = new JButton("");
+		btnAtras = new JButton("");
 		btnAtras.setBorder(null);
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_atras.png")));
@@ -190,7 +210,7 @@ public class VGestion extends JDialog {
 		panelPedido.setBounds(5, 118, 320, 537);
 		contentPanel.add(panelPedido);
 		
-		JButton btnPedir = new JButton("MODIFICAR");
+		btnPedir = new JButton("MODIFICAR");
 		btnPedir.setForeground(Color.WHITE);
 		btnPedir.setBackground(colorVerdeClaro);
 		btnPedir.setBorder(null);
@@ -213,7 +233,7 @@ public class VGestion extends JDialog {
 		panelBotones.add(panel);
 		panel.setLayout(null);
 		
-		JButton btnNewButton = new JButton("NUEVO");
+		btnNewButton = new JButton("NUEVO");
 		btnNewButton.setBounds(0, 0, 140, 78);
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 28));
@@ -226,12 +246,29 @@ public class VGestion extends JDialog {
 		panelBotones.add(panel_4);
 		panel_4.setLayout(null);
 		
-		JButton btnNewButton_1 = new JButton("ELIMINAR");
-		btnNewButton_1.setBounds(0, 0, 150, 78);
-		btnNewButton_1.setForeground(Color.WHITE);
-		btnNewButton_1.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 28));
-		btnNewButton_1.setBorder(null);
-		btnNewButton_1.setBackground(colorRojoClaro);
-		panel_4.add(btnNewButton_1);
+		btnEliminar = new JButton("ELIMINAR");
+		btnEliminar.setBounds(0, 0, 150, 78);
+		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 28));
+		btnEliminar.setBorder(null);
+		btnEliminar.setBackground(colorRojoClaro);
+		panel_4.add(btnEliminar);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnAtras)) {
+			this.dispose();
+			vLogin.setVisible(true);
+		}
+		if (e.getSource().equals(btnEliminar)) {
+			// TODO
+		}
+		if (e.getSource().equals(btnNewButton)) {
+			// TODO
+		}
+		if (e.getSource().equals(btnPedir)) {
+			// TODO
+		}
 	}
 }

@@ -30,6 +30,7 @@ import java.awt.Cursor;
 public class VMenuCliente extends JDialog implements ActionListener {
 	
 	private static final long serialVersionUID = -8955757198366800331L;
+	
 	private static Point point = new Point(0, 0);
 	private static JButton btnX;
 	private static JButton btnSalir;
@@ -254,6 +255,17 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		btnX.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_x_inactive.png")));
 		panelBotonesSuperiores.add(btnX);
 		btnX.addActionListener(this);
+
+		btnX.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
+				//btnX.setBackground(new Color(255,0,0));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
+				//btnX.setBackground(new Color(255,255,255));
+			}
+		});
 		
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));

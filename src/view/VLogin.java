@@ -30,15 +30,10 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.Frame;
 
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.MatteBorder;
 
 public class VLogin extends JFrame implements ActionListener {
 
@@ -47,6 +42,8 @@ public class VLogin extends JFrame implements ActionListener {
 	private JTextField txtCorreoElectronico;
 	private JPasswordField txtContrasea;
 	private JButton btnEntrar;
+	private JButton btnX;
+	private JButton btnMinimizar;
 	private static Point point = new Point(0, 0);
 
 	public static void main(String[] args) {
@@ -256,24 +253,47 @@ public class VLogin extends JFrame implements ActionListener {
 		panelBotonesSuperiores.setBounds(1105, 0, 106, 29);
 		contentPane.add(panelBotonesSuperiores);
 		
-		JButton btnMinimizar = new JButton("");
+		btnMinimizar = new JButton("");
 		btnMinimizar.setBackground(Color.WHITE);
 		btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_inactive.png")));
 		btnMinimizar.setBorder(null);
 		panelBotonesSuperiores.add(btnMinimizar);
+		btnMinimizar.addActionListener(this);
+		btnMinimizar.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_active.png")));
+				//btnMinimizar.setBackground(new Color(0,0,255));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_inactive.png")));
+				//btnMinimizar.setBackground(new Color(255,255,255));
+			}
+		});
 		
-		JButton btnX = new JButton("");
+		btnX = new JButton("");
 		btnX.setBackground(Color.WHITE);
 		btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
 		btnX.setBorder(null);
 		panelBotonesSuperiores.add(btnX);
+		btnX.addActionListener(this);
+		btnX.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
+				//btnX.setBackground(new Color(255,0,0));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
+				//btnX.setBackground(new Color(255,255,255));
+			}
+		});
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnEntrar)) {
 			Usuarie userAux;
 			String myPass = String.valueOf(txtContrasea.getPassword());
-			if (txtCorreoElectronico.getText().isEmpty() || myPass.isEmpty() || txtCorreoElectronico.equals("Correo Electronico") || myPass.equals("Contrase\u00F1a")) {
+			if (txtCorreoElectronico.getText().isEmpty() || myPass.isEmpty()
+					|| txtCorreoElectronico.equals("Correo Electronico") || myPass.equals("Contrase\u00F1a")) {
 				JOptionPane.showMessageDialog(this,
 						"WARNING.",
 						"Warning",
@@ -283,29 +303,45 @@ public class VLogin extends JFrame implements ActionListener {
 				if (userAux == null) {
 					userAux = UsuarieADFactory.getAccessUsuaries().buscarUsuarie(txtCorreoElectronico.getText());
 					if (userAux != null && userAux.getPasswd().equals(myPass)) {
-						this.dispose(); // TODO Llamar a ventana admin
-					}
-					else { // TODO Error correcto
+						VGestion vG = new VGestion(this, userAux);
+						this.dispose();
+						vG.setVisible(true);
+						txtCorreoElectronico.setText("Correo Electronico");
+						txtContrasea.setText("Contrase\u00F1a");
+						txtContrasea.setEchoChar((char) 0);
+						txtCorreoElectronico.setForeground(new Color(131, 132, 133));
+						txtContrasea.setForeground(new Color(131, 132, 133));
+					} else { // TODO Error correcto
 						JOptionPane.showMessageDialog(this,
-						"Usuario o contraseña MAAAAAAL.",
-						"Warning",
-						JOptionPane.WARNING_MESSAGE);
+								"Usuario o contraseña MAAAAAAL.",
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
 					}
-				} else { 
+				} else {
 					if (userAux.getPasswd().equals(myPass)) {
-						System.out.println("Cliente");
 						VMenuCliente vMC = new VMenuCliente(this, userAux);
 						this.dispose();
 						vMC.setVisible(true);
-					}
-					else // TODO Error correcto
+						txtCorreoElectronico.setText("Correo Electronico");
+						txtContrasea.setText("Contrase\u00F1a");
+						txtContrasea.setEchoChar((char) 0);
+						txtCorreoElectronico.setForeground(new Color(131, 132, 133));
+						txtContrasea.setForeground(new Color(131, 132, 133));
+					} else // TODO Error correcto
 						JOptionPane.showMessageDialog(this,
-							"Usuario o contraseña MAAAAAAL.",
-							"Warning",
-							JOptionPane.WARNING_MESSAGE);
+								"Usuario o contraseña MAAAAAAL.",
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
 				}
-				
+
 			}
+		}
+
+		if (e.getSource().equals(btnX)) {
+			this.dispose();
+		}
+		if (e.getSource().equals(btnMinimizar)) {
+			this.setState(Frame.ICONIFIED);
 		}
 	}
 
