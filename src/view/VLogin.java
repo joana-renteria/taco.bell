@@ -33,6 +33,12 @@ import java.awt.Point;
 
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
 
 public class VLogin extends JFrame implements ActionListener {
 
@@ -75,7 +81,6 @@ public class VLogin extends JFrame implements ActionListener {
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -89,8 +94,10 @@ public class VLogin extends JFrame implements ActionListener {
 				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
 			}
 		});
+		contentPane.setLayout(null);
 
 		JPanel panelMarca = new JPanel();
+		panelMarca.setBounds(5, 30, 537, 665);
 		FlowLayout fl_panelMarca = (FlowLayout) panelMarca.getLayout();
 		fl_panelMarca.setVgap(180);
 		fl_panelMarca.setHgap(40);
@@ -102,6 +109,7 @@ public class VLogin extends JFrame implements ActionListener {
 		panelMarca.add(iconMarca);
 
 		JPanel panelContenidoContainer = new JPanel();
+		panelContenidoContainer.setBounds(542, 30, 652, 665);
 		panelContenidoContainer.setBackground(Color.WHITE);
 		contentPane.add(panelContenidoContainer);
 		panelContenidoContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 30));
@@ -226,7 +234,6 @@ public class VLogin extends JFrame implements ActionListener {
 		btnEntrar.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 20));
 		btnEntrar.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		btnEntrar.addActionListener(this);
-		btnEntrar.setOpaque(false);
 
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panel.getLayout();
@@ -240,6 +247,26 @@ public class VLogin extends JFrame implements ActionListener {
 		lblRegister.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 17));
 		lblRegister.setAlignmentX(0.5f);
 		panel.add(lblRegister);
+		
+		JPanel panelBotonesSuperiores = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelBotonesSuperiores.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		flowLayout.setHgap(20);
+		panelBotonesSuperiores.setBackground(Color.WHITE);
+		panelBotonesSuperiores.setBounds(1105, 0, 106, 29);
+		contentPane.add(panelBotonesSuperiores);
+		
+		JButton btnMinimizar = new JButton("");
+		btnMinimizar.setBackground(Color.WHITE);
+		btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_inactive.png")));
+		btnMinimizar.setBorder(null);
+		panelBotonesSuperiores.add(btnMinimizar);
+		
+		JButton btnX = new JButton("");
+		btnX.setBackground(Color.WHITE);
+		btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
+		btnX.setBorder(null);
+		panelBotonesSuperiores.add(btnX);
 	}
 
 	public void actionPerformed(ActionEvent e) {
