@@ -23,7 +23,8 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
-//import java.awt.Point;
+import java.awt.SystemColor;
+import java.awt.Cursor;
 
 public class VGestion extends JDialog implements ActionListener {
 
@@ -41,6 +42,7 @@ public class VGestion extends JDialog implements ActionListener {
 	private static Color colorAzulClaro = new Color(21, 101, 170);
 
 	//private static Point point = new Point(0, 0);
+  private static JButton btnX;
 	private static JButton btnAtras;
 	private static JButton btnPedir;
 	private static JButton btnNewButton;
@@ -76,8 +78,8 @@ public class VGestion extends JDialog implements ActionListener {
 	public VGestion(VLogin vL, Usuarie pUsuarie) {
 		super(vL, "Taco Bell",true);
 		vLogin = vL;
-
-		setBounds(100, 100, 1200, 700);
+		setUndecorated(true);
+		setBounds(100, 100, 1185, 660);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
@@ -86,7 +88,7 @@ public class VGestion extends JDialog implements ActionListener {
 		
 		JPanel panelMenu = new JPanel();
 		panelMenu.setBackground(new Color(240, 240, 240));
-		panelMenu.setBounds(5, 5, 1174, 110);
+		panelMenu.setBounds(5, 28, 1174, 100);
 		panelMenu.setAlignmentY(Component.TOP_ALIGNMENT);
 		FlowLayout flowLayout = (FlowLayout) panelMenu.getLayout();
 		flowLayout.setHgap(0);
@@ -96,7 +98,7 @@ public class VGestion extends JDialog implements ActionListener {
 		JPanel panelMenuFondo = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panelMenuFondo.getLayout();
 		flowLayout_1.setVgap(10);
-		flowLayout_1.setHgap(140);
+		flowLayout_1.setHgap(120);
 		panelMenuFondo.setBackground(colorMoradoClaro);
 		panelMenu.add(panelMenuFondo);
 		
@@ -108,6 +110,7 @@ public class VGestion extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelVolver);
 		
 		btnAtras = new JButton("");
+    btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAtras.setBorder(null);
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_atras.png")));
@@ -125,6 +128,13 @@ public class VGestion extends JDialog implements ActionListener {
 		lblNewLabel.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelTitulo.add(lblNewLabel);
 		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(Color.WHITE);
+		FlowLayout flowLayout_7 = (FlowLayout) panel_5.getLayout();
+		flowLayout_7.setHgap(1);
+		flowLayout_7.setVgap(40);
+		panelMenuFondo.add(panel_5);
+		
 		JPanel panelClientes = new JPanel();
 		panelClientes.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelClientes);
@@ -137,16 +147,21 @@ public class VGestion extends JDialog implements ActionListener {
 		panel_1.setBackground(colorMoradoClaro);
 		panelClientes.add(panel_1);
 		
-		JLabel lblNewLabel_5 = new JLabel("");
-		lblNewLabel_5.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_users.png")));
-		panel_1.add(lblNewLabel_5);
+		JButton btnClientes = new JButton("");
+		btnClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnClientes.setBorder(null);
+		btnClientes.setBackground(colorMoradoClaro);
+		btnClientes.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_users.png")));
+		panel_1.add(btnClientes);
 		
-		JLabel lblNewLabel_1 = new JLabel("Clientes");
-		lblNewLabel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
-		panelClientes.add(lblNewLabel_1);
+		JButton btnNewButton_2 = new JButton("Clientes");
+		btnNewButton_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewButton_2.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
+		btnNewButton_2.setBackground(colorMoradoClaro);
+		btnNewButton_2.setBorder(null);
+		btnNewButton_2.setForeground(Color.WHITE);
+		panelClientes.add(btnNewButton_2);
 		
 		JPanel panelPedidos = new JPanel();
 		panelPedidos.setBackground(colorMoradoClaro);
@@ -160,16 +175,21 @@ public class VGestion extends JDialog implements ActionListener {
 		panel_2.setBackground(colorMoradoClaro);
 		panelPedidos.add(panel_2);
 		
-		JLabel lblNewLabel_6 = new JLabel("");
-		lblNewLabel_6.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_pedidos.png")));
-		panel_2.add(lblNewLabel_6);
+		JButton btnPedidos = new JButton("");
+		btnPedidos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPedidos.setBorder(null);
+		btnPedidos.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_pedidos.png")));
+		btnPedidos.setBackground(colorMoradoClaro);
+		panel_2.add(btnPedidos);
 		
-		JLabel lblNewLabel_2 = new JLabel("Pedidos");
-		lblNewLabel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
-		panelPedidos.add(lblNewLabel_2);
+		JButton btnNewButton_3 = new JButton("Pedidos");
+		btnNewButton_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_3.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewButton_3.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
+		btnNewButton_3.setBackground(colorMoradoClaro);
+		btnNewButton_3.setBorder(null);
+		btnNewButton_3.setForeground(Color.WHITE);
+		panelPedidos.add(btnNewButton_3);
 		
 		JPanel panelPersonal = new JPanel();
 		panelPersonal.setBackground(colorMoradoClaro);
@@ -183,48 +203,54 @@ public class VGestion extends JDialog implements ActionListener {
 		panel_3.setBackground(colorMoradoClaro);
 		panelPersonal.add(panel_3);
 		
-		JLabel lblNewLabel_7 = new JLabel("");
-		lblNewLabel_7.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_personal.png")));
-		panel_3.add(lblNewLabel_7);
+		JButton btnPersonal = new JButton("");
+		btnPersonal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPersonal.setBorder(null);
+		btnPersonal.setBackground(colorMoradoClaro);
+		btnPersonal.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_personal.png")));
+		panel_3.add(btnPersonal);
 		
-		JLabel lblNewLabel_3 = new JLabel("Personal");
-		lblNewLabel_3.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_3.setForeground(Color.WHITE);
-		lblNewLabel_3.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
-		panelPersonal.add(lblNewLabel_3);
+		JButton btnNewButton_4 = new JButton("Personal");
+		btnNewButton_4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_4.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNewButton_4.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
+		btnNewButton_4.setBackground(colorMoradoClaro);
+		btnNewButton_4.setBorder(null);
+		btnNewButton_4.setForeground(Color.WHITE);
+		panelPersonal.add(btnNewButton_4);
 		
 		JPanel panelProductos = new JPanel();
-		panelProductos.setBounds(347, 118, 832, 537);
+		panelProductos.setBounds(426, 129, 753, 526);
 		contentPanel.add(panelProductos);
 		panelProductos.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
 		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(335, 118, 2, 537);
+		separator.setBounds(414, 133, 2, 522);
 		contentPanel.add(separator);
 		
 		JPanel panelPedido = new JPanel();
 		panelPedido.setLayout(null);
-		panelPedido.setBounds(5, 118, 320, 537);
+		panelPedido.setBounds(5, 118, 399, 537);
 		contentPanel.add(panelPedido);
 		
 		btnPedir = new JButton("MODIFICAR");
+		btnPedir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnPedir.setForeground(Color.WHITE);
 		btnPedir.setBackground(colorVerdeClaro);
 		btnPedir.setBorder(null);
 		btnPedir.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
-		btnPedir.setBounds(10, 466, 300, 60);
+		btnPedir.setBounds(10, 466, 379, 60);
 		panelPedido.add(btnPedir);
 		
 		JPanel panelSeleccion = new JPanel();
-		panelSeleccion.setBounds(10, 11, 300, 355);
+		panelSeleccion.setBounds(10, 11, 379, 355);
 		panelPedido.add(panelSeleccion);
 		panelSeleccion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panelBotones = new JPanel();
-		panelBotones.setBounds(10, 377, 300, 78);
+		panelBotones.setBounds(10, 377, 379, 78);
 		panelPedido.add(panelBotones);
 		panelBotones.setLayout(new BoxLayout(panelBotones, BoxLayout.X_AXIS));
 		
@@ -234,7 +260,8 @@ public class VGestion extends JDialog implements ActionListener {
 		panel.setLayout(null);
 		
 		btnNewButton = new JButton("NUEVO");
-		btnNewButton.setBounds(0, 0, 140, 78);
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton.setBounds(0, 0, 179, 78);
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 28));
 		btnNewButton.setBorder(null);
@@ -246,14 +273,28 @@ public class VGestion extends JDialog implements ActionListener {
 		panelBotones.add(panel_4);
 		panel_4.setLayout(null);
 		
-		btnEliminar = new JButton("ELIMINAR");
-		btnEliminar.setBounds(0, 0, 150, 78);
+		JButton btnNewButton_1 = new JButton("ELIMINAR");
+		btnEliminar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnEliminar.setBounds(0, 0, 189, 78);
 		btnEliminar.setForeground(Color.WHITE);
 		btnEliminar.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 28));
 		btnEliminar.setBorder(null);
 		btnEliminar.setBackground(colorRojoClaro);
 		panel_4.add(btnEliminar);
-	}
+		
+		JPanel panelBotonesVentana = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panelBotonesVentana.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.RIGHT);
+		panelBotonesVentana.setBounds(1072, 0, 107, 29);
+		contentPanel.add(panelBotonesVentana);
+		
+		btnX = new JButton("");
+		btnX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnX.setBackground(SystemColor.menu);
+		btnX.setBorder(null);
+		btnX.setSelectedIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_x_active.png")));
+		btnX.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_x_inactive.png")));
+		panelBotonesVentana.add(btnX);
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
