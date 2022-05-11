@@ -81,6 +81,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
+
 	public VMenuCliente(VLogin vL, Usuarie pCliente) {
 		super(vL,"Taco Bell", true);
 		cargarTipografia();
@@ -217,7 +218,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		lblSalir.setForeground(Color.WHITE);
 		lblSalir.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelContenido4.add(lblSalir);
-		
+
 		btnConsulta = new JButton("Consultar Pedidos");
 		btnConsulta.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		btnConsulta.setOpaque(false);
@@ -242,7 +243,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		fl_panelBotonesSuperiores.setAlignment(FlowLayout.RIGHT);
 		panelBotonesSuperiores.setBounds(1061, 0, 124, 29);
 		contentPanel.add(panelBotonesSuperiores);
-		
+
 		btnMinimizar = new JButton("");
 		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMinimizar.setBorder(null);
