@@ -267,7 +267,7 @@ public class VLogin extends JFrame implements ActionListener {
 				} else { 
 					if (userAux.getPasswd().equals(myPass)) {
 						System.out.println("Cliente");
-						VMenuCliente vMC = new VMenuCliente(userAux);
+						VMenuCliente vMC = new VMenuCliente(this, userAux);
 						this.dispose();
 						vMC.setVisible(true);
 					}

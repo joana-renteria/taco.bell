@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.EventQueue;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,6 +31,12 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	
 	private static final long serialVersionUID = -8955757198366800331L;
 	private static Point point = new Point(0, 0);
+	private static JButton btnX;
+	private static JButton btnMinimizar;
+	private static JButton btnSalir;
+	private static JButton btnConsulta;
+	private static JButton btnDatos;
+	private static JButton btnNuevoPedido;
 
 	// Definir colores
 	private static Color colorMoradoOscuro = new Color(73, 44, 89);
@@ -51,6 +58,20 @@ public class VMenuCliente extends JDialog implements ActionListener {
 			e.printStackTrace();
 		}
 	}*/
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					cargarTipografia();
+					VLogin vL = null;
+					VMenuCliente frame = new VMenuCliente(vL,null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	public static void cargarTipografia() {
 		Fuentes fe = new Fuentes();
@@ -60,7 +81,9 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public VMenuCliente(Usuarie pCliente) {
+
+	public VMenuCliente(VLogin vL, Usuarie pCliente) {
+		super(vL,"Taco Bell", true);
 		cargarTipografia();
 		this.setUndecorated(true);
 		setBounds(100, 100, 1185, 686);
@@ -102,7 +125,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		lblPedidoNuevo.setAlignmentX(0.5f);
 		panelContenido1.add(lblPedidoNuevo);
 		
-		JButton btnNuevoPedido = new JButton("Realizar Pedido Nuevo");
+		btnNuevoPedido = new JButton("Realizar Pedido Nuevo");
 		btnNuevoPedido.setOpaque(false);
 		btnNuevoPedido.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNuevoPedido.setBorder(null);
@@ -195,19 +218,20 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		lblSalir.setForeground(Color.WHITE);
 		lblSalir.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelContenido4.add(lblSalir);
-		
-		JButton btnConsulta = new JButton("Consultar Pedidos");
+
+		btnConsulta = new JButton("Consultar Pedidos");
 		btnConsulta.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+		btnConsulta.setOpaque(false);
 		btnConsulta.setBounds(0, 0, 587, 313);
 		panelRight.add(btnConsulta);
 		
-		JButton btnDatos = new JButton("Cambiar y revisar tus datos");
+		btnDatos = new JButton("Cambiar y revisar tus datos");
 		btnDatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDatos.setOpaque(false);
 		btnDatos.setBounds(0, 324, 311, 327);
 		panelRight.add(btnDatos);
 		
-		JButton btnSalir = new JButton("Salir");
+		btnSalir = new JButton("Salir");
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSalir.setOpaque(false);
 		btnSalir.setBounds(321, 324, 266, 327);
@@ -219,17 +243,18 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		fl_panelBotonesSuperiores.setAlignment(FlowLayout.RIGHT);
 		panelBotonesSuperiores.setBounds(1061, 0, 124, 29);
 		contentPanel.add(panelBotonesSuperiores);
-		
-		JButton btnMinimizar = new JButton("");
+
+		btnMinimizar = new JButton("");
 		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMinimizar.setBorder(null);
 		btnMinimizar.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_minimizar_inactive.png")));
 		panelBotonesSuperiores.add(btnMinimizar);
 		
-		JButton btnX = new JButton("");
+		btnX = new JButton("");
 		btnX.setBorder(null);
 		btnX.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_x_inactive.png")));
 		panelBotonesSuperiores.add(btnX);
+		btnX.addActionListener(this);
 		
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -252,7 +277,23 @@ public class VMenuCliente extends JDialog implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getSource().equals(btnX)){
+			this.dispose();
+		}
+		if (e.getSource().equals(btnMinimizar)) {
+			
+		}
+		if (e.getSource().equals(btnConsulta)) {
+
+		}
+		if (e.getSource().equals(btnNuevoPedido)) {
+
+		}
+		if (e.getSource().equals(btnDatos)) {
+
+		}
+		if (e.getSource().equals(btnSalir)) {
+
+		}
 	}
 }
