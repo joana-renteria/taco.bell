@@ -1,6 +1,5 @@
 package datos;
 
-import java.text.Normalizer;
 
 public class Establecimiento implements Comparable <Establecimiento> {
     private final String codEst;

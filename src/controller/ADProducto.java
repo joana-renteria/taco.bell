@@ -16,11 +16,10 @@ public class ADProducto extends MasterConnection implements Productable {
             stmt.setString(1, pProducto.getCodPrd());
             stmt.setFloat(2, pProducto.getPrecio());
             stmt.setString(3, pProducto.getNombre());
-            stmt.setString(4, pProducto.getIngredientes()[0]);
-            stmt.setString(5, pProducto.getIngredientes()[1]);
-            stmt.setString(6, pProducto.getIngredientes()[2]);
-            stmt.setString(7, pProducto.getIngredientes()[3]);
-            stmt.setString(8, pProducto.getIngredientes()[4]);
+
+            for (int i = 0; i < 5; i++) 
+                stmt.setString(i + 4, pProducto.getIngredientes()[i]);
+                
             stmt.setString(9, pProducto.getTipo());
                 stmt.executeUpdate();
         } catch (SQLException sqle) {
@@ -101,7 +100,7 @@ public class ADProducto extends MasterConnection implements Productable {
     @Override
     public TreeMap <String, Producto> listarProductos() {
         Producto pProducto = null;
-        String [] pIngredientes = 
+        String [] pIngredientes =
             new String [5];
 
         TreeMap <String, Producto> pProductos = 
@@ -111,6 +110,7 @@ public class ADProducto extends MasterConnection implements Productable {
             stmt = con.prepareStatement(listarTodo);
                 rs = stmt.executeQuery();
             while (rs.next()) {
+
                 for (int i = 0; i < 5; i++) 
                     pIngredientes[i] = rs.getString(i + 4);
     
@@ -125,7 +125,7 @@ public class ADProducto extends MasterConnection implements Productable {
             }
             
         } catch (SQLException sqle) {
-            System.out.println("Ha saltado");
+            // TODO: handle exception
         }
         closeConnection();
         

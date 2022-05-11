@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.util.Random;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -42,7 +41,7 @@ public class TestADProducto {
     }
     /**Un método auxiliar para ahorrar la sentencia.
      * Usando la factoría se busca el Producto por código.
-     * @param codPrd
+     * @param pCodPrd
      */
     private Producto buscar(String pCodPrd) {
         return ProductoADFactory
@@ -197,7 +196,7 @@ public class TestADProducto {
             total,
             productos.values().stream()
             .filter(p -> productos.keySet().contains(p.getCodPrd()))
-            .collect(Collectors.toList()).size());
+            .count());
         /**Se comprueba que todos los productos se han
          * generado correctamente, uno a uno.
          */
@@ -211,7 +210,7 @@ public class TestADProducto {
     @Test
     public void testProductoCompareIngredientes() {
         String [] pIngredientes = // diferencias de case y de orden.
-            {"aRrOz", "quEsO", "veGGie", "naTa aGria"};
+        {"aRrOz", "quEsO", "veGGie", "naTa aGria"};
 
         Producto producto1 =
             new Producto(

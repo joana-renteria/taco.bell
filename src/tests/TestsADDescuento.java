@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.util.Random;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 import org.junit.Before;
@@ -193,7 +192,7 @@ public class TestsADDescuento {
             total,
             descuentos.values().stream()
             .filter(d -> descuentos.keySet().contains(d.getCodDsc()))
-            .collect(Collectors.toList()).size());
+            .count());
         /**Se comprueba que todos los descuentos se han 
          * generado correctamente, uno a uno.
         */

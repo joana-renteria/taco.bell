@@ -40,7 +40,7 @@ public class TestsADPedido {
                 "CL00004",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("CL%"), (buscar CLIENTE)
                 "RE00003",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("RE%"), (buscar REPARTIDOR)
                 "ES00001",
-                MenuADFactory.getAccessMenu().buscarMenu("ME00000001"));
+                MenuADFactory.getAccessMenu().buscarMenuPorCodigo("ME00000001"));
                 System.out.println(pPedido.toString());
         // grabado en la base de datos.
         PedidoADFactory
@@ -68,7 +68,7 @@ public class TestsADPedido {
                 "CL00004",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("CL%"), (buscar CLIENTE)
                 "RE00003",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("RE%"), (buscar REPARTIDOR)
                 "ES00001",
-                MenuADFactory.getAccessMenu().buscarMenu("ME00000001"));
+                MenuADFactory.getAccessMenu().buscarMenuPorCodigo("ME00000001"));
                 System.out.println(pPedido.toString());
         // grabado en la base de datos.
         PedidoADFactory

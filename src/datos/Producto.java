@@ -28,16 +28,20 @@ public class Producto implements Comparable <Producto> {
         nombre = pNombre;
         tipo = upperAndLower(pTipo);
     }
-    /**Consctructor completo. Incluye todos los datos
+    /**Consctructor completo. Tiene todos los datos
      * de la clase, incluyendo la lista.
-     * @param pIngredientes
+     * @param pIngredientes ingredientes del producto.
      */
     public Producto(
     String pCodPrd, float pPrecio, String pNombre,
     String [] pIngredientes, String pTipo) {
         this(pCodPrd, pPrecio, pNombre, pTipo);
 
-        int bond = (pIngredientes.length <= ingredientes.length) ? pIngredientes.length : ingredientes.length;
+        int bond = 
+            (pIngredientes.length <= ingredientes.length) ? 
+                pIngredientes.length : 
+                ingredientes.length;
+
         for (int i = 0; i < bond; i++) 
             if (pIngredientes[i] != null)
                 ingredientes[i] = upperAndLower(pIngredientes[i]);
@@ -157,7 +161,7 @@ public class Producto implements Comparable <Producto> {
                 ingredientesTexto += upperAndLower(s) + " ";
 
         return codPrd + " " + precio + " " + upperAndLower(nombre) + " " 
-            + ingredientesTexto + " " + upperAndLower(tipo);
+            + ingredientesTexto + upperAndLower(tipo);
     }
     @Override
     public int compareTo(Producto pProducto) {// TODO Auto-generated method stub

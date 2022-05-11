@@ -62,19 +62,17 @@ public class TestsADEstablecimiento {
             nEstablecimientoRandom = 
             new Random().nextInt(totalEstablecimientos) + 1;
             // se genera un código aleatorio.
-            String codEstRandom = "DE000000";
+            String codEstRandom = "ES000";
 
             if (nEstablecimientoRandom < 10)
                 codEstRandom += "0" + nEstablecimientoRandom;
             else
                 codEstRandom += nEstablecimientoRandom;
 
-        System.out.println(buscar(codEstRandom));
-        System.out.println(codEstRandom);
         // se comprueba el establecimiento.
-        /*assertEquals(
+        assertEquals(
             codEstRandom,
-            buscar(codEstRandom).getCodEst());*/
+            buscar(codEstRandom).getCodEst());
     }
     /**Se comprueba que el método equals
      * @see Establecimiento equals()
@@ -185,8 +183,8 @@ public class TestsADEstablecimiento {
             total,
             establecimientos.values().stream()
             .filter(e -> establecimientos.keySet().contains(e.getCodEst()))
-            .collect(Collectors.toList()).size());
-        /**Se comprueba que todos los estableciientos se han
+            .count());
+        /**Se comprueba que todos los establecientos se han
          * generado correctamente, uno a uno.*/
         establecimientos.keySet().stream()
             .forEach(k -> {
