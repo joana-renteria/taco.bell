@@ -7,6 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.factorias.MenuADFactory;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import java.awt.Font;

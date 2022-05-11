@@ -30,6 +30,7 @@ import java.awt.Cursor;
 public class VMenuCliente extends JDialog implements ActionListener {
 	
 	private static final long serialVersionUID = -8955757198366800331L;
+	
 	private static Point point = new Point(0, 0);
 	private static JButton btnX;
 	private static JButton btnSalir;
@@ -82,12 +83,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-<<<<<<< HEAD
 	public VMenuCliente(VLogin vL, Usuarie pUsuarie) {
-=======
-
-	public VMenuCliente(VLogin vL, Usuarie pCliente) {
->>>>>>> 3440b9e1c45f2dd5fe6eacd3bac5875cad02865a
 		super(vL,"Taco Bell", true);
 		vLogin = vL;
 		pCliente = pUsuarie;
@@ -253,21 +249,23 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		fl_panelBotonesSuperiores.setAlignment(FlowLayout.RIGHT);
 		panelBotonesSuperiores.setBounds(1061, 0, 124, 29);
 		contentPanel.add(panelBotonesSuperiores);
-<<<<<<< HEAD
-=======
-
-		btnMinimizar = new JButton("");
-		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnMinimizar.setBorder(null);
-		btnMinimizar.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_minimizar_inactive.png")));
-		panelBotonesSuperiores.add(btnMinimizar);
->>>>>>> 3440b9e1c45f2dd5fe6eacd3bac5875cad02865a
 		
 		btnX = new JButton("");
 		btnX.setBorder(null);
 		btnX.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_x_inactive.png")));
 		panelBotonesSuperiores.add(btnX);
 		btnX.addActionListener(this);
+
+		btnX.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
+				//btnX.setBackground(new Color(255,0,0));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
+				//btnX.setBackground(new Color(255,255,255));
+			}
+		});
 		
 		JPanel panelSuperior = new JPanel();
 		panelSuperior.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
