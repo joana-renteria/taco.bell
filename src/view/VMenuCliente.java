@@ -82,7 +82,12 @@ public class VMenuCliente extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
+<<<<<<< HEAD
 	public VMenuCliente(VLogin vL, Usuarie pUsuarie) {
+=======
+
+	public VMenuCliente(VLogin vL, Usuarie pCliente) {
+>>>>>>> 3440b9e1c45f2dd5fe6eacd3bac5875cad02865a
 		super(vL,"Taco Bell", true);
 		vLogin = vL;
 		pCliente = pUsuarie;
@@ -221,7 +226,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		lblSalir.setForeground(Color.WHITE);
 		lblSalir.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 32));
 		panelContenido4.add(lblSalir);
-		
+
 		btnConsulta = new JButton("Consultar Pedidos");
 		btnConsulta.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		btnConsulta.setOpaque(false);
@@ -248,6 +253,15 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		fl_panelBotonesSuperiores.setAlignment(FlowLayout.RIGHT);
 		panelBotonesSuperiores.setBounds(1061, 0, 124, 29);
 		contentPanel.add(panelBotonesSuperiores);
+<<<<<<< HEAD
+=======
+
+		btnMinimizar = new JButton("");
+		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMinimizar.setBorder(null);
+		btnMinimizar.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_minimizar_inactive.png")));
+		panelBotonesSuperiores.add(btnMinimizar);
+>>>>>>> 3440b9e1c45f2dd5fe6eacd3bac5875cad02865a
 		
 		btnX = new JButton("");
 		btnX.setBorder(null);
