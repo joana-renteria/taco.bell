@@ -36,6 +36,7 @@ public class TestsADPedido {
      * Se ejecuta antes de cada test. // TODO: borrarlo.
      */
     @Test
+    @Before
     public void mostrarTablaCompleta() {
         pedidos.values().stream()
             .forEach(p -> System.out.println(p));
@@ -50,8 +51,8 @@ public class TestsADPedido {
             .getAccessPedido()
                 .buscarPorCodigo(pCodPed);
     }
-    /**Se comprueba que la búsqueda de un producto funciona
-     * de la forma esperada.
+    /**Se comprueba que la búsqueda de un producto elegido
+     * de forma aleatoria funciona de la forma esperada.
      */
     @Test
     @Order (order = 0)
@@ -62,7 +63,7 @@ public class TestsADPedido {
             nPedidoRandom = 
             new Random().nextInt(totalPedidos) + 1;
         // se genera, pues, un código aleatorio.
-        String codPedRandom = "PR000000";
+        String codPedRandom = "PE000000";
 
         if (nPedidoRandom < 10)
             codPedRandom += "0" + nPedidoRandom;
@@ -70,7 +71,7 @@ public class TestsADPedido {
             codPedRandom += nPedidoRandom;
 
         Pedido buscar = buscar(codPedRandom);
-
+        // se comprueban mediante una comparación.
         assertEquals(
             buscar,
             buscar(codPedRandom));
@@ -111,7 +112,7 @@ public class TestsADPedido {
     /**Se testa el grabado en la base de datos.
      */
     @Test
-    @Order (order = 3)
+    @Order (order = 2)
     public void testAddPedido() {
         // crear un pedido con datos.
         pedido = 
@@ -139,36 +140,43 @@ public class TestsADPedido {
     public void testModificarPedido() {
         pedido = buscar(pCodPed);
         
-        System.out.println(buscar(pCodPed));
-        System.out.println(pedido);
-        //assertNotNull(buscar(pCodPed));
-        //assertEquals(pCodPed, pedido.getCodPed());
+        assertNotNull(pedido);
+        assertEquals(pedido.getCodPed(), pCodPed);
 
+        pedido.setFechaPed(
+            LocalDate.of(1969, 8, 15));
 
+        PedidoADFactory
+            .getAccessPedido()
+                .modificarPedido(pedido);
+        // el pedido ha cambiado en la tabla.
+        assertEquals(pedido, buscar(pCodPed));
     }
     @Test
     public void testDeletePedido() {
-        // crear un pedido con datos.
-        String pCodPed = PedidoADFactory.getAccessPedido().generateCodigo();
+        mostrarTablaCompleta();
         System.out.println(pCodPed);
-        Pedido pPedido = 
-            new Pedido(
-                pCodPed,
-                LocalDate.now(),
-                "CL00004",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("CL%"), (buscar CLIENTE)
-                "RE00003",// TODO UsuarieADFactory.getAccessUsuaries().buscarPorCodigo("RE%"), (buscar REPARTIDOR)
-                "ES00001",
-                MenuADFactory.getAccessMenu().buscarMenuPorCodigo("ME00000001"));
-                System.out.println(pPedido.toString());
-        // grabado en la base de datos.
-        PedidoADFactory
+        pedido = buscar(pCodPed);
+        
+        assertNotNull(pedido);
+        assertEquals(pedido, buscar(pCodPed));
+        // conservar la cantidad total de pedidos.
+        int total = PedidoADFactory
             .getAccessPedido()
-                .grabarPedido(pPedido);
-        // comprobar que contiene el valor.
+                .totalPedidos();
+
         PedidoADFactory
             .getAccessPedido()
                 .borrarPedido(pCodPed);
 
-        assertNull(PedidoADFactory.getAccessPedido().buscarPorCodigo(pCodPed));
+        assertNull(buscar(pCodPed));
+        // ahora debe haber un pedido menos.
+        assertEquals(
+            total - 1,
+            PedidoADFactory
+                .getAccessPedido()
+                    .totalPedidos());
+
+        mostrarTablaCompleta();
     }
 }

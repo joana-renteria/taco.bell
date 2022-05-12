@@ -295,7 +295,6 @@ public class VGestion extends JDialog implements ActionListener {
 		btnX.setSelectedIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_x_active.png")));
 		btnX.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_x_inactive.png")));
 		panelBotonesVentana.add(btnX);
-		
 	}
 
 	@Override
