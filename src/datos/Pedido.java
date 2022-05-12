@@ -2,7 +2,7 @@ package datos;
 
 import java.time.LocalDate;
 
-public class Pedido implements Comparable <Pedido>{
+public class Pedido implements Comparable <Pedido> {
 
     private final String codPed; 
     private LocalDate fechaPed; 
@@ -69,6 +69,19 @@ public class Pedido implements Comparable <Pedido>{
         float sum = 0;
         // TODO
         return sum;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Pedido) {
+            Pedido pPedido = (Pedido) obj;
+            return pPedido.getCodPed().equals(codPed)
+                && pPedido.getFechaPed().equals(fechaPed)
+                && pPedido.getCodCle().equals(codCle)
+                && pPedido.getCodRep().equals(codRep)
+                && pPedido.getCodEst().equals(codEst);
+        }
+        return false;
     }
 
     @Override

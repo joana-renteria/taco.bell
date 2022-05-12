@@ -1,6 +1,7 @@
 package controller.interfaces;
 
-import java.util.ArrayList;
+import java.util.TreeMap;
+
 import datos.Pedido;
 
 public interface Pedible {
@@ -8,6 +9,7 @@ public interface Pedible {
     public void borrarPedido(String pCodPed);
     public void modificarPedido(Pedido pPedido);
     public Pedido buscarPorCodigo(String pCodPed);
-    public ArrayList <Pedido> listarPedidos();
+    public TreeMap <String, Pedido> listarPedidos();
     public String generateCodigo();
+    public int totalPedidos();
 }

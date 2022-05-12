@@ -42,4 +42,27 @@ public class MasterConnection {
                 con.close();
         } catch (SQLException sqle) {}
     }
+
+    /**In case of an error, returns. Otherwise,
+     * returns the number of rows of the full table 
+     * in the database.
+     * @throws SQLException in case something goes wrong.
+     */
+    protected int cantidadTotal(String database) {
+        int pTotal = -1;
+        database = "SELECT COUNT(*) FROM " + database;
+        openConnection();
+        
+        try {
+            stmt = con.prepareStatement(database);
+            rs = stmt.executeQuery();
+                rs.next();
+            pTotal = rs.getInt(1);
+        } catch (SQLException sqle) {
+            // TODO Handle exception
+        }
+        
+        closeConnection();
+        return pTotal;
+    }
 }

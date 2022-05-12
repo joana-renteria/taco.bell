@@ -1,7 +1,7 @@
 package controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 import controller.interfaces.Establecimientable;
 import datos.Establecimiento;
@@ -11,7 +11,6 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
     @Override
     public void grabarEstablecimiento(Establecimiento pEstablecimiento) {
         openConnection();
-
         try {
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pEstablecimiento.getCodEst());
@@ -28,7 +27,6 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
     @Override
     public void borrarEstablecimiento(String pCodEst) {
         openConnection();
-
         try {
             stmt = con.prepareStatement(borrar);
             stmt.setString(1, pCodEst);
@@ -44,22 +42,20 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
     @Override
     public void modificarEstablecimiento(Establecimiento pEstablecimiento) {
         openConnection();
-
         try {
             stmt = con.prepareStatement(modificar);
-            stmt.setString(1, pEstablecimiento.getCodEst());
+            stmt.setString(1, pEstablecimiento.getNombre());
             stmt.setString(2, pEstablecimiento.getLoc());
-            stmt.setString(3, pEstablecimiento.getNombre());
-            // ejecución del comando.
-            stmt.executeUpdate();
-        } catch (SQLException e) {
+            stmt.setString(3, pEstablecimiento.getCodEst());
+                stmt.executeUpdate();
+        } catch (SQLException sqle) {
             // TODO tratar excepción.
         }
         closeConnection();
     }
 
     @Override
-    public Establecimiento buscarPorCodigo(String pCodEst) {
+    public Establecimiento buscarEstablecimientoPorCodigo(String pCodEst) {
         openConnection();
         Establecimiento pEstablecimiento = null;
         try {
@@ -78,26 +74,33 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
     }
 
     @Override
-    public ArrayList<Establecimiento> listarEstablecimientos() {
-        ArrayList<Establecimiento> pListaEstableciento = new ArrayList<Establecimiento>();
+    public TreeMap <String, Establecimiento> listarEstablecimientos() {
+        Establecimiento pEstablecimiento = null;
+        TreeMap <String, Establecimiento> pListaEstablecientos = 
+            new TreeMap <String, Establecimiento>();
         openConnection();
         try {
             stmt = con.prepareStatement(listar);
             rs = stmt.executeQuery();
-            while (rs.next())
-                pListaEstableciento.add(
-                        new Establecimiento(
-                                rs.getString(1),
-                                rs.getString(2),
-                                rs.getString(3)));
-        } catch (SQLException e) {
+            while (rs.next()) {
+                pEstablecimiento = 
+                    new Establecimiento(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3));
+                pListaEstablecientos.put(
+                    pEstablecimiento.getCodEst(),
+                    pEstablecimiento);
+            }
+                
+        } catch (SQLException sqle) {
             // TODO tratar la excepción.
         }
-        return pListaEstableciento;
+        return pListaEstablecientos;
     }
     public String generateCodigo() {
         String pCodEst = "ES";
-        String numEst = String.valueOf(listarEstablecimientos().size()+1);
+        String numEst = String.valueOf(totalEstablecimientos() + 1);
         for (int i = 0; i < 5 - numEst.length(); i++)
             pCodEst += "0";
 
@@ -106,9 +109,14 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         return pCodEst;
     }
 
+    @Override
+    public int totalEstablecimientos() {
+        return cantidadTotal("establecimiento");
+    }
+
     private final String insertar = "INSERT INTO establecimiento VALUES (?, ?, ?)";
     private final String borrar = "DELETE FROM establecimiento WHERE codEst = ?";
-    private final String modificar = "UPDATE FROM establecimiento WHERE codEst = ? SET nombre = ?, loc = ?";
+    private final String modificar = "UPDATE establecimiento SET nombre = ?, loc = ? WHERE codEst = ?";
     private final String listar = "SELECT * FROM establecimiento";
     private final String buscar = "SELECT * FROM establecimiento WHERE codEst = ?";
 }
