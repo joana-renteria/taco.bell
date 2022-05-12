@@ -1,7 +1,10 @@
 package datos;
 
+import GestorExcepciones
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Producto implements Comparable <Producto> {
 
@@ -9,6 +12,7 @@ public class Producto implements Comparable <Producto> {
     private float precio;
     private String nombre;
     private String [] ingredientes = new String [5];
+
     private String tipo;
     
     // Constructors.
@@ -25,7 +29,7 @@ public class Producto implements Comparable <Producto> {
     String pNombre, String pTipo) {
         codPrd = pCodPrd;
         precio = pPrecio;
-        nombre = pNombre;
+        nombre = upperAndLower(pNombre);
         tipo = upperAndLower(pTipo);
     }
     /**Consctructor completo. Tiene todos los datos
@@ -45,6 +49,7 @@ public class Producto implements Comparable <Producto> {
         for (int i = 0; i < bond; i++) 
             if (pIngredientes[i] != null)
                 ingredientes[i] = upperAndLower(pIngredientes[i]);
+        tipo   = pTipo;
     }
 
     // Getters.
@@ -62,6 +67,7 @@ public class Producto implements Comparable <Producto> {
     }
     public String getTipo() {
         return tipo;
+
     }
 
     // Setters.
@@ -93,8 +99,14 @@ public class Producto implements Comparable <Producto> {
             }
     }
 
-    public void setTipo(String pTipo) {
-        tipo = upperAndLower(pTipo);
+        public void setTipo(String pTipo) throws GestorExcepciones {
+          pTipo = upperAndLower(pTipo);
+    	if(pTipo.equals("Comida")
+    			|| pTipo.equals("Aperitivo")
+    			|| pTipo.equals("Bebida"))
+    		tipo = pTipo;
+    	else
+    		throw new GestorExcepciones(021);
     }
 
     // Métodos especiales.
@@ -160,8 +172,12 @@ public class Producto implements Comparable <Producto> {
             if (s != null)
                 ingredientesTexto += upperAndLower(s) + " ";
 
+
         return codPrd + " " + precio + " " + upperAndLower(nombre) + " " 
             + ingredientesTexto + upperAndLower(tipo);
+    }
+
+
     }
     @Override
     public int compareTo(Producto pProducto) {// TODO Auto-generated method stub

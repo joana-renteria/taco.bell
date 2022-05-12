@@ -9,6 +9,7 @@ public interface Usuariable {
     // los usuarios se borran a través de su código.
     public void borrarUsuarie(String pCodUsr);
     public void modificarUsuarie(Usuarie pUsuarie);
+    public Usuarie buscarCliente(String pCorreo);
     public Usuarie buscarUsuarie(String pCodUsr);
     public String [] codigosUsuaries();
     public int numeroDeUsuaries();

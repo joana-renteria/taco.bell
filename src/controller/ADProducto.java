@@ -148,6 +148,12 @@ public class ADProducto extends MasterConnection implements Productable {
     public int totalProductos() {
         return cantidadTotal("producto");
     }
+
+    @Override
+    public String generateCodigo() {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
     private final String insertar = 
         "INSERT INTO producto VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
