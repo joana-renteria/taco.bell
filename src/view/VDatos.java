@@ -237,9 +237,6 @@ public class VDatos extends JDialog implements ActionListener {
 		if (e.getSource().equals(btnEliminar)) {
 			// TODO
 		}
-		if (e.getSource().equals(btnNewButton)) {
-			// TODO
-		}
 		if (e.getSource().equals(btnPedir)) {
 			// TODO
 		}
