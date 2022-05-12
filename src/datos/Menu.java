@@ -136,7 +136,7 @@ public class Menu implements Comparable <Menu> {
     }
 
     /** Simplemente formatea el texto introducido
-     * como parametro. Se reutiliza.
+     * como parametro. Se reutiliza en más clases de datos.
      */
     private String upperAndLower(String pString) {
         pString = pString.substring(0, 1).toUpperCase() +  
@@ -153,7 +153,6 @@ public class Menu implements Comparable <Menu> {
         
         return pString;
     }
-
 
     @Override
     public String toString() {

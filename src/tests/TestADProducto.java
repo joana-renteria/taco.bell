@@ -104,6 +104,7 @@ public class TestADProducto {
         // se observa que la comparación funciona.
         assertEquals(producto2, producto);
         assertTrue(producto2.equals(producto));
+        // también los ingredientes se comparan correctamente.
     }
     /**Se añade un producto de prueba, y se comprueba que 
      * se ha grabado correctamente.
@@ -152,7 +153,7 @@ public class TestADProducto {
      */
     @Test
     @Order (order = 4)
-    public void testDeleteProducto() {
+    public void testBorrarProducto() {
         producto = buscar(pCodPrd);
 
         assertNotNull(producto);
@@ -205,30 +206,5 @@ public class TestADProducto {
                 assertTrue(productos.containsValue(buscar(k)));
                 System.out.println(productos.containsKey(k));
             });
-    }
-
-    @Test
-    public void testProductoCompareIngredientes() {
-        String [] pIngredientes = // diferencias de case y de orden.
-        {"aRrOz", "quEsO", "veGGie", "naTa aGria"};
-
-        Producto producto1 =
-            new Producto(
-            "PR00000002", 
-            (float) 4.99, 
-            "quEsaRitO veGGie", 
-            pIngredientes,
-            "comIdA"),
-        // se busca el producto real en la base de datos.
-        producto2 = new Producto(
-            "PR00000002", 
-            (float) 4.99, 
-            "QUESarITo VeggiE", 
-            pIngredientes,
-            "COmiDa");           
-
-        assertNotNull(producto2);
-        assertEquals(producto1, producto2);
-        assertEquals(producto2, buscar("PR00000002"));
     }
 }

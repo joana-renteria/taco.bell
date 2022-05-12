@@ -1,11 +1,8 @@
 package controller;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.TreeMap;
-
-import com.mysql.cj.protocol.Resultset;
 
 import controller.interfaces.Menuable;
 import datos.Menu;
@@ -69,7 +66,7 @@ public class ADMenu extends MasterConnection implements Menuable {
                 stmt.executeUpdate();
 
             Menu pMenuAux = 
-            buscarMenuPorCodigo(pMenu.getCodMnu());
+                buscarMenuPorCodigo(pMenu.getCodMnu());
 
             for (int i = 0; i < 3; i++) {
                 stmt = con.prepareStatement(modificarNM);
@@ -89,8 +86,8 @@ public class ADMenu extends MasterConnection implements Menuable {
     @Override
     public Menu buscarMenuPorCodigo(String pCodMnu) {
         Menu pMenu = null;
-        String [] codPrdsAux = getCodigosProductos(pCodMnu);
-        System.out.println(codPrdsAux);
+        String [] pCodPrds = getCodigosProductos(pCodMnu);
+        System.out.println(pCodPrds);
         openConnection();
         try {
             stmt = con.prepareStatement(buscar);
@@ -102,14 +99,14 @@ public class ADMenu extends MasterConnection implements Menuable {
                 new Menu(
                 rs.getString(1),
                 rs.getString(2),
-                codPrdsAux,
+                pCodPrds,
                 rs.getFloat(3),
                 rs.getString(4));
 
         } catch (SQLException e) {
             // TODO: handle exception
         }
-        //closeConnection();
+        closeConnection();
         return pMenu;
     }
 
@@ -123,15 +120,20 @@ public class ADMenu extends MasterConnection implements Menuable {
             new String [3];
 
         ResultSet rs2 = null;
-        PreparedStatement stmt2 = null;
+        /**Se crea un nuevo resultset para no sobreescribir el valor
+         * del original. Dado que se va llamar a este método desde otro
+         * que accede a datos, el valor contenido en el ResultSet común
+         * a toda la clase podría ser sobreescrito, y para evitar esto
+         * se utiliza otro.
+         */
         openConnection();
         try {
-            stmt2 = con.prepareStatement(buscarCodigosProductos);
-            stmt2.setString(1, pCodMnu);
-                rs2 = stmt2.executeQuery();
+            stmt = con.prepareStatement(buscarCodigosProductos);
+            stmt.setString(1, pCodMnu);
+                rs2 = stmt.executeQuery();
 
             for (int i = 0; i < codigosProductos.length && rs2.next(); i++) 
-                codigosProductos[i] = rs.getString(1);
+                codigosProductos[i] = rs2.getString(1);
             
         } catch (SQLException sle) {
             //TODO: handle exception.
@@ -172,7 +174,6 @@ public class ADMenu extends MasterConnection implements Menuable {
             
         } catch (SQLException sqle) {
             // TODO: handle exception
-            sqle.printStackTrace();
         }
         closeConnection();
         

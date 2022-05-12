@@ -78,6 +78,7 @@ public class TestsADDescuento {
      * hace la comparacion de forma esperada.
      */
     @Test
+    @Order (order = 1)
     public void testEqualsDescuento() {
         // se generan dos descuentos con diferencias pero equivalentes.
         descuento = 

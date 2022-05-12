@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.util.Random;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -21,7 +20,7 @@ public class TestsADEstablecimiento {
             .getAccessEstablecimiento()
                 .generateCodigo();
     // un objeto Establecimiento auxiliar.
-    Establecimiento establecimiento = null;
+    private Establecimiento establecimiento = null;
     /**Genera una lista con todos los establecimientos.
      * Cada vez que se llama por primera vez en un 
      * método se genera de nuevo, por lo que 
@@ -68,7 +67,6 @@ public class TestsADEstablecimiento {
                 codEstRandom += "0" + nEstablecimientoRandom;
             else
                 codEstRandom += nEstablecimientoRandom;
-
         // se comprueba el establecimiento.
         assertEquals(
             codEstRandom,
@@ -79,8 +77,9 @@ public class TestsADEstablecimiento {
      * hace la comparación de la forma esperada.
      */
     @Test
+    @Order (order = 1)
     public void testEqualsEstablecimiento() {
-        // se generan dos establecimientos con diferencias pero equivalentes.
+        // se generan dos establecimientos equivalentes.
         establecimiento = 
             new Establecimiento(pCodEst,
             "El de Indautxu",

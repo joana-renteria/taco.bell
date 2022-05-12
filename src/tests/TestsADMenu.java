@@ -21,7 +21,7 @@ public class TestsADMenu {
                 .generateCodigo();
     // producto auxiliar.
     private Menu menu = null;
-    /**Genera un TreeMao con todos los menus.
+    /**Genera un TreeMap con todos los menus.
      * Cada vez que se llama por primera vez en un test
      * se genera de nuevo, por lo que siempre
      * se encuentra actualizada.
@@ -51,7 +51,8 @@ public class TestsADMenu {
     /**Se comprueba que la búsqueda de un producto
      * en la base de datos funciona bien. Se mira el código.
      */
-    
+    @Test
+    @Order (order = 0)
     public void testBuscarMenu() {
         int totalMenus = MenuADFactory
             .getAccessMenu()
@@ -66,19 +67,22 @@ public class TestsADMenu {
         else
             codMnuRandom += nMenuRandom;
         // se comprueba que el producto generado es el correcto.
+        Menu buscar =
+            buscar(codMnuRandom);
+
         assertEquals(
-            "ME00000001",
-            buscar("ME00000001").getCodMnu());
-        System.out.println(buscar("ME00000001"));
+            buscar,
+            buscar(codMnuRandom));
     }
     /**Se comprueba el método equals
      * @see Producto equals()
      * hace la comparación esperada.
      */
-    //@Test
-    //@Order (order = 1)
+    @Test
+    @Order (order = 1)
     public void testEqualsMenu() {
         // lista de productos en distinto orden.
+        // antes de 
         String [] 
             pCodPrds1 = 
             {"PR00000003", "PR00000004", "PR00000007"},
@@ -100,11 +104,11 @@ public class TestsADMenu {
             (float) 8.99,
             "menú quesarito y Nachos");
             // se observa que la comparación funciona.
-            System.out.println(menu + "\n" + menu2);
-            assertEquals(menu2, menu);
-            assertTrue(menu2.equals(menu));
+        assertEquals(menu2, menu);
+        assertTrue(menu2.equals(menu));
     }
-
+    /** Se testa el grabado de datos.
+     */
     @Test
     @Order (order = 2)
     public void testAddMenu() {
@@ -145,6 +149,7 @@ public class TestsADMenu {
                 .modificarMenu(menu);
         // el menu ya modificado se encuentra en la tabla.
         assertEquals(menu, buscar(pCodMnu));
+        assertNotNull(buscar(pCodMnu));
     }
     /**Se elimina, y se observa que ya no 
      * está en la tabla.
@@ -153,7 +158,7 @@ public class TestsADMenu {
     @Order (order = 4)
     public void testDeleteMenu() {
         menu = buscar(pCodMnu);
-
+        System.out.println(pCodMnu);
         assertNotNull(menu);
         assertEquals(pCodMnu, menu.getCodMnu());
         // conservar la cantidad de menus total.
@@ -198,9 +203,12 @@ public class TestsADMenu {
     }
 
     @Test
-    public void testMenuCompareCodigos() {
-        String [] pProductos = // diferencias de case y de orden.
-        {"aRrOz", "quEsO", "veGGie", "naTa aGria"};
+    public void testMenuCompareProductos() {
+        String [] 
+            pProductos = // diferencias de case y de orden.
+            {"codigo1", "codigo2", "codigo3"},
+            pProductos2 = 
+            {"codigo3", "codigo1", "codigo2"};
 
         menu =
             new Menu(
@@ -209,15 +217,15 @@ public class TestsADMenu {
             pProductos,
             (float) 5, 
             "quEsaRitO veGGie");
-        // se busca el producto real en la base de datos.
         Menu menu2 = 
             new Menu(
             "PR00000002", 
             " ",
-            pProductos,
+            pProductos2,
             (float) 5, 
             "quEsaRitO veGGie");      
             
         assertEquals(menu, menu2);
+        assertTrue(menu.compareProductos(menu2.getCodPrds()));
     }
 }

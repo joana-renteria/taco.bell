@@ -114,8 +114,8 @@ public class Producto implements Comparable <Producto> {
     
     public boolean compareIngredientes(String [] pIngredientes) {
         List <String> 
-            l1 = new ArrayList<String> (),
-            l2 = new ArrayList<String> ();
+            l1 = new ArrayList <String> (),
+            l2 = new ArrayList <String> ();
         
         for (String s : ingredientes) 
             if (s !=  null)

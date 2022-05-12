@@ -1,7 +1,7 @@
 package controller;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 import controller.factorias.MenuADFactory;
 import controller.interfaces.Pedible;
@@ -34,7 +34,6 @@ public class ADPedido extends MasterConnection implements Pedible {
     @Override
     public void borrarPedido(String pCodPed) {
         openConnection();
-
         try {
             stmt = con.prepareStatement(borrar);
             stmt.setString(1, pCodPed);
@@ -93,21 +92,24 @@ public class ADPedido extends MasterConnection implements Pedible {
     }
 
     @Override
-    public ArrayList<Pedido> listarPedidos() {
-        ArrayList<Pedido> pListaPedidos = new ArrayList<Pedido>();
+    public TreeMap <String, Pedido> listarPedidos() {
+        TreeMap <String, Pedido> pListaPedidos = 
+            new TreeMap <String, Pedido>();
+
         openConnection();
         try {
-            stmt = con.prepareStatement(listar);
+            stmt = con.prepareStatement(listarTodo);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                pListaPedidos.add(
-                        new Pedido(
-                                rs.getString(1),
-                                rs.getDate(6).toLocalDate(),
-                                rs.getString(2),
-                                rs.getString(3),
-                                rs.getString(5),
-                                MenuADFactory.getAccessMenu().buscarMenuPorCodigo(rs.getString(4))));
+                pListaPedidos.put(
+                    rs.getString(1),
+                    new Pedido(
+                    rs.getString(1),
+                    rs.getDate(6).toLocalDate(),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(5),
+                    MenuADFactory.getAccessMenu().buscarMenuPorCodigo(rs.getString(4))));
             }
         } catch (SQLException e) {
             // TODO tratar la excepción.
@@ -127,10 +129,14 @@ public class ADPedido extends MasterConnection implements Pedible {
         return pCodPed;
     }
 
+    @Override
+    public int totalPedidos() {
+        return cantidadTotal("pedido");
+    }
+
     private final String insertar = "INSERT INTO pedido VALUES (?, ?, ?, ?, ?, ?)";
     private final String borrar = "DELETE FROM pedido WHERE codPed = ?";
     private final String modificar = "UPDATE FROM pedido WHERE codPed = ? SET codCle = ?, codRep = ?, codMnu = ?, codEst = ?, fechaPed = ?";
     private final String buscar = "SELECT * FROM pedido WHERE codPed = ?";
-    private final String listar = "SELECT * FROM pedido";
-
+    private final String listarTodo = "SELECT * FROM pedido";
 }
