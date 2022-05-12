@@ -72,7 +72,7 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		
 		JPanel panelMenu = new JPanel();
 		panelMenu.setBackground(new Color(240, 240, 240));
-		panelMenu.setBounds(5, 5, 1174, 110);
+		panelMenu.setBounds(5, 30, 1174, 109);
 		panelMenu.setAlignmentY(Component.TOP_ALIGNMENT);
 		FlowLayout flowLayout = (FlowLayout) panelMenu.getLayout();
 		flowLayout.setHgap(0);
@@ -113,7 +113,7 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		panelMenus.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panelContenido = new JPanel();
-		panelContenido.setBounds(5, 126, 1169, 524);
+		panelContenido.setBounds(5, 139, 1169, 511);
 		contentPanel.add(panelContenido);
 		panelContenido.setLayout(null);
 		
@@ -152,6 +152,20 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		panelInfoPedido.add(scrollPane_1);
+		
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panel.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.RIGHT);
+		panel.setBounds(919, 0, 260, 45);
+		contentPanel.add(panel);
+		
+		JButton btnX = new JButton("");
+		btnX.setBackground(Color.WHITE);
+		btnX.setBorder(null);
+		btnX.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnX.setSelectedIcon(new ImageIcon(VConsultaPedido.class.getResource("/resources/icon_x_active.png")));
+		btnX.setIcon(new ImageIcon(VConsultaPedido.class.getResource("/resources/icon_x_inactive.png")));
+		panel.add(btnX);
 	}
 
 	@Override
