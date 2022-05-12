@@ -92,15 +92,7 @@ public class Pedido implements Comparable <Pedido> {
 
     @Override
     public String toString() {
-        return "{" +
-            " codPed='" + getCodPed() + "'" +
-            ", fechaPed='" + getFechaPed() + "'" +
-            ", codCle='" + getCodCle() + "'" +
-            ", codRep='" + getCodRep() + "'" +
-            ", codEst='" + getCodEst() + "'" +
-            ", menu='" + getMenu() + "'" +
-            "}";
+        return codPed + " " + fechaPed.toString() + " " + codCle + 
+        " " + codRep + " " + codEst + " " + menu.toString();
     }
-    
-    
 }

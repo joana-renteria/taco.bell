@@ -1,9 +1,10 @@
 package datos;
 
-import GestorExcepciones
 
 import java.util.ArrayList;
 import java.util.List;
+
+import exceptions.GestorExcepciones;
 
 
 public class Producto implements Comparable <Producto> {
@@ -99,14 +100,18 @@ public class Producto implements Comparable <Producto> {
             }
     }
 
-        public void setTipo(String pTipo) throws GestorExcepciones {
-          pTipo = upperAndLower(pTipo);
-    	if(pTipo.equals("Comida")
-    			|| pTipo.equals("Aperitivo")
-    			|| pTipo.equals("Bebida"))
-    		tipo = pTipo;
-    	else
-    		throw new GestorExcepciones(021);
+    public void setTipo(String pTipo) throws GestorExcepciones {
+        pTipo = upperAndLower(pTipo);
+        if(pTipo.equals("Comida")
+        || pTipo.equals("Aperitivo")
+        || pTipo.equals("Bebida"))
+            tipo = pTipo;
+        else
+            throw new GestorExcepciones(021);
+    }
+    // TODO: esto se puede tratar internamente.
+    public void setTipoDefault() {
+        tipo = "Comida";
     }
 
     // Métodos especiales.
@@ -177,8 +182,6 @@ public class Producto implements Comparable <Producto> {
             + ingredientesTexto + upperAndLower(tipo);
     }
 
-
-    }
     @Override
     public int compareTo(Producto pProducto) {// TODO Auto-generated method stub
         return pProducto.getCodPrd().compareTo(codPrd);
