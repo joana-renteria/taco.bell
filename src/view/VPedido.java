@@ -22,15 +22,21 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
 import datos.Producto;
 import exceptions.GestorExcepciones;
+import users.Usuarie;
 import datos.Menu;
 
-public class VPedido extends JDialog {
+public class VPedido extends JDialog implements ActionListener {
 
 	/**
 	 * 
@@ -40,6 +46,8 @@ public class VPedido extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	
 	private JTable tablaProductos;
+	private JButton btnAtras;
+	private JDialog vMenuCliente;
 	private int menu = 0;
 	
 	//private float descuento = 0;
@@ -59,7 +67,7 @@ public class VPedido extends JDialog {
 	public static void main(String[] args) {
 		try {
 			cargarTipografia();
-			VPedido dialog = new VPedido();
+			VPedido dialog = new VPedido(null,null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -174,7 +182,10 @@ public class VPedido extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public VPedido() {
+	public VPedido(JDialog vMC, Usuarie pUsuarie) {
+		super(vMC,"Taco Bell",true);
+		vMenuCliente = vMC;
+
 		setBounds(100, 100, 1200, 700);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -204,11 +215,12 @@ public class VPedido extends JDialog {
 		panelVolver.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelVolver);
 		
-		JButton btnAtras = new JButton("");
+		btnAtras = new JButton("");
 		btnAtras.setBorder(null);
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
 		panelVolver.add(btnAtras);
+		btnAtras.addActionListener(this);
 
 		JPanel panelMenus = new JPanel();
 		panelMenus.setBackground(colorMoradoClaro);
@@ -349,5 +361,14 @@ public class VPedido extends JDialog {
 		lblDescuentoCantidad.setForeground(colorAzulClaro);
 		lblDescuentoCantidad.setBounds(197, 11, 93, 56);
 		panelDescuento.add(lblDescuentoCantidad);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnAtras)) {
+			this.dispose();
+			vMenuCliente.setVisible(true);
+		}
+		
 	}
 }

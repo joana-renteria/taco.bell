@@ -15,12 +15,15 @@ import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,7 +38,7 @@ import java.awt.Frame;
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
 
-public class VLogin extends JFrame implements ActionListener {
+public class VLogin extends JFrame implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = -8877946520751179327L;
 	private JPanel contentPane;
@@ -153,24 +156,7 @@ public class VLogin extends JFrame implements ActionListener {
 		txtCorreoElectronico.setColumns(20);
 		panelUser.add(txtCorreoElectronico);
 		txtCorreoElectronico.setFocusable(false);
-
-		txtCorreoElectronico.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				txtCorreoElectronico.setFocusable(true);
-				txtCorreoElectronico.requestFocus();
-				String myPass = String.valueOf(txtContrasea.getPassword());
-				if (txtCorreoElectronico.getText().equals("Correo Electronico")) {
-					txtCorreoElectronico.setText("");
-					txtCorreoElectronico.setForeground(new Color(0,0,0));
-				}
-				if (myPass.isEmpty()) {
-					txtContrasea.setEchoChar((char) 0);
-					txtContrasea.setText("Contrase\u00F1a");
-					txtContrasea.setForeground(new Color(131,132,133));
-				}
-			}
-		});
+		txtCorreoElectronico.addFocusListener(this);
 
 		JSeparator separator = new JSeparator();
 		panelLogin.add(separator);
@@ -189,24 +175,7 @@ public class VLogin extends JFrame implements ActionListener {
 		panelPass.add(txtContrasea);
 		txtContrasea.setEchoChar((char) 0);
 		txtContrasea.setFocusable(false);
-
-		txtContrasea.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				txtContrasea.setFocusable(true);
-				txtContrasea.requestFocus();
-				String myPass = String.valueOf(txtContrasea.getPassword());
-				if (myPass.equals("Contrase\u00F1a")) {
-					txtContrasea.setEchoChar('*');
-					txtContrasea.setText("");
-					txtContrasea.setForeground(new Color(0,0,0));
-				}
-				if (txtCorreoElectronico.getText().isEmpty()) {
-					txtCorreoElectronico.setText("Correo Electronico");
-					txtCorreoElectronico.setForeground(new Color(131,132,133));
-				}
-			}
-		});
+		txtContrasea.addFocusListener(this);
 
 		JSeparator separator_1 = new JSeparator();
 		panelLogin.add(separator_1);
@@ -230,6 +199,7 @@ public class VLogin extends JFrame implements ActionListener {
 		btnEntrar.setForeground(Color.WHITE);
 		btnEntrar.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 20));
 		btnEntrar.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		btnEntrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnEntrar.addActionListener(this);
 
 		JPanel panel = new JPanel();
@@ -258,15 +228,15 @@ public class VLogin extends JFrame implements ActionListener {
 		btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_inactive.png")));
 		btnMinimizar.setBorder(null);
 		panelBotonesSuperiores.add(btnMinimizar);
+		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMinimizar.setFocusable(false);
 		btnMinimizar.addActionListener(this);
 		btnMinimizar.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_active.png")));
-				//btnMinimizar.setBackground(new Color(0,0,255));
 			}
 			public void mouseExited(MouseEvent evt) {
 				btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_inactive.png")));
-				//btnMinimizar.setBackground(new Color(255,255,255));
 			}
 		});
 		
@@ -275,20 +245,26 @@ public class VLogin extends JFrame implements ActionListener {
 		btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
 		btnX.setBorder(null);
 		panelBotonesSuperiores.add(btnX);
+		btnX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnX.setFocusable(false);
 		btnX.addActionListener(this);
 		btnX.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
-				//btnX.setBackground(new Color(255,0,0));
 			}
 			public void mouseExited(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
-				//btnX.setBackground(new Color(255,255,255));
 			}
 		});
+
+		btnEntrar.requestFocusInWindow();
+		txtCorreoElectronico.setFocusable(true);
+		txtContrasea.setFocusable(true);
+		this.getRootPane().setDefaultButton(btnEntrar);
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		if (e.getSource().equals(btnEntrar)) {
 			Usuarie userAux;
 			String myPass = String.valueOf(txtContrasea.getPassword());
@@ -345,4 +321,32 @@ public class VLogin extends JFrame implements ActionListener {
 		}
 	}
 
+	@Override
+	public void focusGained(FocusEvent e) {
+		this.getRootPane().setDefaultButton(btnEntrar);
+		String myPass = String.valueOf(txtContrasea.getPassword());
+		if (e.getSource().equals(txtContrasea) && myPass.equals("Contrase\u00F1a")) {
+			txtContrasea.setEchoChar('*');
+					txtContrasea.setText("");
+					txtContrasea.setForeground(new Color(0,0,0));
+		}
+		if (e.getSource().equals(txtCorreoElectronico) && txtCorreoElectronico.getText().equals("Correo Electronico")) {
+			txtCorreoElectronico.setText("");
+			txtCorreoElectronico.setForeground(new Color(0,0,0));
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		String myPass = String.valueOf(txtContrasea.getPassword());
+		if (e.getSource().equals(txtContrasea) && myPass.isEmpty()) {
+			txtContrasea.setEchoChar((char) 0);
+			txtContrasea.setText("Contrase\u00F1a");
+			txtContrasea.setForeground(new Color(131,132,133));
+		}
+		if (e.getSource().equals(txtCorreoElectronico) && txtCorreoElectronico.getText().isEmpty()) {
+			txtCorreoElectronico.setText("Correo Electronico");
+			txtCorreoElectronico.setForeground(new Color(131,132,133));
+		}
+	}
 }

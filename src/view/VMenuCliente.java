@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -27,7 +28,7 @@ import java.awt.Point;
 import javax.swing.JButton;
 import java.awt.Cursor;
 
-public class VMenuCliente extends JDialog implements ActionListener {
+public class VMenuCliente extends JDialog implements ActionListener{
 	
 	private static final long serialVersionUID = -8955757198366800331L;
 	
@@ -107,6 +108,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		panelPedidoNuevo.setBounds(0, 0, 577, 651);
 		panelLeft.add(panelPedidoNuevo);
 		panelPedidoNuevo.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 220));
+		panelPedidoNuevo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JPanel panelContenido1 = new JPanel();
 		panelContenido1.setBackground(new Color(118, 38, 161));
@@ -135,6 +137,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		btnNuevoPedido.setBorder(null);
 		btnNuevoPedido.setBounds(0, 0, 578, 651);
 		panelLeft.add(btnNuevoPedido);
+		btnNuevoPedido.addActionListener(this);
 		
 		JPanel panelRight = new JPanel();
 		panelRight.setBounds(592, 30, 587, 651);
@@ -148,6 +151,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		panelConsultaPedidos.setBackground(colorMoradoOscuro);
 		panelConsultaPedidos.setBounds(0, 0, 587, 313);
 		panelRight.add(panelConsultaPedidos);
+		panelConsultaPedidos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JPanel panelContenido2 = new JPanel();
 		panelContenido2.setBackground(colorMoradoOscuro);
@@ -175,6 +179,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		panelDatos.setBackground(colorAzulOscuro);
 		panelDatos.setBounds(0, 323, 311, 328);
 		panelRight.add(panelDatos);
+		panelDatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JPanel panelContenido3 = new JPanel();
 		panelContenido3.setBackground(colorAzulOscuro);
@@ -202,6 +207,7 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		panelSalir.setBackground(colorVerdeClaro);
 		panelSalir.setBounds(321, 324, 266, 327);
 		panelRight.add(panelSalir);
+		panelSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		JPanel panelContenido4 = new JPanel();
 		panelContenido4.setBackground(colorVerdeClaro);
@@ -229,12 +235,37 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		btnConsulta.setBounds(0, 0, 587, 313);
 		panelRight.add(btnConsulta);
 		btnConsulta.addActionListener(this);
+		btnConsulta.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				panelConsultaPedidos.setBackground(new Color(63, 34, 79));
+				panelContenido2.setBackground(new Color(63, 34, 79));
+				panelIcono2.setBackground(new Color(63, 34, 79));
+			}
+			public void mouseExited(MouseEvent evt) {
+				panelConsultaPedidos.setBackground(colorMoradoOscuro);
+				panelContenido2.setBackground(colorMoradoOscuro);
+				panelIcono2.setBackground(colorMoradoOscuro);
+			}
+		});
 		
 		btnDatos = new JButton("Cambiar y revisar tus datos");
 		btnDatos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDatos.setOpaque(false);
 		btnDatos.setBounds(0, 324, 311, 327);
 		panelRight.add(btnDatos);
+		btnDatos.addActionListener(this);
+		btnDatos.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				panelDatos.setBackground(new Color(88, 4, 174));
+				panelContenido3.setBackground(new Color(88, 4, 174));
+				panelIcono3.setBackground(new Color(88, 4, 174));
+			}
+			public void mouseExited(MouseEvent evt) {
+				panelDatos.setBackground(colorAzulOscuro);
+				panelContenido3.setBackground(colorAzulOscuro);
+				panelIcono3.setBackground(colorAzulOscuro);
+			}
+		});
 		
 		btnSalir = new JButton("Salir");
 		btnSalir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -242,6 +273,18 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		btnSalir.setBounds(321, 324, 266, 327);
 		panelRight.add(btnSalir);
 		btnSalir.addActionListener(this);
+		btnSalir.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				panelSalir.setBackground(new Color(54, 170, 79));
+				panelContenido4.setBackground(new Color(54, 170, 79));
+				panelIcono4.setBackground(new Color(54, 170, 79));
+			}
+			public void mouseExited(MouseEvent evt) {
+				panelSalir.setBackground(colorVerdeClaro);
+				panelContenido4.setBackground(colorVerdeClaro);
+				panelIcono4.setBackground(colorVerdeClaro);
+			}
+		});
 		
 		JPanel panelBotonesSuperiores = new JPanel();
 		FlowLayout fl_panelBotonesSuperiores = (FlowLayout) panelBotonesSuperiores.getLayout();
@@ -249,21 +292,35 @@ public class VMenuCliente extends JDialog implements ActionListener {
 		fl_panelBotonesSuperiores.setAlignment(FlowLayout.RIGHT);
 		panelBotonesSuperiores.setBounds(1061, 0, 124, 29);
 		contentPanel.add(panelBotonesSuperiores);
+
+		btnNuevoPedido.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				panelPedidoNuevo.setBackground(new Color(108, 28, 151));
+				panelContenido1.setBackground(new Color(108, 28, 151));
+				panelIcono1.setBackground(new Color(108, 28, 151));
+			}
+			public void mouseExited(MouseEvent evt) {
+				panelPedidoNuevo.setBackground(new Color(118, 38, 161));
+				panelContenido1.setBackground(new Color(118, 38, 161));
+				panelIcono1.setBackground(new Color(118, 38, 161));
+			}
+		});
 		
 		btnX = new JButton("");
+		btnX.setBackground(Color.WHITE);
 		btnX.setBorder(null);
 		btnX.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_x_inactive.png")));
 		panelBotonesSuperiores.add(btnX);
+		btnX.setFocusable(false);
 		btnX.addActionListener(this);
+		btnX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		btnX.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
-				//btnX.setBackground(new Color(255,0,0));
 			}
 			public void mouseExited(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
-				//btnX.setBackground(new Color(255,255,255));
 			}
 		});
 		
@@ -284,12 +341,14 @@ public class VMenuCliente extends JDialog implements ActionListener {
 				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
 			}
 		});
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnX)){
 			this.dispose();
+			vLogin.dispose();
 		}
 		if (e.getSource().equals(btnConsulta)) {
 			VConsultaPedido vConsultaPedido = new VConsultaPedido(this, pUsuarie);
@@ -297,10 +356,14 @@ public class VMenuCliente extends JDialog implements ActionListener {
 			vConsultaPedido.setVisible(true);
 		}
 		if (e.getSource().equals(btnNuevoPedido)) {
-
+			VPedido vPedido = new VPedido(this, pUsuarie);
+			this.dispose();
+			vPedido.setVisible(true);
 		}
 		if (e.getSource().equals(btnDatos)) {
-
+			//! VDatos vDatos = new VDatos(this, pUsuarie);
+			this.dispose();
+			//! vPedido.setVisible(true);
 		}
 		if (e.getSource().equals(btnSalir)) {
 			this.dispose();
