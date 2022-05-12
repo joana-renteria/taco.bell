@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import datos.Producto;
+import exceptions.GestorExcepciones;
 import controller.factorias.ProductoADFactory;
 
 @RunWith(OrderedRunner.class)
@@ -132,14 +133,21 @@ public class TestADProducto {
      */
     @Test
     @Order (order = 3)
-    public void testModificarProducto() {                    
+    public void testModificarProducto() {
         producto = buscar(pCodPrd);
         
         assertNotNull(producto);
         assertEquals(pCodPrd, producto.getCodPrd());
 
         producto.setNombre("Burrito de Queso");
-        producto.setTipo("Diarrea explosiva");
+        // TODO: en caso de fallo, un valor default en la clase?.
+        String pTipo = "Diarrea explosiva";
+        try {
+            producto.setTipo(pTipo);
+        } catch (GestorExcepciones ge) {
+            producto.setTipoDefault();
+        }
+
         producto.addIngrediente("Salsa extra-picante");
 
         ProductoADFactory

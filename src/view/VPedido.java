@@ -88,7 +88,7 @@ public class VPedido extends JDialog {
 	private JTable cargarDatos(int menu) throws GestorExcepciones {
 		
 		List<NombrePrecio<String,Float>> nombrePrecio = null;
-
+		/*
 		// menus
 		if(menu == 0) {
 			List<Menu> menues = MenuADFactory.getAccessMenu().listarMenus();
@@ -123,7 +123,7 @@ public class VPedido extends JDialog {
 		}
 		// error
 		else throw new GestorExcepciones(011);
-
+		*/
 		Object[][] listado = new Object[nombrePrecio.size()][2];
 		for(int i = 0; i < nombrePrecio.size(); i++) {
 			listado[i][0] = nombrePrecio.get(i).getFst();
