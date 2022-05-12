@@ -5,7 +5,6 @@ import java.util.TreeMap;
 
 import controller.factorias.MenuADFactory;
 import controller.interfaces.Pedible;
-import datos.Menu;
 import datos.Pedido;
 
 public class ADPedido extends MasterConnection implements Pedible {
