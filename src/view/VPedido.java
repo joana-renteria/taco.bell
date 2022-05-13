@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.Point;
+import java.awt.Cursor;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -50,6 +52,11 @@ public class VPedido extends JDialog implements ActionListener {
 	private JButton btnAtras;
 	private JDialog vMenuCliente;
 	private int menu = 0;
+	private static JButton btnX;
+	private static JButton btnMenus;
+	private static JButton btnAperitivos;
+	private static JButton btnBebida;
+	private static Point point = new Point(0, 0);
 
 	//private float descuento = 0;
 	private float precioTotal = 0;
@@ -224,8 +231,17 @@ public class VPedido extends JDialog implements ActionListener {
 		btnAtras.setBorder(null);
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
+		btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelVolver.add(btnAtras);
 		btnAtras.addActionListener(this);
+		btnAtras.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnAtras.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnAtras.setBackground(colorMoradoClaro);
+			}
+		});
 
 		JPanel panelMenus = new JPanel();
 		panelMenus.setBackground(colorMoradoClaro);
@@ -245,12 +261,21 @@ public class VPedido extends JDialog implements ActionListener {
 		btnMenusIcon.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_menus.png")));
 		panel.add(btnMenusIcon);
 
-		JButton btnMenus = new JButton("Menus");
+		btnMenus = new JButton("Menus");
 		btnMenus.setForeground(Color.WHITE);
 		btnMenus.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnMenus.setBorder(null);
 		btnMenus.setBackground(colorMoradoClaro);
+		btnMenus.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelMenus.add(btnMenus);
+		btnMenus.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnMenus.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnMenus.setBackground(colorMoradoClaro);
+			}
+		});
 
 		JPanel panelComida = new JPanel();
 		panelComida.setBackground(colorMoradoClaro);
@@ -275,7 +300,16 @@ public class VPedido extends JDialog implements ActionListener {
 		btnComida.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnComida.setBorder(null);
 		btnComida.setBackground(colorMoradoClaro);
+		btnComida.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelComida.add(btnComida);
+		btnComida.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnComida.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnComida.setBackground(colorMoradoClaro);
+			}
+		});
 
 		JPanel panelAperitivos = new JPanel();
 		panelAperitivos.setBackground(colorMoradoClaro);
@@ -295,12 +329,21 @@ public class VPedido extends JDialog implements ActionListener {
 		btnAperitivosIcon.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_aperitivos.png")));
 		panel_2.add(btnAperitivosIcon);
 
-		JButton btnAperitivos = new JButton("Aperitivos");
+		btnAperitivos = new JButton("Aperitivos");
 		btnAperitivos.setForeground(Color.WHITE);
 		btnAperitivos.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnAperitivos.setBorder(null);
 		btnAperitivos.setBackground(colorMoradoClaro);
+		btnAperitivos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelAperitivos.add(btnAperitivos);
+		btnAperitivos.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnAperitivos.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnAperitivos.setBackground(colorMoradoClaro);
+			}
+		});
 
 		JPanel panelBebida = new JPanel();
 		panelBebida.setBackground(colorMoradoClaro);
@@ -325,7 +368,16 @@ public class VPedido extends JDialog implements ActionListener {
 		btnBebida.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnBebida.setBorder(null);
 		btnBebida.setBackground(colorMoradoClaro);
+		btnBebida.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelBebida.add(btnBebida);
+		btnBebida.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnBebida.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnBebida.setBackground(colorMoradoClaro);
+			}
+		});
 
 		JPanel panelProductos = new JPanel();
 		panelProductos.setBounds(347, 141, 832, 514);
@@ -349,7 +401,16 @@ public class VPedido extends JDialog implements ActionListener {
 		btnPedir.setBorder(null);
 		btnPedir.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
 		btnPedir.setBounds(10, 466, 300, 60);
+		btnPedir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelPedido.add(btnPedir);
+		btnPedir.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnPedir.setBackground(new Color(10, 160, 112));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnPedir.setBackground(colorVerdeClaro);
+			}
+		});
 
 		JPanel panelSeleccion = new JPanel();
 		panelSeleccion.setBounds(10, 26, 300, 340);
@@ -381,11 +442,35 @@ public class VPedido extends JDialog implements ActionListener {
 		panel_4.setBounds(1017, 0, 162, 32);
 		contentPanel.add(panel_4);
 
-		JButton btnX = new JButton("");
+		btnX = new JButton("");
 		btnX.setSelectedIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_x_active.png")));
 		btnX.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_x_inactive.png")));
+		btnX.setBackground(Color.WHITE);
 		btnX.setBorder(null);
+		btnX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panel_4.add(btnX);
+		btnX.addActionListener(this);
+		btnX.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
+			}
+		});
+
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				point.x = e.getX();
+				point.y = e.getY();
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				Point p = getLocation();
+				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
+			}
+		});
 	}
 
 	@Override
@@ -394,6 +479,9 @@ public class VPedido extends JDialog implements ActionListener {
 			this.dispose();
 			vMenuCliente.setVisible(true);
 		}
-
+		if (e.getSource().equals(btnX)) {
+			this.dispose();
+			vMenuCliente.dispose();
+		}
 	}
 }

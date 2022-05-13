@@ -25,6 +25,7 @@ import java.awt.Component;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Point;
+import java.awt.Cursor;
 
 public class VConsultaPedido extends JDialog implements ActionListener {
 
@@ -41,6 +42,8 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 	private static JTable table;
 	private static JTable table_1;
 	private static JButton btnAtras;
+	private static JButton btnPedidosCurso;
+	private static JButton btnPedidosAnteriores;
 	private static JButton btnX;
 	private static VMenuCliente vMenuCliente;
 
@@ -99,7 +102,16 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		btnAtras.setBorder(null);
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_atras.png")));
+		btnAtras.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAtras.addActionListener(this);
+		btnAtras.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnAtras.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnAtras.setBackground(colorMoradoClaro);
+			}
+		});
 		
 		JPanel panelVolver = new JPanel();
 		FlowLayout flowLayout_6 = (FlowLayout) panelVolver.getLayout();
@@ -125,33 +137,39 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		contentPanel.add(panelContenido);
 		panelContenido.setLayout(null);
 		
-		JButton btnPedidosCurso = new JButton("<html>Pedidos<br>en curso</html>");
+		btnPedidosCurso = new JButton("<html>Pedidos<br>en curso</html>");
 		btnPedidosCurso.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 28));
 		btnPedidosCurso.setBorder(null);
 		btnPedidosCurso.setForeground(Color.WHITE);
 		btnPedidosCurso.setBackground(colorMoradoClaro);
 		btnPedidosCurso.setBounds(65, 131, 178, 118);
+		btnPedidosCurso.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelContenido.add(btnPedidosCurso);
+		btnPedidosCurso.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnPedidosCurso.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnPedidosCurso.setBackground(colorMoradoClaro);
+			}
+		});
 		
-		JButton btnPedidosAnteriores = new JButton("<html>Pedidos<br>anteriores</html>");
+		btnPedidosAnteriores = new JButton("<html>Pedidos<br>anteriores</html>");
 		btnPedidosAnteriores.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 28));
 		btnPedidosAnteriores.setBorder(null);
 		btnPedidosAnteriores.setForeground(Color.WHITE);
 		btnPedidosAnteriores.setBackground(colorMoradoClaro);
 		btnPedidosAnteriores.setBounds(65, 275, 178, 118);
+		btnPedidosAnteriores.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelContenido.add(btnPedidosAnteriores);
-		/*btnConsulta.addMouseListener(new MouseAdapter() {
+		btnPedidosAnteriores.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
-				panelConsultaPedidos.setBackground(new Color(63, 34, 79));
-				panelContenido2.setBackground(new Color(63, 34, 79));
-				panelIcono2.setBackground(new Color(63, 34, 79));
+				btnPedidosAnteriores.setBackground(new Color(98, 18, 141));
 			}
 			public void mouseExited(MouseEvent evt) {
-				panelConsultaPedidos.setBackground(colorMoradoOscuro);
-				panelContenido2.setBackground(colorMoradoOscuro);
-				panelIcono2.setBackground(colorMoradoOscuro);
+				btnPedidosAnteriores.setBackground(colorMoradoClaro);
 			}
-		});*/
+		});
 		
 		JPanel panelListadoPedidos = new JPanel();
 		panelListadoPedidos.setBounds(338, 26, 795, 227);
@@ -182,9 +200,10 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		btnX = new JButton("");
 		btnX.setBackground(Color.WHITE);
 		btnX.setBorder(null);
-		btnX.setHorizontalAlignment(SwingConstants.RIGHT);
-		btnX.setSelectedIcon(new ImageIcon(VConsultaPedido.class.getResource("/resources/icon_x_active.png")));
-		btnX.setIcon(new ImageIcon(VConsultaPedido.class.getResource("/resources/icon_x_inactive.png")));
+		btnX.setIcon(new ImageIcon(VMenuCliente.class.getResource("/resources/icon_x_inactive.png")));
+		btnX.setFocusable(false);
+		btnX.addActionListener(this);
+		btnX.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panel.add(btnX);
 		btnX.addActionListener(this);
 		btnX.addMouseListener(new MouseAdapter() {
