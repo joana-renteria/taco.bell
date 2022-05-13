@@ -101,10 +101,10 @@ public class VPedido extends JDialog implements ActionListener {
 	 * @return	tabla con los productos disponibles
 	 * @throws GestorExcepciones 
 	 */
-	/*private JTable cargarDatos(int menu) throws GestorExcepciones {
+	private JTable cargarDatos(int menu) throws GestorExcepciones {
 
 		List<NombrePrecio<String,Float>> nombrePrecio = null;
-		
+    
 		// menus
 		if(menu == 0) {
 			Collection<Menu> menues = MenuADFactory.getAccessMenu().listarMenus().values();
@@ -216,7 +216,7 @@ public class VPedido extends JDialog implements ActionListener {
 		JPanel panelMenuFondo = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panelMenuFondo.getLayout();
 		flowLayout_1.setVgap(10);
-		flowLayout_1.setHgap(140);
+		flowLayout_1.setHgap(180);
 		panelMenuFondo.setBackground(colorMoradoClaro);
 		panelMenu.add(panelMenuFondo);
 
@@ -248,20 +248,9 @@ public class VPedido extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelMenus);
 		panelMenus.setLayout(new BoxLayout(panelMenus, BoxLayout.Y_AXIS));
 
-		JPanel panel = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) panel.getLayout();
-		flowLayout_2.setVgap(0);
-		flowLayout_2.setHgap(0);
-		panel.setBackground(colorMoradoClaro);
-		panelMenus.add(panel);
+		JButton btnMenus = new JButton("");
+		btnMenus.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_menus.png")));
 
-		JButton btnMenusIcon = new JButton("");
-		btnMenusIcon.setBorder(null);
-		btnMenusIcon.setBackground(colorMoradoClaro);
-		btnMenusIcon.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_menus.png")));
-		panel.add(btnMenusIcon);
-
-		btnMenus = new JButton("Menus");
 		btnMenus.setForeground(Color.WHITE);
 		btnMenus.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnMenus.setBorder(null);
@@ -282,20 +271,8 @@ public class VPedido extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelComida);
 		panelComida.setLayout(new BoxLayout(panelComida, BoxLayout.Y_AXIS));
 
-		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout_3 = (FlowLayout) panel_1.getLayout();
-		flowLayout_3.setVgap(0);
-		flowLayout_3.setHgap(0);
-		panel_1.setBackground(colorMoradoClaro);
-		panelComida.add(panel_1);
-
-		JButton btnComidaIcon = new JButton("");
-		btnComidaIcon.setBorder(null);
-		btnComidaIcon.setBackground(colorMoradoClaro);
-		btnComidaIcon.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_comida.png")));
-		panel_1.add(btnComidaIcon);
-
-		JButton btnComida = new JButton("Comida");
+		JButton btnComida = new JButton("");
+		btnComida.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_comida.png")));
 		btnComida.setForeground(Color.WHITE);
 		btnComida.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnComida.setBorder(null);
@@ -316,20 +293,9 @@ public class VPedido extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelAperitivos);
 		panelAperitivos.setLayout(new BoxLayout(panelAperitivos, BoxLayout.Y_AXIS));
 
-		JPanel panel_2 = new JPanel();
-		FlowLayout flowLayout_4 = (FlowLayout) panel_2.getLayout();
-		flowLayout_4.setVgap(0);
-		flowLayout_4.setHgap(0);
-		panel_2.setBackground(colorMoradoClaro);
-		panelAperitivos.add(panel_2);
+		JButton btnAperitivos = new JButton("");
+		btnAperitivos.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_aperitivos.png")));
 
-		JButton btnAperitivosIcon = new JButton("");
-		btnAperitivosIcon.setBorder(null);
-		btnAperitivosIcon.setBackground(colorMoradoClaro);
-		btnAperitivosIcon.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_aperitivos.png")));
-		panel_2.add(btnAperitivosIcon);
-
-		btnAperitivos = new JButton("Aperitivos");
 		btnAperitivos.setForeground(Color.WHITE);
 		btnAperitivos.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnAperitivos.setBorder(null);
@@ -350,20 +316,8 @@ public class VPedido extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelBebida);
 		panelBebida.setLayout(new BoxLayout(panelBebida, BoxLayout.Y_AXIS));
 
-		JPanel panel_3 = new JPanel();
-		FlowLayout flowLayout_5 = (FlowLayout) panel_3.getLayout();
-		flowLayout_5.setVgap(0);
-		flowLayout_5.setHgap(0);
-		panel_3.setBackground(colorMoradoClaro);
-		panelBebida.add(panel_3);
-
-		JButton btnBebidaIcon = new JButton("");
-		btnBebidaIcon.setBorder(null);
-		btnBebidaIcon.setBackground(colorMoradoClaro);
-		btnBebidaIcon.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_bebidas.png")));
-		panel_3.add(btnBebidaIcon);
-
-		JButton btnBebida = new JButton("Bebida");
+		JButton btnBebida = new JButton("");
+		btnBebida.setIcon(new ImageIcon(VPedido.class.getResource("/resources/icon_bebidas.png")));
 		btnBebida.setForeground(Color.WHITE);
 		btnBebida.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnBebida.setBorder(null);
