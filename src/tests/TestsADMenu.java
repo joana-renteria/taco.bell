@@ -158,6 +158,7 @@ public class TestsADMenu {
     @Order (order = 4)
     public void testDeleteMenu() {
         menu = buscar(pCodMnu);
+
         System.out.println(pCodMnu);
         assertNotNull(menu);
         assertEquals(pCodMnu, menu.getCodMnu());
@@ -226,6 +227,6 @@ public class TestsADMenu {
             "quEsaRitO veGGie");      
             
         assertEquals(menu, menu2);
-        assertTrue(menu.compareProductos(menu2.getCodPrds()));
+        assertTrue(menu.equals(menu2));
     }
 }
