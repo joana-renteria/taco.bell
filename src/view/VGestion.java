@@ -167,45 +167,13 @@ public class VGestion extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelClientes);
 		panelClientes.setLayout(new BoxLayout(panelClientes, BoxLayout.Y_AXIS));
 		
-
 		btnClientes = new JButton("");
-		btnClientes.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_users.png")));
-
-		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout_3 = (FlowLayout) panel_1.getLayout();
-		flowLayout_3.setVgap(0);
-		flowLayout_3.setHgap(0);
-		panel_1.setBackground(colorMoradoClaro);
-		panelClientes.add(panel_1);
-		
-		btnClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnClientes.setHorizontalAlignment(SwingConstants.LEFT);
-		btnClientes.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
-		btnClientes.setBackground(colorMoradoClaro);
-
-		btnClientes.setBorder(null);
 		btnClientes.setForeground(Color.WHITE);
-
-		btnClientes.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_users.png")));
-		panel_1.add(btnClientes);
-		btnClientes.addActionListener(this);
-		
-		btnClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnClientes.setHorizontalAlignment(SwingConstants.LEFT);
 		btnClientes.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
-		btnClientes.setBackground(colorMoradoClaro);
 		btnClientes.setBorder(null);
-		btnClientes.setForeground(Color.WHITE);
-		panelClientes.add(btnClientes2);
-		btnClientes.addActionListener(this);
-		btnClientes.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent evt) {
-				btnClientes.setBackground(new Color(98, 18, 141));
-			}
-			public void mouseExited(MouseEvent evt) {
-				btnClientes.setBackground(colorMoradoClaro);
-			}
-		});
+		btnClientes.setBackground(new Color(118, 38, 161));
+		panelClientes.add(btnClientes);
 		
 		JPanel panelPedidos = new JPanel();
 		panelPedidos.setBackground(colorMoradoClaro);
@@ -214,13 +182,6 @@ public class VGestion extends JDialog implements ActionListener {
 		
 
 		btnPedidos = new JButton("");
-
-		JPanel panel_2 = new JPanel();
-		FlowLayout flowLayout_4 = (FlowLayout) panel_2.getLayout();
-		flowLayout_4.setVgap(0);
-		flowLayout_4.setHgap(0);
-		panel_2.setBackground(colorMoradoClaro);
-		panelPedidos.add(panel_2);
 		
 		btnPedidos = new JButton("");
 		btnPedidos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -235,7 +196,6 @@ public class VGestion extends JDialog implements ActionListener {
 		btnPedidos.setForeground(Color.WHITE);
 		panelPedidos.add(btnPedidos);
 
-		panel_2.add(btnPedidos);
 		btnPedidos.addActionListener(this);
 		
 		btnPedidos.addActionListener(this);
@@ -395,13 +355,13 @@ public class VGestion extends JDialog implements ActionListener {
 			this.dispose();
 			vLogin.setVisible(true);
 		}
-		if (e.getSource().equals(btnClientes2)) {
+		if (e.getSource().equals(btnClientes)) {
 			// TODO
 		}
-		if (e.getSource().equals(btnPedidos2)) {
+		if (e.getSource().equals(btnPedidos)) {
 			// TODO
 		}
-		if (e.getSource().equals(btnPersonal2)) {
+		if (e.getSource().equals(btnPersonal)) {
 			// TODO
 		}
 		if (e.getSource().equals(btnEliminar)) {
