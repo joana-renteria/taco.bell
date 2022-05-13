@@ -117,7 +117,7 @@ public class Menu implements Comparable <Menu> {
             return false;
     }    
 
-    public boolean compareProductos(String [] pCodPrds) {
+    private boolean compareProductos(String [] pCodPrds) {
         List <String>
             l1 = new ArrayList <String> (),
             l2 = new ArrayList <String> ();

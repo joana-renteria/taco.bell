@@ -2,6 +2,7 @@ package tests;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -35,8 +36,8 @@ public class TestsADPedido {
     /**Método auxiliar que muestra la tabla.
      * Se ejecuta antes de cada test. // TODO: borrarlo.
      */
-    @Test
-    @Before
+    //@Test
+    //@Before
     public void mostrarTablaCompleta() {
         pedidos.values().stream()
             .forEach(p -> System.out.println(p));
@@ -177,5 +178,28 @@ public class TestsADPedido {
                     .totalPedidos());
 
         mostrarTablaCompleta();
+    }
+    /**Se comprueba que se genera el TreeMap de forma correcta,
+     * y que se incluyen todos los elementos, con el par de 
+     * objeto y código.
+     */
+    @Test
+    @Order (order = 5)
+    public void testListarPedidos() {
+        int total = PedidoADFactory
+            .getAccessPedido()
+                .totalPedidos();
+        // la cantidad total de elementos.
+        assertEquals(
+            total,
+            pedidos.size());
+        /**Se comprueba que todas las claves son 
+         * las de los menús.
+         */
+        assertEquals(
+            total,
+            pedidos.values().stream()
+            .filter(p -> pedidos.keySet().contains(p.getCodPed()))
+            .count());
     }
 }

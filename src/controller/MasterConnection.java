@@ -7,22 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class MasterConnection {
-    protected ResourceBundle configFile;
+public abstract class MasterConnection {
     protected Connection con;
     protected PreparedStatement stmt;
     protected ResultSet rs;
-    protected String url;
-    protected String user;
-    protected String pass;
-    
-    
-    public MasterConnection() {
-        configFile = ResourceBundle.getBundle("controller.config");
-        url = configFile.getString("URL");
-        user = configFile.getString("USER");
+    // access to the configuration file.
+    protected ResourceBundle configFile = 
+        ResourceBundle.getBundle("controller.config");;
+    protected String 
+        url = configFile.getString("URL"),
+        user = configFile.getString("USER"),
         pass = configFile.getString("PASSWORD");
-    }
+    
 
     protected void openConnection() {
         con = null;
