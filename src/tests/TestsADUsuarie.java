@@ -2,17 +2,32 @@ package tests;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+ 
+import java.util.Random;
+import java.util.TreeMap;
+
+import org.junit.Before;
+import org.junit.runner.RunWith;
 
 import users.*;
 import controller.factorias.UsuarieADFactory;
 
+@RunWith(OrderedRunner.class)
 public class TestsADUsuarie {
     // conservar el código del Usuarie creado.
-    private String type = "Auxiliar";
+    private final static String [] type = 
+        {"", "", ""};
+    // un objeto usuarie auxiliar.
+    private Usuarie pUsuarie = null;
+    /**Genera una lista con todos los usuaries.
+     * Cada vez que se llama por primera vez en un 
+     * método se genera de nuevo. Siempre esta
+     * actualizada.
+     */
     private String pCodUsr =
         UsuarieADFactory
             .getAccessUsuaries()
-                .crearCodigo(type
+                .crearCodigo(type [0]
                     .substring(0, 2)
                         .toUpperCase());
     /**Un método especial para ahorrar toda la sentencia.
@@ -113,7 +128,7 @@ public class TestsADUsuarie {
     /**Se comprueban todos los tests de 
      * forma secuencial.
      */
-    @Test
+    //@Test
     public void testTodo() {
         testListarUsuaries();
             testAddUsuarie();

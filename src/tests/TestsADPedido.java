@@ -37,7 +37,7 @@ public class TestsADPedido {
      * Se ejecuta antes de cada test. // TODO: borrarlo.
      */
     //@Test
-    //@Before
+    @Before
     public void mostrarTablaCompleta() {
         pedidos.values().stream()
             .forEach(p -> System.out.println(p));
