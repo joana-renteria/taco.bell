@@ -39,14 +39,14 @@ public class VDatos extends JDialog implements ActionListener {
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
 	private static Color colorRojoClaro = new Color(215, 7, 81);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
-	private static Color colorAzulClaro = new Color(21, 101, 170);
+	//private static Color colorAzulClaro = new Color(21, 101, 170);
 
 	//private static Point point = new Point(0, 0);
-  private static JButton btnX;
+  	private static JButton btnX;
 	private static JButton btnAtras;
 	private static JButton btnPedir;
 	private static JButton btnEliminar; 
-	private static VLogin vLogin;
+	private static JDialog vMC;
 	
 	/**
 	 * Launch the application.
@@ -74,10 +74,11 @@ public class VDatos extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public VDatos(VLogin vL, Usuarie pUsuarie) {
-		super(vL, "Taco Bell",true);
-		vLogin = vL;
+	public VDatos(JDialog VMenuCliente, Usuarie pUsuarie) {
+		super(VMenuCliente, "Taco Bell",true);
+		vMC = VMenuCliente;
 		setUndecorated(true);
+
 		setBounds(100, 100, 1185, 660);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -114,6 +115,7 @@ public class VDatos extends JDialog implements ActionListener {
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VDatos.class.getResource("/resources/icon_atras.png")));
 		panelVolver.add(btnAtras);
+		btnAtras.addActionListener(this);
 
 		JPanel panelTitulo = new JPanel();
 		panelTitulo.setBackground(colorMoradoClaro);
@@ -187,6 +189,7 @@ public class VDatos extends JDialog implements ActionListener {
 		btnPedir.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
 		btnPedir.setBounds(10, 466, 379, 60);
 		panelPedido.add(btnPedir);
+		btnPedir.addActionListener(this);
 		
 		JPanel panelMetaDatos = new JPanel();
 		panelMetaDatos.setBounds(10, 11, 379, 355);
@@ -211,6 +214,7 @@ public class VDatos extends JDialog implements ActionListener {
 		btnEliminar.setBorder(null);
 		btnEliminar.setBackground(colorRojoClaro);
 		panel_4.add(btnEliminar);
+		btnEliminar.addActionListener(this);
 		
 		JPanel panelBotonesVentana = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) panelBotonesVentana.getLayout();
@@ -225,14 +229,18 @@ public class VDatos extends JDialog implements ActionListener {
 		btnX.setSelectedIcon(new ImageIcon(VDatos.class.getResource("/resources/icon_x_active.png")));
 		btnX.setIcon(new ImageIcon(VDatos.class.getResource("/resources/icon_x_inactive.png")));
 		panelBotonesVentana.add(btnX);
+		btnX.addActionListener(this);
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnX)) {
+			this.dispose();
+		}
 		if (e.getSource().equals(btnAtras)) {
 			this.dispose();
-			vLogin.setVisible(true);
+			vMC.setVisible(true);
 		}
 		if (e.getSource().equals(btnEliminar)) {
 			// TODO

@@ -361,9 +361,9 @@ public class VMenuCliente extends JDialog implements ActionListener{
 			vPedido.setVisible(true);
 		}
 		if (e.getSource().equals(btnDatos)) {
-			//! VDatos vDatos = new VDatos(this, pUsuarie);
+			VDatos vDatos = new VDatos(this, pUsuarie);
 			this.dispose();
-			//! vPedido.setVisible(true);
+			vDatos.setVisible(true);
 		}
 		if (e.getSource().equals(btnSalir)) {
 			this.dispose();

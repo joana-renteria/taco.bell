@@ -94,10 +94,10 @@ public class VPedido extends JDialog implements ActionListener {
 	 * @return	tabla con los productos disponibles
 	 * @throws GestorExcepciones 
 	 */
-	private JTable cargarDatos(int menu) throws GestorExcepciones {
+	/*private JTable cargarDatos(int menu) throws GestorExcepciones {
 
 		List<NombrePrecio<String,Float>> nombrePrecio = null;
-		/*
+		
 		// menus
 		if(menu == 0) {
 			Collection<Menu> menues = MenuADFactory.getAccessMenu().listarMenus().values();

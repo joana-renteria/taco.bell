@@ -10,16 +10,21 @@ import javax.swing.border.EmptyBorder;
 
 import users.Usuarie;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Component;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.Point;
 
 public class VConsultaPedido extends JDialog implements ActionListener {
 
@@ -27,15 +32,17 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 8995247513951729787L;
-	private final JPanel contentPanel = new JPanel();
+	private static final JPanel contentPanel = new JPanel();
+	private static Point point = new Point(0, 0);
 	
 	//Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
 
-	private JTable table;
-	private JTable table_1;
-	private JButton btnAtras;
-	private VMenuCliente vMenuCliente;
+	private static JTable table;
+	private static JTable table_1;
+	private static JButton btnAtras;
+	private static JButton btnX;
+	private static VMenuCliente vMenuCliente;
 
 	/**
 	 * Launch the application.
@@ -69,6 +76,7 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel);
 		contentPanel.setLayout(null);
+		this.setUndecorated(true);
 		
 		JPanel panelMenu = new JPanel();
 		panelMenu.setBackground(new Color(240, 240, 240));
@@ -132,6 +140,18 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		btnPedidosAnteriores.setBackground(colorMoradoClaro);
 		btnPedidosAnteriores.setBounds(65, 275, 178, 118);
 		panelContenido.add(btnPedidosAnteriores);
+		/*btnConsulta.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				panelConsultaPedidos.setBackground(new Color(63, 34, 79));
+				panelContenido2.setBackground(new Color(63, 34, 79));
+				panelIcono2.setBackground(new Color(63, 34, 79));
+			}
+			public void mouseExited(MouseEvent evt) {
+				panelConsultaPedidos.setBackground(colorMoradoOscuro);
+				panelContenido2.setBackground(colorMoradoOscuro);
+				panelIcono2.setBackground(colorMoradoOscuro);
+			}
+		});*/
 		
 		JPanel panelListadoPedidos = new JPanel();
 		panelListadoPedidos.setBounds(338, 26, 795, 227);
@@ -159,13 +179,35 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 		panel.setBounds(919, 0, 260, 45);
 		contentPanel.add(panel);
 		
-		JButton btnX = new JButton("");
+		btnX = new JButton("");
 		btnX.setBackground(Color.WHITE);
 		btnX.setBorder(null);
 		btnX.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnX.setSelectedIcon(new ImageIcon(VConsultaPedido.class.getResource("/resources/icon_x_active.png")));
 		btnX.setIcon(new ImageIcon(VConsultaPedido.class.getResource("/resources/icon_x_inactive.png")));
 		panel.add(btnX);
+		btnX.addActionListener(this);
+		btnX.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
+			}
+		});
+
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				point.x = e.getX();
+				point.y = e.getY();
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				Point p = getLocation();
+				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
+			}
+		});
 	}
 
 	@Override
@@ -174,6 +216,9 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 			this.dispose();
 			vMenuCliente.setVisible(true);
 		}
-		
+		if (e.getSource().equals(btnX)) {
+			this.dispose();
+			vMenuCliente.dispose();
+		}
 	}
 }
