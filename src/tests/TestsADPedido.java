@@ -87,14 +87,14 @@ public class TestsADPedido {
          */
         pedido =
             new Pedido(
-                pCodPed,
-                LocalDate.now(),
-                "CL00004",
-                "RE00003",
-                "ES00001",
-                MenuADFactory
-                    .getAccessMenu()
-                        .buscarMenuPorCodigo("ME00000001"));
+            pCodPed,
+            LocalDate.now(),
+            "CL00004",
+            "RE00003",
+            "ES00001",
+            MenuADFactory
+                .getAccessMenu()
+                    .buscarMenuPorCodigo("ME00000001"));
         Pedido pedido2 = 
             new Pedido(
             pCodPed,
@@ -153,9 +153,8 @@ public class TestsADPedido {
         assertEquals(pedido, buscar(pCodPed));
     }
     @Test
+    @Order (order = 4)
     public void testDeletePedido() {
-        mostrarTablaCompleta();
-        System.out.println(pCodPed);
         pedido = buscar(pCodPed);
         
         assertNotNull(pedido);
