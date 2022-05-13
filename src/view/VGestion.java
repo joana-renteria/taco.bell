@@ -140,84 +140,45 @@ public class VGestion extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelClientes);
 		panelClientes.setLayout(new BoxLayout(panelClientes, BoxLayout.Y_AXIS));
 		
-		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout_3 = (FlowLayout) panel_1.getLayout();
-		flowLayout_3.setVgap(0);
-		flowLayout_3.setHgap(0);
-		panel_1.setBackground(colorMoradoClaro);
-		panelClientes.add(panel_1);
-		
 		JButton btnClientes = new JButton("");
-		btnClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnClientes.setBorder(null);
-		btnClientes.setBackground(colorMoradoClaro);
 		btnClientes.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_users.png")));
-		panel_1.add(btnClientes);
-		
-		JButton btnNewButton_2 = new JButton("Clientes");
-		btnNewButton_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton_2.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
-		btnNewButton_2.setBackground(colorMoradoClaro);
-		btnNewButton_2.setBorder(null);
-		btnNewButton_2.setForeground(Color.WHITE);
-		panelClientes.add(btnNewButton_2);
+		btnClientes.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnClientes.setHorizontalAlignment(SwingConstants.LEFT);
+		btnClientes.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
+		btnClientes.setBackground(colorMoradoClaro);
+		btnClientes.setBorder(null);
+		btnClientes.setForeground(Color.WHITE);
+		panelClientes.add(btnClientes);
 		
 		JPanel panelPedidos = new JPanel();
 		panelPedidos.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelPedidos);
 		panelPedidos.setLayout(new BoxLayout(panelPedidos, BoxLayout.Y_AXIS));
 		
-		JPanel panel_2 = new JPanel();
-		FlowLayout flowLayout_4 = (FlowLayout) panel_2.getLayout();
-		flowLayout_4.setVgap(0);
-		flowLayout_4.setHgap(0);
-		panel_2.setBackground(colorMoradoClaro);
-		panelPedidos.add(panel_2);
-		
 		JButton btnPedidos = new JButton("");
-		btnPedidos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnPedidos.setBorder(null);
 		btnPedidos.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_pedidos.png")));
+		btnPedidos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPedidos.setHorizontalAlignment(SwingConstants.LEFT);
+		btnPedidos.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnPedidos.setBackground(colorMoradoClaro);
-		panel_2.add(btnPedidos);
-		
-		JButton btnNewButton_3 = new JButton("Pedidos");
-		btnNewButton_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_3.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton_3.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
-		btnNewButton_3.setBackground(colorMoradoClaro);
-		btnNewButton_3.setBorder(null);
-		btnNewButton_3.setForeground(Color.WHITE);
-		panelPedidos.add(btnNewButton_3);
+		btnPedidos.setBorder(null);
+		btnPedidos.setForeground(Color.WHITE);
+		panelPedidos.add(btnPedidos);
 		
 		JPanel panelPersonal = new JPanel();
 		panelPersonal.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelPersonal);
 		panelPersonal.setLayout(new BoxLayout(panelPersonal, BoxLayout.Y_AXIS));
 		
-		JPanel panel_3 = new JPanel();
-		FlowLayout flowLayout_5 = (FlowLayout) panel_3.getLayout();
-		flowLayout_5.setVgap(0);
-		flowLayout_5.setHgap(0);
-		panel_3.setBackground(colorMoradoClaro);
-		panelPersonal.add(panel_3);
-		
 		JButton btnPersonal = new JButton("");
-		btnPersonal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnPersonal.setBorder(null);
-		btnPersonal.setBackground(colorMoradoClaro);
 		btnPersonal.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_personal.png")));
-		panel_3.add(btnPersonal);
-		
-		JButton btnNewButton_4 = new JButton("Personal");
-		btnNewButton_4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_4.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNewButton_4.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
-		btnNewButton_4.setBackground(colorMoradoClaro);
-		btnNewButton_4.setBorder(null);
-		btnNewButton_4.setForeground(Color.WHITE);
-		panelPersonal.add(btnNewButton_4);
+		btnPersonal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnPersonal.setHorizontalAlignment(SwingConstants.LEFT);
+		btnPersonal.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
+		btnPersonal.setBackground(colorMoradoClaro);
+		btnPersonal.setBorder(null);
+		btnPersonal.setForeground(Color.WHITE);
+		panelPersonal.add(btnPersonal);
 		
 		JPanel panelProductos = new JPanel();
 		panelProductos.setBounds(426, 129, 753, 526);
