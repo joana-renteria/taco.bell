@@ -33,19 +33,19 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 8995247513951729787L;
-	private static final JPanel contentPanel = new JPanel();
-	private static Point point = new Point(0, 0);
+	private  final JPanel contentPanel = new JPanel();
+	private  Point point = new Point(0, 0);
 	
 	//Definir colores
-	private static Color colorMoradoClaro = new Color(118, 38, 161);
+	private Color colorMoradoClaro = new Color(118, 38, 161);
 
-	private static JTable table;
-	private static JTable table_1;
-	private static JButton btnAtras;
-	private static JButton btnPedidosCurso;
-	private static JButton btnPedidosAnteriores;
-	private static JButton btnX;
-	private static VMenuCliente vMenuCliente;
+	private JTable table;
+	private JTable table_1;
+	private JButton btnAtras;
+	private JButton btnPedidosCurso;
+	private JButton btnPedidosAnteriores;
+	private JButton btnX;
+	private JDialog vMenuCliente;
 
 	/**
 	 * Launch the application.
@@ -70,7 +70,7 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public VConsultaPedido(VMenuCliente vMC, Usuarie pUsuarie) {
+	public VConsultaPedido(JDialog vMC, Usuarie pUsuarie) {
 		super(vMC,"Taco Bell", true);
 		vMenuCliente = vMC;
 
@@ -227,12 +227,15 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
 			}
 		});
+		System.out.println(1);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println(1);
 		if (e.getSource().equals(btnAtras)) {
-			this.dispose();
+			System.out.println(2);
+			dispose();
 			vMenuCliente.setVisible(true);
 		}
 		if (e.getSource().equals(btnX)) {
