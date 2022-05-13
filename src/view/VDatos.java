@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.awt.event.MouseAdapter;
-//import java.awt.event.MouseEvent;
-//import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -34,19 +35,20 @@ public class VDatos extends JDialog implements ActionListener {
 	private static final long serialVersionUID = 5346279688602835531L;
 
 	private final JPanel contentPanel = new JPanel();
+	private static Point point = new Point(0, 0);
 	
 	// Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
 	private static Color colorRojoClaro = new Color(215, 7, 81);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
-	private static Color colorAzulClaro = new Color(21, 101, 170);
+	//private static Color colorAzulClaro = new Color(21, 101, 170);
 
 	//private static Point point = new Point(0, 0);
-  private static JButton btnX;
+  	private static JButton btnX;
 	private static JButton btnAtras;
 	private static JButton btnPedir;
 	private static JButton btnEliminar; 
-	private static VLogin vLogin;
+	private static JDialog vMC;
 	
 	/**
 	 * Launch the application.
@@ -74,10 +76,11 @@ public class VDatos extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public VDatos(VLogin vL, Usuarie pUsuarie) {
-		super(vL, "Taco Bell",true);
-		vLogin = vL;
+	public VDatos(JDialog VMenuCliente, Usuarie pUsuarie) {
+		super(VMenuCliente, "Taco Bell",true);
+		vMC = VMenuCliente;
 		setUndecorated(true);
+
 		setBounds(100, 100, 1185, 660);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -114,6 +117,15 @@ public class VDatos extends JDialog implements ActionListener {
 		btnAtras.setBackground(colorMoradoClaro);
 		btnAtras.setIcon(new ImageIcon(VDatos.class.getResource("/resources/icon_atras.png")));
 		panelVolver.add(btnAtras);
+		btnAtras.addActionListener(this);
+		btnAtras.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnAtras.setBackground(new Color(98, 18, 141));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnAtras.setBackground(colorMoradoClaro);
+			}
+		});
 
 		JPanel panelTitulo = new JPanel();
 		panelTitulo.setBackground(colorMoradoClaro);
@@ -187,6 +199,15 @@ public class VDatos extends JDialog implements ActionListener {
 		btnPedir.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
 		btnPedir.setBounds(10, 466, 379, 60);
 		panelPedido.add(btnPedir);
+		btnPedir.addActionListener(this);
+		btnPedir.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnPedir.setBackground(new Color(10, 160, 112));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnPedir.setBackground(colorVerdeClaro);
+			}
+		});
 		
 		JPanel panelMetaDatos = new JPanel();
 		panelMetaDatos.setBounds(10, 11, 379, 355);
@@ -211,6 +232,15 @@ public class VDatos extends JDialog implements ActionListener {
 		btnEliminar.setBorder(null);
 		btnEliminar.setBackground(colorRojoClaro);
 		panel_4.add(btnEliminar);
+		btnEliminar.addActionListener(this);
+		btnEliminar.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnEliminar.setBackground(new Color(195, 0, 61));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnEliminar.setBackground(colorRojoClaro);
+			}
+		});
 		
 		JPanel panelBotonesVentana = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) panelBotonesVentana.getLayout();
@@ -225,14 +255,38 @@ public class VDatos extends JDialog implements ActionListener {
 		btnX.setSelectedIcon(new ImageIcon(VDatos.class.getResource("/resources/icon_x_active.png")));
 		btnX.setIcon(new ImageIcon(VDatos.class.getResource("/resources/icon_x_inactive.png")));
 		panelBotonesVentana.add(btnX);
-		
+		btnX.addActionListener(this);
+		btnX.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
+			}
+			public void mouseExited(MouseEvent evt) {
+				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
+			}
+		});
+
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				point.x = e.getX();
+				point.y = e.getY();
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseDragged(MouseEvent e) {
+				Point p = getLocation();
+				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
+			}
+		});
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(btnX)) {
+			this.dispose();
+		}
 		if (e.getSource().equals(btnAtras)) {
 			this.dispose();
-			vLogin.setVisible(true);
+			vMC.setVisible(true);
 		}
 		if (e.getSource().equals(btnEliminar)) {
 			// TODO
