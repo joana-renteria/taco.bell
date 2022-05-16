@@ -7,7 +7,12 @@ import controller.interfaces.Descontable;
 import datos.Descuento;
 
 public class ADDescuento extends MasterConnection implements Descontable {
-
+    /**Este método recibe como parámetro un objeto de tipo
+     * descuento, y crea una sentencia SQL con los valores 
+     * correspondientes a dicho objeto para después grabarlo.
+     * @param pDescuento objeto de tipo descuento a grabar en la 
+     * tabla.
+     */
     @Override
     public void grabarDescuento(Descuento pDescuento) {
         openConnection();   
@@ -24,7 +29,10 @@ public class ADDescuento extends MasterConnection implements Descontable {
         }
         closeConnection();
     }
-
+    /**Este método recibe como parámetro un String y lo introduce
+     * en una sentencia SQL que lo borra de la tabla.
+     * @param pCodDsc descuento a borrar de la base de datos.
+     */
     @Override
     public void borrarDescuento(String pCodDsc) {
         openConnection();
@@ -37,7 +45,11 @@ public class ADDescuento extends MasterConnection implements Descontable {
         }
         closeConnection();
     }
-
+    /**Este método recibe como parámetro un Descuento, y prepara
+     * una sentencia SQL para modificarlo de la base de datos.
+     * TODO: en caso de no estar, se lanza una excepción.
+     * @param pDescuento descuento que se modifica en las tablas.
+     */
     @Override
     public void modificarDescuento(Descuento pDescuento) {
         openConnection();
@@ -54,7 +66,13 @@ public class ADDescuento extends MasterConnection implements Descontable {
         }
         closeConnection();
     }
-
+    /**Este método recibe como parámetro un codigo de descuento, 
+     * y prepara una sentencia SQL que busca en la base de datos 
+     * el descuento con dicho código.
+     * @param pCodDsc codigo del descuento a buscar.
+     * @return el descuento con el código correspondiente.
+     * En caso de no encontrarlo, devuelve null.
+    */
     @Override
     public Descuento buscarDescuentoPorCodigo(String pCodDsc) {
         Descuento pDescuento = null;
@@ -77,7 +95,11 @@ public class ADDescuento extends MasterConnection implements Descontable {
         closeConnection();
         return pDescuento;
     }
-
+    /**Este método devuelve un TreeMap con todos los descuentos.
+     * Se utiliza como clave el codigo de descuento. Esta lista
+     * facilita la búsqueda de Descuentos a la hora de listarlos.
+     * @return TreeMap con todos los descuentos de la base de datos.
+     */
     @Override
     public TreeMap <String, Descuento> listarDescuentos() {
         Descuento pDescuento = null;
@@ -105,7 +127,10 @@ public class ADDescuento extends MasterConnection implements Descontable {
         }   
         return pListaDescuentos;
     }
-
+    /**Este método genera el código correspondiente al siguiente
+     * descuento en la base de datos.
+     * @return String correspondiente al siguiente código.
+    */
     @Override
     public String generateCodigo() {
         String pCodDsc = "DE";
@@ -117,16 +142,27 @@ public class ADDescuento extends MasterConnection implements Descontable {
 
         return pCodDsc;
     }
-
+    /**@return un entero con la cantidad total de descuentos 
+     * en la tabla de descuento. Usa cantidad total, implementado en 
+     * la superclase. Se le envía como parámetro el nombre de la tabla.
+     * @see MasterConnection
+     */
     @Override
     public int totalDescuentos() {
         return cantidadTotal("descuento");
     }
 
-    private final String insertar = "INSERT INTO descuento VALUES (?, ?, ?, ?, ?)";
-    private final String borrar = "DELETE FROM descuento WHERE codDsc = ?";
-    private final String modificar = "UPDATE descuento SET usos = ?, cantidadDesc = ?, fechaInicio = ?, fechaFin = ? WHERE codDsc = ?";
-    private final String listarTodo = "SELECT * FROM descuento";
-    private final String buscar = "SELECT * FROM descuento WHERE codDsc = ?";
+    // sentencias sql preparadas.
+    private final String insertar = 
+        "INSERT INTO descuento VALUES (?, ?, ?, ?, ?)";
+    private final String borrar = 
+        "DELETE FROM descuento WHERE codDsc = ?";
+    private final String modificar = 
+        "UPDATE descuento SET usos = ?, cantidadDesc = ?, " + 
+        "fechaInicio = ?, fechaFin = ? WHERE codDsc = ?";
+    private final String listarTodo = 
+        "SELECT * FROM descuento";
+    private final String buscar = 
+        "SELECT * FROM descuento WHERE codDsc = ?";
 
 }

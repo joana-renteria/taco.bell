@@ -7,7 +7,12 @@ import controller.interfaces.Establecimientable;
 import datos.Establecimiento;
 
 public class ADEstablecimiento extends MasterConnection implements Establecimientable {
-
+    /**El método recibe como parámetro un objeto de tipo
+     * establecimiento, y después prepara una sentencia SQL
+     * con los datos correspondientes.
+     * @param pEstablecimiento objeto de tipo Establecimiento
+     * a grabar en la tabla.
+     */
     @Override
     public void grabarEstablecimiento(Establecimiento pEstablecimiento) {
         openConnection();
