@@ -47,6 +47,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 	private JButton btnEntrar;
 	private JButton btnX;
 	private JButton btnMinimizar;
+	private JButton btnRegister;
 	private static Point point = new Point(0, 0);
 
 	public static void main(String[] args) {
@@ -208,12 +209,14 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		panel.setBackground(Color.WHITE);
 		panelBotones.add(panel);
 
-		JLabel lblRegister = new JLabel("\u00BFA\u00FAn no te has registrado? \u00A1Registrate ya!");
-		lblRegister.setBackground(Color.WHITE);
-		lblRegister.setForeground(new Color(69, 157, 213));
-		lblRegister.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 17));
-		lblRegister.setAlignmentX(0.5f);
-		panel.add(lblRegister);
+		btnRegister = new JButton("\u00BFA\u00FAn no te has registrado? \u00A1Registrate ya!");
+		btnRegister.setBackground(Color.WHITE);
+		btnRegister.setForeground(new Color(69, 157, 213));
+		btnRegister.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 17));
+		btnRegister.setAlignmentX(0.5f);
+		btnRegister.setBorder(null);
+		panel.add(btnRegister);
+		btnRegister.addActionListener(this);
 		
 		JPanel panelBotonesSuperiores = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panelBotonesSuperiores.getLayout();
@@ -229,7 +232,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		btnMinimizar.setBorder(null);
 		panelBotonesSuperiores.add(btnMinimizar);
 		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnMinimizar.setFocusable(false);
+		btnMinimizar.setFocusable(true);
 		btnMinimizar.addActionListener(this);
 		btnMinimizar.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
@@ -312,12 +315,16 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 
 			}
 		}
-
 		if (e.getSource().equals(btnX)) {
 			this.dispose();
 		}
 		if (e.getSource().equals(btnMinimizar)) {
 			this.setState(Frame.ICONIFIED);
+		}
+		if (e.getSource().equals(btnRegister)) {
+			VRegister vR = new VRegister(this);
+			this.dispose();
+			vR.setVisible(true);
 		}
 	}
 
