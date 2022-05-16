@@ -4,7 +4,7 @@ import controller.factorias.UsuarieADFactory;
 import resources.Util;
 import users.*;
 
-public abstract class GenerateUsers {
+public abstract class GenerateUsers {/*
     
     public static Adminstrador crearAdministrador() {
         Adminstrador pAdminstrador = 
@@ -47,7 +47,7 @@ public abstract class GenerateUsers {
         return UsuarieADFactory
             .getAccessUsuaries()
                 .crearCodigo(pPrefix);
-    }
+    }*/
 
     /**Crea, instancia y añade los datos comunes 
      * a todos los objetos de clases que implementen 
