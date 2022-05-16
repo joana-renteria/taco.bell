@@ -1,4 +1,6 @@
 package controller.interfaces;
+import java.util.TreeMap;
+
 import users.Usuarie;
 
 public interface Usuariable {
@@ -11,7 +13,7 @@ public interface Usuariable {
     public void modificarUsuarie(Usuarie pUsuarie);
     public Usuarie buscarCliente(String pCorreo);
     public Usuarie buscarUsuarie(String pCodUsr);
-    public String [] codigosUsuaries();
-    public int numeroDeUsuaries();
-    public String crearCodigo(String pCodUsr);
+    public TreeMap <String, Usuarie> listarUsuaries();
+    public String generateCodigo(String pCodUsr);
+    public int totalUsuaries();
 }

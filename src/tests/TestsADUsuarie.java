@@ -1,6 +1,7 @@
 package tests;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
  
 import java.util.Random;
@@ -16,20 +17,33 @@ import controller.factorias.UsuarieADFactory;
 public class TestsADUsuarie {
     // conservar el código del Usuarie creado.
     private final static String [] type = 
-        {"", "", ""};
+        {"CL", "AU", "RE", "AD"};
+    private final static String pCodUsr =
+        UsuarieADFactory
+            .getAccessUsuaries()
+                .generateCodigo(type 
+                [(int) (Math.random()*4)]
+                .substring(0, 2));
     // un objeto usuarie auxiliar.
-    private Usuarie pUsuarie = null;
+    private final static Usuarie usuarie = 
+        instanceUsuarie();
     /**Genera una lista con todos los usuaries.
      * Cada vez que se llama por primera vez en un 
      * método se genera de nuevo. Siempre esta
      * actualizada.
      */
-    private String pCodUsr =
+    private TreeMap <String, Usuarie> usuaries = 
         UsuarieADFactory
             .getAccessUsuaries()
-                .crearCodigo(type [0]
-                    .substring(0, 2)
-                        .toUpperCase());
+                .listarUsuaries();
+    
+    @Before
+    @Test
+    public void mostrarTablaCompleta() {
+        usuaries.values().stream()
+            .forEach(u -> System.out.println(u));
+        System.out.print("\n");
+    }
     /**Un método especial para ahorrar toda la sentencia.
      * Usando la factoría, se busca en la base de datos.
      * @param pCodUsr
@@ -39,29 +53,66 @@ public class TestsADUsuarie {
             .getAccessUsuaries()
                 .buscarUsuarie(pCodUsr);
     }
+    /**Se genera un usuario de tipo aleatorio. 
+     * Después se grabará en la base de datos.
+    */
+    public static Usuarie instanceUsuarie() {
+        String
+            pPasswd = "octafish",
+            pNombre = "Captain",
+            pApellido = "Beefheart",
+            pCodEst = "ES00001",
+            pHorario = "Nocturno";
+        float pSueldo = 1941;
+        Usuarie u;
+        // usuarie a grabar.
+        switch (pCodUsr.substring(0, 2)) {
+            case "CL" :
+                u = 
+               new Cliente(pCodUsr, pPasswd, pNombre, 
+                pApellido, "fakemail@fake.wtf");
+            break;
+
+            case "AU" :
+                u = 
+                new Auxiliar(pCodUsr, pPasswd,
+                pNombre, pApellido, pCodEst,
+                pHorario, pSueldo, "TMR");
+            break;
+
+            case "RE" :
+                u = 
+                new Repartidor(pCodUsr,pPasswd, pNombre,
+                pApellido, pCodEst, pHorario,
+                pSueldo,"TMR");
+            break;
+
+            case "AD" :
+                u = 
+                new Adminstrador(pCodUsr, pPasswd, pNombre,
+                pApellido);
+            break;
+
+            default :
+                u = null;
+            break;
+        }
+        return u;
+    }
     /**Se añade un usuario de prueba (Captain Beefheart.)
      * Después se busca y se muestra por pantalla.
      */
-    //@Test
-    //@Before
-    public void testAddUsuarie() {    
-        // usuarie a grabar.
-        Usuarie pUsuarie = 
-            new Auxiliar(
-                pCodUsr,
-                "octafish",
-                "Captain",
-                "Beefheart",
-                "ES00001", // codEst DEBE SER REAL.
-                "Midnight",
-                1941,
-                "TMR");
+    @Test
+    @Order (order = 1)
+    public void testAddUsuarie() {
+        System.out.println(usuarie);
         // añadir a la base de datos.
         UsuarieADFactory
             .getAccessUsuaries()
-                .addUsuarie(pUsuarie);
+                .addUsuarie(usuarie);
         // comprobar los cambios.
-        assertEquals(pUsuarie, buscar(pCodUsr));
+        assertNotNull(buscar(pCodUsr));
+        assertEquals(usuarie, buscar(pCodUsr));
        // si no da errores, coincide cuando se busca por código.
     }
     /**Se usa el usuarie creado antes para modificarlo
@@ -69,22 +120,22 @@ public class TestsADUsuarie {
      */
     //@Test
     public void testModificarUsuarie() {
-        Usuarie pUsuarie = buscar(pCodUsr);
+        Usuarie usuarie = buscar(pCodUsr);
         // se comprueba que se instancia del tipo correcto.
-        assertTrue(pUsuarie instanceof Auxiliar);
-        assertEquals(pCodUsr, pUsuarie.getCodUsr());
+        assertTrue(usuarie instanceof Auxiliar);
+        assertEquals(pCodUsr, usuarie.getCodUsr());
         // se modifica el objeto usuarie.
-        pUsuarie.setNombre("Frank");
-        pUsuarie.setApellido("Zappa");
-        pUsuarie.setPasswd("59'Chevy");
-        ((Auxiliar) pUsuarie).setSueldo(1940);
-        ((Auxiliar) pUsuarie).setPuesto("WOIFTM");
+        usuarie.setNombre("Frank");
+        usuarie.setApellido("Zappa");
+        usuarie.setPasswd("59'Chevy");
+        ((Auxiliar) usuarie).setSueldo(1940);
+        ((Auxiliar) usuarie).setPuesto("WOIFTM");
         // se updatea en la base de datos.
         UsuarieADFactory
             .getAccessUsuaries()
-                .modificarUsuarie(pUsuarie);
+                .modificarUsuarie(usuarie);
         // comprobar los cambios.    
-        assertEquals(pUsuarie, buscar(pCodUsr));
+        assertEquals(usuarie, buscar(pCodUsr));
         // si no da errores, de nuevo se observa que ha cambiado en la BD.
     }
     /**Se comprueba que el borrado de usuarie se hace 
@@ -101,41 +152,6 @@ public class TestsADUsuarie {
         // no debería poderse encontrar.
         assertNull(buscar(pCodUsr));
     }
-    /**Sistema manual que muestra todos los códigos encontrados
-     * en la base de datos.
-     */
-    // @Test
-    public void testListarUsuaries() {
-        String [] codes = 
-            UsuarieADFactory
-                .getAccessUsuaries()
-                    .codigosUsuaries();
-        // se comprueba que todos los códigos están.
-        assertEquals(codes[0], buscar(codes[0]).getCodUsr());
-        assertEquals(codes[1], buscar(codes[1]).getCodUsr());
-        assertEquals(codes[2], buscar(codes[2]).getCodUsr());
-        assertEquals(codes[3], buscar(codes[3]).getCodUsr());
-        // para asegurarlo, se muestran por pantalla.
-        for (String pointer : codes) 
-            if (!pointer.equals(pCodUsr))
-                System.out.println(buscar(pointer));
-            else
-                System.out.println("* " + buscar(pointer)); // sumarle un string.
-
-        System.out.print("\n");
-        
-    }
-    /**Se comprueban todos los tests de 
-     * forma secuencial.
-     */
-    //@Test
-    public void testTodo() {
-        testListarUsuaries();
-            testAddUsuarie();
-        testListarUsuaries();
-            testModificarUsuarie();
-        testListarUsuaries();
-            testBorrarUsuarie();
-        testListarUsuaries();
-    }
+   
+    
 }
