@@ -98,6 +98,8 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         }
         return pListaEstablecientos;
     }
+
+    @Override
     public String generateCodigo() {
         String pCodEst = "ES";
         String numEst = String.valueOf(totalEstablecimientos() + 1);

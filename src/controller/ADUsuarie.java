@@ -3,6 +3,7 @@ package controller;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.TreeMap;
 
 import controller.interfaces.Usuariable;
 import users.*;
@@ -22,6 +23,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         // la variable choice almacena el tipo de usuarie a grabar en la BD.
         String type = pUsuarie.getClass().getName().substring(6);
         switch (type) {
+            
             case "Administrador": grabarUsuarie(pUsuarie);
                 break;
             case "Cliente": grabarCliente((Cliente) pUsuarie);
@@ -198,7 +200,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             rs = stmt.executeQuery();
             rs.next();
             pUsuarie = new Cliente(rs.getString(1));
-            ((Cliente)pUsuarie).setCorreoLogin(rs.getString(2));
+            ((Cliente) pUsuarie).setCorreoLogin(rs.getString(2));
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pUsuarie.getCodUsr());
             rs = stmt.executeQuery();
@@ -206,7 +208,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             pUsuarie.setPasswd(rs.getString(2));
             pUsuarie.setNombre(rs.getString(3));
             pUsuarie.setApellido(rs.getString(4));
-        } catch (SQLException e) {
+        } catch (SQLException sqle) {
 
         }
 
@@ -267,14 +269,14 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                         rsThree.next();              
                     pUsuarie = 
                         new Auxiliar(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                                rsThree.getString(2),
-                                rsThree.getString(3),
-                                rsThree.getFloat(4),
-                                    rsTwo.getString(1));
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                            rsThree.getString(2),
+                            rsThree.getString(3),
+                            rsThree.getFloat(4),
+                                rsTwo.getString(1));
                     break;
 
                 case "RE" : 
@@ -289,14 +291,14 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                         rsThree.next();
                     pUsuarie = 
                         new Repartidor(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                                rsThree.getString(2),
-                                rsThree.getString(3),
-                                rsThree.getFloat(4),
-                                    rsTwo.getString(1));
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                            rsThree.getString(2),
+                            rsThree.getString(3),
+                            rsThree.getFloat(4),
+                                rsTwo.getString(1));
                     break;
             }  
         } catch (SQLException sqle) {
@@ -309,50 +311,43 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
     }
 
     @Override
-    public String [] codigosUsuaries() {
-        String [] codsUsr = new String [numeroDeUsuaries()];
+    public TreeMap <String, Usuarie> listarUsuaries() {
+        Usuarie pUsuarie = null;
+        TreeMap <String, Usuarie> pListaUsuaries = 
+            new TreeMap <String, Usuarie> ();
         openConnection();
-
         try {
             stmt = con.prepareStatement(listarCodigos);
-            rs = stmt.executeQuery();
-
-            for (int i = 0; i < codsUsr.length && rs.next(); i++) 
-                codsUsr[i] = rs.getString(1);
-
-        } catch (Exception e) {
-            return null;
-        }
-        closeConnection();
-        return codsUsr;
-    }
-
-    @Override
-    public int numeroDeUsuaries() {
-        openConnection();
-        int pTotal = 0;
-        try {
-            stmt = con.prepareStatement(cantidadUsers);
                 rs = stmt.executeQuery();
-                rs.next();
-            pTotal = rs.getInt(1);
+            while (rs.next()) {
+                pUsuarie = buscarUsuarie(rs.getString(1));
+                pListaUsuaries.put(
+                    rs.getString(1),
+                    pUsuarie);
+            }
         } catch (SQLException sqle) {
             //TODO: handle exception
         }
         closeConnection();
-        return pTotal;
+        return pListaUsuaries;
     }
 
     /**Crea de manera automática el código. 
      * @param pCodUsr es el prefijo del código.
      */
-    public String crearCodigo(String pCodUsr) {
-        String numUsers = String.valueOf(numeroDeUsuaries() + 1);
+    @Override
+    public String generateCodigo(String pCodUsr) {
+        String numUsers = String.valueOf(totalUsuaries() + 1);
         for (int i = 0; i < 5 - numUsers.length(); i++) 
             pCodUsr += "0";
             
         pCodUsr += numUsers;
         return pCodUsr;
+    }
+
+    @Override
+    public int totalUsuaries() {
+        return cantidadTotal("usuarie");
     }
 
     private final String insertarUsuarie = 
