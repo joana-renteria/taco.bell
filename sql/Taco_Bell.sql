@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.29, for Win64 (x86_64)
+-- MariaDB dump 10.19  Distrib 10.6.7-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: taco_bell
 -- ------------------------------------------------------
--- Server version	5.7.29-log
+-- Server version	10.6.7-MariaDB-3
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -36,7 +36,7 @@ CREATE TABLE `auxiliar` (
 
 LOCK TABLES `auxiliar` WRITE;
 /*!40000 ALTER TABLE `auxiliar` DISABLE KEYS */;
-INSERT INTO `auxiliar` VALUES ('AU00002','Cocina');
+INSERT INTO `auxiliar` VALUES ('AU00002','Cocina'),('AU00005','Recepcion'),('AU00006','Limpieza'),('AU00009','Limpieza');
 /*!40000 ALTER TABLE `auxiliar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +61,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES ('CL00004','joana.rente6@tuta.io');
+INSERT INTO `cliente` VALUES ('CL00004','joana.rente6@tuta.io'),('CL00011','unaizuluu@gmail.com'),('CL00012','julenbara6@gmail.com');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `establecimiento` (
 
 LOCK TABLES `establecimiento` WRITE;
 /*!40000 ALTER TABLE `establecimiento` DISABLE KEYS */;
-INSERT INTO `establecimiento` VALUES ('ES00001','Avda. Urquijo','Bilbao'),('ES00002','Gran Vía','MADRID');
+INSERT INTO `establecimiento` VALUES ('ES00001','Avda. Urquijo','Bilbao'),('ES00002','Gran Vía','MADRID'),('ES00003','Abando','Bilbao');
 /*!40000 ALTER TABLE `establecimiento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +141,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES ('ME00000001','DE00000001',8.99,'Menú Quesarito y Nachos'),('ME00000002',NULL,8.99,'Menú Qesarito Veggie');
+INSERT INTO `menu` VALUES ('ME00000001','DE00000001',8.99,'Menú Quesarito y Nachos'),('ME00000002',NULL,8.99,'Menú Qesarito Veggie'),('ME00000003',NULL,8.99,'Menú Quesarito y Patatas Mex'),('ME00000004',NULL,8.99,'Menú Santa Mónica'),('ME00000005',NULL,8.99,'Menú Santa Mónica Veggie'),('ME00000006',NULL,8.99,'Menú Quesadilla'),('ME00000007',NULL,8.99,'Menú Quesadilla Veggie'),('ME00000008',NULL,11.99,'Menú Crunchywrap Supreme'),('ME00000009',NULL,11.99,'Menú Crunchywrap Supreme V'),('ME00000010',NULL,7.99,'Menú Tacos Supreme'),('ME00000011',NULL,8.99,'Menú Gran Burrito'),('ME00000012',NULL,8.99,'Menú Gran Burrito Veggie'),('ME00000013',NULL,5.99,'Menú Kids');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,7 +168,7 @@ CREATE TABLE `menu_producto` (
 
 LOCK TABLES `menu_producto` WRITE;
 /*!40000 ALTER TABLE `menu_producto` DISABLE KEYS */;
-INSERT INTO `menu_producto` VALUES ('ME00000001','PR00000001'),('ME00000002','PR00000002'),('ME00000001','PR00000003'),('ME00000002','PR00000004'),('ME00000001','PR00000007'),('ME00000002','PR00000007');
+INSERT INTO `menu_producto` VALUES ('ME00000001','PR00000001'),('ME00000001','PR00000003'),('ME00000001','PR00000007'),('ME00000002','PR00000002'),('ME00000002','PR00000004'),('ME00000002','PR00000007');
 /*!40000 ALTER TABLE `menu_producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,7 +260,7 @@ CREATE TABLE `repartidor` (
 
 LOCK TABLES `repartidor` WRITE;
 /*!40000 ALTER TABLE `repartidor` DISABLE KEYS */;
-INSERT INTO `repartidor` VALUES ('RE00003','2003MAR');
+INSERT INTO `repartidor` VALUES ('RE00003','2003MAR'),('RE00007','2534CNJ'),('RE00008','3563LBJ'),('RE00010','9734BBB');
 /*!40000 ALTER TABLE `repartidor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +290,7 @@ CREATE TABLE `trabajador` (
 
 LOCK TABLES `trabajador` WRITE;
 /*!40000 ALTER TABLE `trabajador` DISABLE KEYS */;
-INSERT INTO `trabajador` VALUES ('AU00002','ES00001','Tarde',1000,'Auxiliar'),('RE00003','ES00001','Tarde',1200,'Repartidor');
+INSERT INTO `trabajador` VALUES ('AU00002','ES00001','Tarde',1000,'Auxiliar'),('AU00005','ES00001','Mañana',1000,'Auxiliar'),('AU00006','ES00001','Mañana',1000,'Auxiliar'),('AU00009','ES00003','Mañana',1000,'Auxiliar'),('RE00003','ES00001','Tarde',1200,'Repartidor'),('RE00007','ES00001','Tarde',1000,'Repartidor'),('RE00008','ES00001','Mañana',1000,'Repartidor'),('RE00010','ES00003','Tarde',1000,'Repartidor');
 /*!40000 ALTER TABLE `trabajador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,7 +317,7 @@ CREATE TABLE `usuarie` (
 
 LOCK TABLES `usuarie` WRITE;
 /*!40000 ALTER TABLE `usuarie` DISABLE KEYS */;
-INSERT INTO `usuarie` VALUES ('AD00001','abcd*1234','Nicolás','Rodríguez','Administrador'),('AU00002','abcd*1234','Daniel','Barrios','Trabajador'),('CL00004','abcd*1234','Joana','Renteria','Cliente'),('RE00003','abcd*1234','Markelito','Fernández','Trabajador');
+INSERT INTO `usuarie` VALUES ('AD00001','abcd*1234','Nicolás','Rodríguez','Administrador'),('AU00002','abcd*1234','Daniel','Barrios','Trabajador'),('AU00005','abcd*1234','Nerea','Oceja','Trabajador'),('AU00006','abcd*1234','Sendoa','Badiola','Trabajador'),('AU00009','abcd*1234','Unai','Bonilla','Trabajador'),('CL00004','abcd*1234','Joana','Renteria','Cliente'),('CL00011','abcd*1234','Unai','Zulueta','Cliente'),('CL00012','abcd*1234','Julen','Barainca','Cliente'),('RE00003','abcd*1234','Markelito','Fernández','Trabajador'),('RE00007','abcd*1234','Fran','Ysasi-Fernandez','Trabajador'),('RE00008','abcd*1234','Alex','Irusta','Trabajador'),('RE00010','abcd*1234','Mikel','Bermejo','Trabajador');
 /*!40000 ALTER TABLE `usuarie` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -330,4 +330,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-08 13:59:12
+-- Dump completed on 2022-05-16 14:12:59
