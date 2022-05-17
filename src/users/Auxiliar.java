@@ -44,10 +44,10 @@ public class Auxiliar extends Trabajador {
 
     @Override
     public boolean equals(Object obj) {
-        Auxiliar pAuxiliar;
         if (super.equals(obj) && obj instanceof Auxiliar) {
+            Auxiliar pAuxiliar;
             pAuxiliar = (Auxiliar) obj;
-            return pAuxiliar.getPuesto().equals(puesto);
+            return pAuxiliar.getPuesto().equalsIgnoreCase(puesto);
         }
         else
             return false;

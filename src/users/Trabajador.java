@@ -48,7 +48,7 @@ public abstract class Trabajador extends Usuarie {
         if (super.equals(obj) && obj instanceof Trabajador ) {
             pTrabajador = (Trabajador) obj;
             return pTrabajador.getCodEst().equals(codEst)
-                && pTrabajador.getHorario().equals(horario)
+                && pTrabajador.getHorario().equalsIgnoreCase(horario)
                 && pTrabajador.getSueldo() == sueldo;
         }
         else

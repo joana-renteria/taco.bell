@@ -31,9 +31,9 @@ public class Adminstrador extends Usuarie {
 
     @Override
     public boolean equals(Object obj) {
-        if (super.equals(obj)) 
-            return false;
-        else 
+        if (obj instanceof Adminstrador)
+            return super.equals(obj);
+        else
             return false;
     }
 

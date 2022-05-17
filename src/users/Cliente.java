@@ -52,7 +52,7 @@ public class Cliente extends Usuarie {
 
     @Override
     public boolean equals(Object obj) {        
-        if (super.equals(obj)) {
+        if (super.equals(obj) && obj instanceof Cliente) {
             Cliente pCliente = (Cliente) obj;
             return pCliente.getCorreoLogin().equals(correoLogin);
         }
