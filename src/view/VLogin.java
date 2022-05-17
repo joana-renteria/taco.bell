@@ -8,6 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
+import resources.fuentes.Fuentes;
 import users.Usuarie;
 
 import java.awt.event.ActionEvent;

@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 
 import datos.Producto;
 import exceptions.GestorExcepciones;
+import resources.fuentes.Fuentes;
 import users.Usuarie;
 import datos.Menu;
 
