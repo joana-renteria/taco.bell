@@ -7,16 +7,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.JTableHeader;
 
+import controller.factorias.PedidoADFactory;
+import controller.factorias.UsuarieADFactory;
+import datos.Pedido;
+import users.Cliente;
+import users.Trabajador;
 import users.Usuarie;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -26,6 +37,7 @@ import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.Point;
 import java.awt.Cursor;
+import javax.swing.JTable;
 
 public class VGestion extends JDialog implements ActionListener {
 
@@ -52,6 +64,12 @@ public class VGestion extends JDialog implements ActionListener {
 	private static JButton btnPedidos;
 	private static JButton btnPersonal;
 	private static VLogin vLogin;
+	private JScrollPane scrollPane;
+	private JTable table;
+	private JPanel panelProductos;
+	private String titulosCliente[] = {"Código","Nombre","Apellido","Correo"};
+	private String titulosPedido[] = {"Código Pedido","Fecha","Código cliente","Código repartidor","Código establecimiento","Menu"};
+	private String titulosTrabajadores[] = {"Código Trabajador","Nombre","Apellido","Código Establecimiento","Horario","Sueldo","Clase"};
 	private static Point point = new Point(0, 0);
 	
 	/**
@@ -168,20 +186,19 @@ public class VGestion extends JDialog implements ActionListener {
 		panelClientes.setLayout(new BoxLayout(panelClientes, BoxLayout.Y_AXIS));
 		
 		btnClientes = new JButton("");
+		btnClientes.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_users.png")));
 		btnClientes.setHorizontalAlignment(SwingConstants.LEFT);
 		btnClientes.setForeground(Color.WHITE);
 		btnClientes.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnClientes.setBorder(null);
 		btnClientes.setBackground(new Color(118, 38, 161));
 		panelClientes.add(btnClientes);
+		btnClientes.addActionListener(this);
 		
 		JPanel panelPedidos = new JPanel();
 		panelPedidos.setBackground(colorMoradoClaro);
 		panelMenuFondo.add(panelPedidos);
 		panelPedidos.setLayout(new BoxLayout(panelPedidos, BoxLayout.Y_AXIS));
-		
-
-		btnPedidos = new JButton("");
 		
 		btnPedidos = new JButton("");
 		btnPedidos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -213,19 +230,17 @@ public class VGestion extends JDialog implements ActionListener {
 		panelMenuFondo.add(panelPersonal);
 		panelPersonal.setLayout(new BoxLayout(panelPersonal, BoxLayout.Y_AXIS));
 		
-		JButton btnPersonal = new JButton("");
+		btnPersonal = new JButton("");
 		btnPersonal.setIcon(new ImageIcon(VGestion.class.getResource("/resources/icon_personal.png")));
-		
 		btnPersonal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnPersonal.setHorizontalAlignment(SwingConstants.LEFT);
 		btnPersonal.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnPersonal.setBackground(colorMoradoClaro);
-
 		btnPersonal.setBorder(null);
 		btnPersonal.setForeground(Color.WHITE);
 		panelPersonal.add(btnPersonal);
-
 		btnPersonal.addActionListener(this);
+
 		btnPersonal.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				btnPersonal.setBackground(new Color(98, 18, 141));
@@ -235,7 +250,7 @@ public class VGestion extends JDialog implements ActionListener {
 			}
 		});
 		
-		JPanel panelProductos = new JPanel();
+		panelProductos = new JPanel();
 		panelProductos.setBounds(426, 129, 753, 526);
 		contentPanel.add(panelProductos);
 		panelProductos.setLayout(new GridLayout(0, 1, 0, 0));
@@ -347,6 +362,110 @@ public class VGestion extends JDialog implements ActionListener {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
 			}
 		});
+		scrollPane = new JScrollPane();
+			scrollPane.setBounds(24, 209, 583, 121);
+			panelProductos.add(scrollPane);
+			
+			table = actualizarTabla(0);
+			table.setSelectionBackground(colorMoradoClaro);
+			table.setSelectionForeground(Color.WHITE);
+			table.setRowMargin(0);
+			table.setRowHeight(25);
+			table.setShowVerticalLines(false);
+			table.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 12));
+			scrollPane.setViewportView(table);
+			JTableHeader tableHeader = table.getTableHeader();
+			tableHeader.setBackground(colorVerdeClaro);
+			tableHeader.setForeground(Color.WHITE);
+			tableHeader.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 15));
+			tableHeader.setBorder(null);
+			tableHeader.setEnabled(false);
+	}
+	
+	private JTable actualizarTabla(int x) {
+		switch (x) {
+			case 1:
+			return new JTable(tablaPedidos(),titulosPedido);
+			case 2:
+			return new JTable(tablaTrabajadores(),titulosTrabajadores);
+			default:
+			return new JTable(tablaClientes(),titulosCliente);
+		}
+		
+	}
+
+	private void refreshTabla() {
+		table.setSelectionBackground(colorMoradoClaro);
+		table.setSelectionForeground(Color.WHITE);
+		table.setRowMargin(0);
+		table.setRowHeight(25);
+		table.setShowVerticalLines(false);
+		table.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 12));
+		scrollPane.setViewportView(table);
+		JTableHeader tableHeader = table.getTableHeader();
+		tableHeader.setBackground(colorVerdeClaro);
+		tableHeader.setForeground(Color.WHITE);
+		tableHeader.setFont(new Font("Iosevka ", Font.BOLD, 15));
+		tableHeader.setBorder(null);
+		tableHeader.setEnabled(false);
+	}
+
+	public String[][] tablaClientes() {
+		List<Usuarie> listaCliente;
+		Collection<Usuarie> listaUser = UsuarieADFactory.getAccessUsuaries().listarUsuaries().values();
+		listaCliente = listaUser.stream()
+				.filter(p -> p.getClass().toString().contains("Cliente"))
+				.collect(Collectors.toList());
+		String matrizTabla[][] = new String [listaCliente.size()][4];
+		if (listaCliente.size() > 0) {
+			for (int i = 0; i < listaCliente.size(); i++) {
+				matrizTabla[i][0] = listaCliente.get(i).getCodUsr();
+				matrizTabla[i][1] = listaCliente.get(i).getNombre();
+				matrizTabla[i][2] = listaCliente.get(i).getApellido();
+				matrizTabla[i][3] = ((Cliente)listaCliente.get(i)).getCorreoLogin();
+			}
+		}
+		return matrizTabla;
+	}
+	public String[][] tablaPedidos() {
+		List<Pedido> listaPedidos = PedidoADFactory.getAccessPedido().listarPedidos().values().stream().collect(Collectors.toList());
+		String matrizTabla[][] = new String [listaPedidos.size()][6];
+		if (listaPedidos.size() > 0) {
+			
+			for (int i = 0; i < listaPedidos.size(); i++) {
+				
+				matrizTabla[i][0] = listaPedidos.get(i).getCodPed();
+				matrizTabla[i][1] = listaPedidos.get(i).getFechaPed().toString();
+				matrizTabla[i][2] = listaPedidos.get(i).getCodCle();
+				matrizTabla[i][3] = listaPedidos.get(i).getCodRep();
+				matrizTabla[i][4] = listaPedidos.get(i).getCodEst();
+				matrizTabla[i][5] = listaPedidos.get(i).getMenu().getNombre();
+			}
+		}
+		return matrizTabla;
+	}
+	public String[][] tablaTrabajadores() {
+		List<Usuarie> listaTrabajadores;
+		Collection<Usuarie> listaUser = UsuarieADFactory.getAccessUsuaries().listarUsuaries().values();
+		listaTrabajadores = listaUser.stream()
+				.filter(p -> p instanceof Trabajador)
+				.collect(Collectors.toList());
+		String matrizTabla[][] = new String [listaTrabajadores.size()][8];
+		
+		if (listaTrabajadores.size() > 0) {
+			
+			for (int i = 0; i < listaTrabajadores.size(); i++) {
+				
+				matrizTabla[i][0] = listaTrabajadores.get(i).getCodUsr();
+				matrizTabla[i][1] = listaTrabajadores.get(i).getNombre();
+				matrizTabla[i][2] = listaTrabajadores.get(i).getApellido();
+				matrizTabla[i][3] = ((Trabajador)listaTrabajadores.get(i)).getCodEst();
+				matrizTabla[i][4] = ((Trabajador)listaTrabajadores.get(i)).getHorario();
+				matrizTabla[i][6] = String.valueOf(((Trabajador)listaTrabajadores.get(i)).getSueldo());
+				matrizTabla[i][7] = ((Trabajador)listaTrabajadores.get(i)).getClass().toString().contains("Auxiliar")?"Auxiliar":"Repartidor";	
+			}
+		}
+		return matrizTabla;
 	}
 
 	@Override
@@ -356,13 +475,16 @@ public class VGestion extends JDialog implements ActionListener {
 			vLogin.setVisible(true);
 		}
 		if (e.getSource().equals(btnClientes)) {
-			// TODO
+			table = actualizarTabla(0);
+			refreshTabla();
 		}
 		if (e.getSource().equals(btnPedidos)) {
-			// TODO
+			table = actualizarTabla(1);
+			refreshTabla();
 		}
 		if (e.getSource().equals(btnPersonal)) {
-			// TODO
+			table = actualizarTabla(2);
+			refreshTabla();
 		}
 		if (e.getSource().equals(btnEliminar)) {
 			// TODO
