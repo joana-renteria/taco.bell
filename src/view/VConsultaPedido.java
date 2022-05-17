@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import resources.fuentes.Fuentes;
 import users.Usuarie;
 
 import java.awt.event.MouseAdapter;
