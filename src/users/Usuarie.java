@@ -56,12 +56,12 @@ public abstract class Usuarie {
 
     @Override
     public boolean equals(Object obj) {        
-        if (obj instanceof Usuarie) {
+        if (super.equals(obj) && obj instanceof Usuarie) {
             Usuarie pUsuarie = (Usuarie) obj;
             return pUsuarie.getCodUsr().equals(codUsr) 
                 && pUsuarie.getPasswd().equals(passwd)
-                && pUsuarie.getNombre().equals(nombre) 
-                && pUsuarie.getApellido().equals(apellido);
+                && pUsuarie.getNombre().equalsIgnoreCase(nombre) 
+                && pUsuarie.getApellido().equalsIgnoreCase(apellido);
         }
         else 
             return false;

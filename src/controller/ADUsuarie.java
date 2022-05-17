@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.TreeMap;
 
+
 import controller.interfaces.Usuariable;
 import users.*;
 
@@ -315,15 +316,16 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         Usuarie pUsuarie = null;
         TreeMap <String, Usuarie> pListaUsuaries = 
             new TreeMap <String, Usuarie> ();
+
+        ResultSet rs2;
         openConnection();
         try {
             stmt = con.prepareStatement(listarCodigos);
-                rs = stmt.executeQuery();
-            while (rs.next()) {
-                pUsuarie = buscarUsuarie(rs.getString(1));
-                System.out.println(buscarUsuarie(rs.getString(1)));
+                rs2 = stmt.executeQuery();
+            while (rs2.next()) {
+                pUsuarie = buscarUsuarie(rs2.getString(1));
                 pListaUsuaries.put(
-                    rs.getString(1),
+                    rs2.getString(1),
                     pUsuarie);
             }
         } catch (SQLException sqle) {
