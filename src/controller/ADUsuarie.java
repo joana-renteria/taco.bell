@@ -321,12 +321,14 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                 rs = stmt.executeQuery();
             while (rs.next()) {
                 pUsuarie = buscarUsuarie(rs.getString(1));
+                System.out.println(buscarUsuarie(rs.getString(1)));
                 pListaUsuaries.put(
                     rs.getString(1),
                     pUsuarie);
             }
         } catch (SQLException sqle) {
             //TODO: handle exception
+            System.out.println("something went wrong");
         }
         closeConnection();
         return pListaUsuaries;

@@ -41,7 +41,7 @@ public class TestsADUsuarie {
     @Test
     public void mostrarTablaCompleta() {
         usuaries.values().stream()
-            .forEach(u -> System.out.println(u));
+            .forEach(u -> System.out.println());
         System.out.print("\n");
     }
     /**Un método especial para ahorrar toda la sentencia.
