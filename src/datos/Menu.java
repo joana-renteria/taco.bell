@@ -79,20 +79,22 @@ public class Menu implements Comparable <Menu> {
     /**Método especial para añadir la cantidad justa
      * de productos a la lista, evitando errores.*/
     public void addProducto(String pCodPrd) {
-        for (int i = 0; i < codPrds.length; i++) 
+        boolean salir = false;
+        for (int i = 0; i < codPrds.length && !salir; i++) 
             if (codPrds[i] == null) {
                 codPrds[i] = pCodPrd;
-                break;
+                salir = true;
             }
     }
     /**Método para borrar un producto de la lista de productos,
      * pero solo en caso de que se encuentre.
      */
     public void deleteProducto(String pCodPrd) {
-        for (int i = 0; i < codPrds.length; i++) 
+        boolean salir = false;
+        for (int i = 0; i < codPrds.length && !salir; i++) 
             if (codPrds[i].equals(pCodPrd)) {
                 codPrds[i] = null;
-                break;
+                salir = true;
             }
     }
 

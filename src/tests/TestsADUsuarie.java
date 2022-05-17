@@ -155,15 +155,18 @@ public class TestsADUsuarie {
     public void testAddUsuarie() {
         assertNull(usuarie);
         usuarie = instanceUsuarie();
-        System.out.println(usuarie);
+        System.out.println(
+            usuarie + 
+            usuarie.getClass().getName());
         // añadir a la base de datos.
         UsuarieADFactory
             .getAccessUsuaries()
                 .addUsuarie(usuarie);
         // comprobar los cambios.
-        assertNotNull(buscar(pCodUsr));
+        //assertNotNull(buscar(pCodUsr));
 
         assertEquals(usuarie, buscar(pCodUsr));
+        
     }
     /**Se usa el usuarie creado antes para modificarlo
      * y testar los cambios.
