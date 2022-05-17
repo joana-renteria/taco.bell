@@ -31,28 +31,38 @@ public class TestsADUsuarie {
             nUsuarieRandom = 
             new Random().nextInt(totalUsuaries) + 1;
             // se genera un número de usuarie aleatorio..
-            String codUsuarieRandom = "00000";
+            String codUsuarieRandom = "000";
 
             if (nUsuarieRandom < 10)
                 codUsuarieRandom += "0" + nUsuarieRandom;
             else
                 codUsuarieRandom += nUsuarieRandom;
         // en caso de uno que no exista, se devuelve con un prefijo cualquiera.
-        if (!is)
-            return type [(int) (Math.random()*4)] + codUsuarieRandom;
+        if (is) {
 
-        while ((buscar(codUsuarieRandom) == null) == is) 
-            codUsuarieRandom = 
+            do  codUsuarieRandom = 
                 type [(int) (Math.random()*4)] + 
                 codUsuarieRandom.substring(2);
-
-        return codUsuarieRandom;
+            while (buscar(codUsuarieRandom) == null);
+                
+            
+            return codUsuarieRandom;
+        }
+        else {
+            boolean salir = false;
+            for (int i = 0; i < type.length && !salir; i++) 
+                if (buscar(type[i] + codUsuarieRandom) == null) {
+                    codUsuarieRandom = type[i] + codUsuarieRandom;
+                    salir = true;  
+                }    
+            return codUsuarieRandom;
+        }
     }
     /**Se genera un codigo de usuarie no existente previamente.
      * Después se harán las pruebas de la base de datos con el.
      */
-    private final static String pCodUsr =
-        generateRandomUserCode(false);
+    private final static String pCodUsr = "0";
+        //generateRandomUserCode(false);
     
     /**Se genera un usuario de tipo aleatorio. 
      * Después se grabará en la base de datos.
@@ -96,6 +106,7 @@ public class TestsADUsuarie {
 
             default :
                 u = null;
+                System.out.println("Linea 107.");
             break;
         }
         return u;
@@ -107,15 +118,15 @@ public class TestsADUsuarie {
      * método se genera de nuevo. Siempre esta
      * actualizada.
      */
-    private TreeMap <String, Usuarie> usuaries = 
+    private static TreeMap <String, Usuarie> usuaries = 
         UsuarieADFactory
             .getAccessUsuaries()
                 .listarUsuaries();
     /**Método auxiliar que muestra la tabla.
      * Se ejecuta antes de cada tests individual.
      */
-    @Before
-    @Test
+    /*@Before
+    @Test*/
     public void mostrarTablaCompleta() {
         usuaries.values().stream()
             .forEach(u -> System.out.println(u));
@@ -133,8 +144,8 @@ public class TestsADUsuarie {
     /**Se añade un usuario de prueba (Captain Beefheart.)
      * Después se busca y se muestra por pantalla.
      */
-    @Test
-    @Order (order = 0)
+    /*@Test
+    @Order (order = 0)*/
     public void testBuscarUsuarie() {
         // se genera un código aleatorio de un usuarie existente.
         String pCodRandom = generateRandomUserCode(true);
@@ -150,23 +161,35 @@ public class TestsADUsuarie {
             usuarie.getClass().getName()
             .substring(6, 8).toUpperCase());
     }
+
+
     @Test
-    @Order (order = 1)
+    public void testGenerarCodigo() {
+        String cod = generateRandomUserCode(true);
+
+        System.out.println(cod);
+    }
+
+
+
+
+    /**Se usa un usuarie nuevo.
+     * 
+     */
+    /*@Test
+    @Order (order = 1)*/
     public void testAddUsuarie() {
+        System.out.println(pCodUsr);
         assertNull(usuarie);
         usuarie = instanceUsuarie();
-        System.out.println(
-            usuarie + 
-            usuarie.getClass().getName());
+        System.out.println(usuarie);
         // añadir a la base de datos.
         UsuarieADFactory
             .getAccessUsuaries()
                 .addUsuarie(usuarie);
         // comprobar los cambios.
         //assertNotNull(buscar(pCodUsr));
-
         assertEquals(usuarie, buscar(pCodUsr));
-        
     }
     /**Se usa el usuarie creado antes para modificarlo
      * y testar los cambios.
