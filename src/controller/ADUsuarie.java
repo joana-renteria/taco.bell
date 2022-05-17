@@ -33,7 +33,9 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                 break;
             case "Repartidor": grabarRepartidor((Repartidor) pUsuarie);
                 break;
-            default: System.out.println("Errpr con el tipo."); 
+            default: System.out.println(
+                "Error con el tipo " + 
+                pUsuarie.getClass().getName()); 
                 break; //TODO caso por defecto: cliente.
         }
     }
@@ -51,7 +53,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(5, pUsuarie.getClass().getName().substring(6));
                 stmt.executeUpdate();
         } catch (SQLException sqle) {
-            // se puede lanzar una excepción si executeUpdate() devuelve 2.
+            System.out.println("Ha saltado una excepcion en grabar usuarie.");
         }
 
         closeConnection();
@@ -66,7 +68,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(2, pCliente.getCorreoLogin());
                 stmt.executeUpdate();
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            System.out.println("Ha saltado una excepcion en grabar cliente.");
         }
         closeConnection();
     }
@@ -80,7 +82,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(3, pTrabajador.getHorario());
             stmt.setFloat(4, pTrabajador.getSueldo());
             stmt.setString(5, pTrabajador.getClass().getName().substring(6));
-                stmt.execute();
+                stmt.executeUpdate();
             
         } catch (SQLException sqle) {
             System.out.println("Ha saltado una excepcion en grabar trabajador.");
@@ -98,7 +100,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(2, pAuxiliar.getPuesto());
                 stmt.executeUpdate();
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            System.out.println("Ha saltado una excepcion en grabar auxiliar.");
         }
         closeConnection();
     }
@@ -114,7 +116,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             // ejecucion del comando.
             stmt.executeUpdate();
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            System.out.println("Ha saltado una excepcion en grabar repartidor.");
         } 
         closeConnection();
     }

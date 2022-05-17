@@ -81,11 +81,12 @@ public class Producto implements Comparable <Producto> {
     /**Método especial para añadir la cantidad justa
      * de ingredientes a la lista.*/
     public void addIngrediente(String pIngrediente) {
+        boolean salir = false;
         pIngrediente = upperAndLower(pIngrediente);
-        for (int i = 0; i < ingredientes.length; i++) 
+        for (int i = 0; i < ingredientes.length && !salir; i++) 
             if (ingredientes[i] == null) {
                 ingredientes[i] = pIngrediente;
-                break;
+                salir = true;
             }
     }
     /**Método para borrar un ingrediente en caso de
@@ -93,10 +94,11 @@ public class Producto implements Comparable <Producto> {
      * @param pIngrediente ignore case.
      */
     public void deleteIngrediente(String pIngrediente) {
-        for (int i = 0; i < ingredientes.length; i++) 
+        boolean salir = false;
+        for (int i = 0; i < ingredientes.length && !salir; i++) 
             if (ingredientes[i].equalsIgnoreCase(pIngrediente)) {
                 ingredientes[i] = null;
-                break;
+                salir = true;
             }
     }
 
