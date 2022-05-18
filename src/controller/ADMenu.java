@@ -87,7 +87,6 @@ public class ADMenu extends MasterConnection implements Menuable {
     public Menu buscarMenuPorCodigo(String pCodMnu) {
         Menu pMenu = null;
         String [] pCodPrds = getCodigosProductos(pCodMnu);
-        System.out.println(pCodPrds);
         openConnection();
         try {
             stmt = con.prepareStatement(buscar);

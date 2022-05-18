@@ -73,7 +73,7 @@ public class TestsADUsuarie {
     /**Se genera un usuario de tipo aleatorio. 
      * Después se grabará en la base de datos.
     */
-    public static Usuarie instanceUsuarie() {
+    public Usuarie instanceUsuarie() {
         String
             pPasswd = "octafish",
             pNombre = "Captain",
@@ -172,14 +172,15 @@ public class TestsADUsuarie {
             usuarie.getClass().getName()
             .substring(6, 8).toUpperCase());
     }
-    /**Se usa un usuarie nuevo.
+    /**Se usa un usuarie nuevo. Se instancia (de un tipo aleatorio)
+     * y después se graba en la base de datos para despues comprobar 
+     * que, efectivamente
      * 
      */
     @Test
     @Order (order = 1)
     public void testAddUsuarie() {
-        System.out.println(pCodUsr);
-        assertNull(usuarie);
+        usuarie = null;
         usuarie = instanceUsuarie();
         // añadir a la base de datos.
         UsuarieADFactory
@@ -187,45 +188,40 @@ public class TestsADUsuarie {
                 .addUsuarie(usuarie);
         // comprobar los cambios.
         assertNotNull(buscar(pCodUsr));
-        assertEquals(buscar(pCodUsr).getCodUsr(), pCodUsr);
+        assertEquals(buscar(pCodUsr), usuarie);
     }
     /**Se usa el usuarie creado antes para modificarlo
      * y testar los cambios.
      */
-    //@Test
+    @Test
+    @Order (order = 2)
     public void testModificarUsuarie() {
-        Usuarie usuarie = buscar(pCodUsr);
-        // se comprueba que se instancia del tipo correcto.
-        assertTrue(usuarie instanceof Auxiliar);
-        assertEquals(pCodUsr, usuarie.getCodUsr());
-        // se modifica el objeto usuarie.
-        usuarie.setNombre("Frank");
+        usuarie = buscar(pCodUsr);
+        assertNotNull(usuarie);
+        usuarie.setNombre("Frank Vincent");
         usuarie.setApellido("Zappa");
-        usuarie.setPasswd("59'Chevy");
-        ((Auxiliar) usuarie).setSueldo(1940);
-        ((Auxiliar) usuarie).setPuesto("WOIFTM");
-        // se updatea en la base de datos.
+        usuarie.setPasswd("59' Chevy");
+
+        assertNotEquals(usuarie, buscar(pCodUsr));
+    
         UsuarieADFactory
             .getAccessUsuaries()
                 .modificarUsuarie(usuarie);
-        // comprobar los cambios.    
-        assertEquals(usuarie, buscar(pCodUsr));
-        // si no da errores, de nuevo se observa que ha cambiado en la BD.
+
+        assertEquals(buscar(pCodUsr), usuarie);
     }
     /**Se comprueba que el borrado de usuarie se hace 
      * de forma efectiva, usando el mismo objeto de antes.
      */
-    //@Test
+    @Test
     public void testBorrarUsuarie() {
-        // se comprueba que se encuentra en la base de datos.
-        assertEquals(buscar(pCodUsr).getCodUsr(), pCodUsr);
-        // se procede a borrarlo.
+        usuarie = buscar(pCodUsr);
+        assertNotNull(usuarie);
+        
         UsuarieADFactory
             .getAccessUsuaries()
                 .borrarUsuarie(pCodUsr);
-        // no debería poderse encontrar.
+        
         assertNull(buscar(pCodUsr));
-    }
-   
-    
+    } 
 }
