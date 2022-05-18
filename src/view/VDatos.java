@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import resources.fuentes.Fuentes;
 import users.Usuarie;
+import resources.Fuentes;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ import javax.swing.JSeparator;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.Cursor;
+import javax.swing.JTextField;
 
 public class VDatos extends JDialog implements ActionListener {
 
@@ -50,6 +52,7 @@ public class VDatos extends JDialog implements ActionListener {
 	private static JButton btnPedir;
 	private static JButton btnEliminar; 
 	private static JDialog vMC;
+	private JTextField textField;
 	
 	/**
 	 * Launch the application.
@@ -179,7 +182,19 @@ public class VDatos extends JDialog implements ActionListener {
 		JPanel panelProductos = new JPanel();
 		panelProductos.setBounds(426, 129, 753, 526);
 		contentPanel.add(panelProductos);
-		panelProductos.setLayout(new GridLayout(0, 1, 0, 0));
+		panelProductos.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(34, 76, 205, 39);
+		panelProductos.add(panel);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		textField = new JTextField();
+		panel.add(textField);
+		textField.setColumns(10);
+		
+		JSeparator separator_1 = new JSeparator();
+		panel.add(separator_1);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
@@ -213,7 +228,7 @@ public class VDatos extends JDialog implements ActionListener {
 		JPanel panelMetaDatos = new JPanel();
 		panelMetaDatos.setBounds(10, 11, 379, 355);
 		panelPedido.add(panelMetaDatos);
-		panelMetaDatos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelMetaDatos.setLayout(null);
 		
 		JPanel panelBotones = new JPanel();
 		panelBotones.setBounds(10, 377, 379, 78);
