@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.TreeMap;
 
-
 import controller.interfaces.Usuariable;
 import users.*;
 
@@ -19,8 +18,6 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
      */
     @Override
     public void addUsuarie(Usuarie pUsuarie) {
-        // se graba en la tabla principal.
-        grabarUsuarie(pUsuarie);
         // la variable choice almacena el tipo de usuarie a grabar en la BD.
         String type = pUsuarie.getClass().getName().substring(6);
         switch (type) {
@@ -394,7 +391,4 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
 
     private final String listarCodigos = 
         "SELECT codUsr from usuarie";
-
-    private final String cantidadUsers = 
-        "SELECT COUNT(*) FROM usuarie";
 }

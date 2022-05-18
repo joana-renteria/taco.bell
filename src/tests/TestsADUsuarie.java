@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import users.*;
+import controller.ADUsuarie;
 import controller.factorias.UsuarieADFactory;
 
 @RunWith(OrderedRunner.class)
@@ -31,37 +32,42 @@ public class TestsADUsuarie {
             nUsuarieRandom = 
             new Random().nextInt(totalUsuaries) + 1;
             // se genera un número de usuarie aleatorio..
-            String codUsuarieRandom = "000";
-
-            if (nUsuarieRandom < 10)
-                codUsuarieRandom += "0" + nUsuarieRandom;
+            String codUsuarie = "000";
+        /**Si se desea un código no existente, se devuelve el número
+         * correspondiente al siguiente usuarie con un código 
+         * aleatorio.
+         */
+        if (!is) {
+            if (totalUsuaries + 1 < 10)
+                codUsuarie += "0" + (totalUsuaries + 1);
             else
-                codUsuarieRandom += nUsuarieRandom;
-        // en caso de uno que no exista, se devuelve con un prefijo cualquiera.
-        if (is) {
-
-            do  codUsuarieRandom = 
-                type [(int) (Math.random()*4)] + 
-                codUsuarieRandom.substring(2);
-            while (buscar(codUsuarieRandom) == null);
-                
+                codUsuarie += (totalUsuaries + 1);
             
-            return codUsuarieRandom;
+            return type [(int) (Math.random()*4)] + codUsuarie;
         }
-        else {
-            boolean salir = false;
-            for (int i = 0; i < type.length && !salir; i++) 
-                if (buscar(type[i] + codUsuarieRandom) == null) {
-                    codUsuarieRandom = type[i] + codUsuarieRandom;
-                    salir = true;  
-                }    
-            return codUsuarieRandom;
-        }
+        /**Si se desea un codigo existente, se comprueba que este 
+         * se genera un numero existente y después se busca 
+         * el prefijo correspondiente, comprobando que existe.
+         */
+        else
+            if (nUsuarieRandom < 10)
+                codUsuarie += "0" + nUsuarieRandom;
+            else
+                codUsuarie += nUsuarieRandom;
+
+        boolean salir = false;
+        for (int i = 0; i < type.length && !salir; i++) 
+            if (buscar(type[i] + codUsuarie) != null) {
+                codUsuarie = type[i] + codUsuarie;
+                salir = true;  
+            }    
+
+        return codUsuarie;
     }
     /**Se genera un codigo de usuarie no existente previamente.
      * Después se harán las pruebas de la base de datos con el.
      */
-    private final static String pCodUsr = "0";
+    private final static String pCodUsr = generateRandomUserCode(false);
         //generateRandomUserCode(false);
     
     /**Se genera un usuario de tipo aleatorio. 
@@ -74,8 +80,10 @@ public class TestsADUsuarie {
             pApellido = "Beefheart",
             pCodEst = "ES00001",
             pHorario = "Nocturno";
+
         float pSueldo = 1941;
-        Usuarie u;
+
+        Usuarie u = null;
         // usuarie a grabar.
         switch (pCodUsr.substring(0, 2)) {
             case "CL" :
@@ -105,8 +113,7 @@ public class TestsADUsuarie {
             break;
 
             default :
-                u = null;
-                System.out.println("Linea 107.");
+                System.out.println("Linea 116.");
             break;
         }
         return u;
@@ -124,11 +131,15 @@ public class TestsADUsuarie {
                 .listarUsuaries();
     /**Método auxiliar que muestra la tabla.
      * Se ejecuta antes de cada tests individual.
+     * La tabla se muestra ordenada segun el número
+     * de usuarie, se comparan los códigos.
      */
-    /*@Before
-    @Test*/
+    @Before
     public void mostrarTablaCompleta() {
         usuaries.values().stream()
+            .sorted((u1, u2) -> 
+                u1.getCodUsr().substring(2).compareTo(
+                u2.getCodUsr().substring(2)))
             .forEach(u -> System.out.println(u));
         System.out.print("\n");
     }
@@ -144,8 +155,8 @@ public class TestsADUsuarie {
     /**Se añade un usuario de prueba (Captain Beefheart.)
      * Después se busca y se muestra por pantalla.
      */
-    /*@Test
-    @Order (order = 0)*/
+    @Test
+    @Order (order = 0)
     public void testBuscarUsuarie() {
         // se genera un código aleatorio de un usuarie existente.
         String pCodRandom = generateRandomUserCode(true);
@@ -161,35 +172,22 @@ public class TestsADUsuarie {
             usuarie.getClass().getName()
             .substring(6, 8).toUpperCase());
     }
-
-
-    @Test
-    public void testGenerarCodigo() {
-        String cod = generateRandomUserCode(true);
-
-        System.out.println(cod);
-    }
-
-
-
-
     /**Se usa un usuarie nuevo.
      * 
      */
-    /*@Test
-    @Order (order = 1)*/
+    @Test
+    @Order (order = 1)
     public void testAddUsuarie() {
         System.out.println(pCodUsr);
         assertNull(usuarie);
         usuarie = instanceUsuarie();
-        System.out.println(usuarie);
         // añadir a la base de datos.
         UsuarieADFactory
             .getAccessUsuaries()
                 .addUsuarie(usuarie);
         // comprobar los cambios.
-        //assertNotNull(buscar(pCodUsr));
-        assertEquals(usuarie, buscar(pCodUsr));
+        assertNotNull(buscar(pCodUsr));
+        assertEquals(buscar(pCodUsr).getCodUsr(), pCodUsr);
     }
     /**Se usa el usuarie creado antes para modificarlo
      * y testar los cambios.
