@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.TreeMap;
 
-
 import controller.interfaces.Usuariable;
 import users.*;
 
@@ -19,13 +18,11 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
      */
     @Override
     public void addUsuarie(Usuarie pUsuarie) {
-        // se graba en la tabla principal.
-        grabarUsuarie(pUsuarie);
         // la variable choice almacena el tipo de usuarie a grabar en la BD.
         String type = pUsuarie.getClass().getName().substring(6);
         switch (type) {
             
-            case "Administrador": grabarUsuarie(pUsuarie);
+            case "Adminstrador": grabarUsuarie(pUsuarie);
                 break;
             case "Cliente": grabarCliente((Cliente) pUsuarie);
                 break;
@@ -33,7 +30,9 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                 break;
             case "Repartidor": grabarRepartidor((Repartidor) pUsuarie);
                 break;
-            default: System.out.println("Errpr con el tipo."); 
+            default: System.out.println(
+                "Error con el tipo " + 
+                pUsuarie.getClass().getName()); 
                 break; //TODO caso por defecto: cliente.
         }
     }
@@ -51,7 +50,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(5, pUsuarie.getClass().getName().substring(6));
                 stmt.executeUpdate();
         } catch (SQLException sqle) {
-            // se puede lanzar una excepción si executeUpdate() devuelve 2.
+            sqle.printStackTrace();
         }
 
         closeConnection();
@@ -66,7 +65,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(2, pCliente.getCorreoLogin());
                 stmt.executeUpdate();
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            sqle.printStackTrace();
         }
         closeConnection();
     }
@@ -80,10 +79,10 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(3, pTrabajador.getHorario());
             stmt.setFloat(4, pTrabajador.getSueldo());
             stmt.setString(5, pTrabajador.getClass().getName().substring(6));
-                stmt.execute();
+                stmt.executeUpdate();
             
         } catch (SQLException sqle) {
-            System.out.println("Ha saltado una excepcion en grabar trabajador.");
+            sqle.printStackTrace();
         }
         closeConnection();
     }
@@ -98,7 +97,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(2, pAuxiliar.getPuesto());
                 stmt.executeUpdate();
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            sqle.printStackTrace();
         }
         closeConnection();
     }
@@ -114,7 +113,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             // ejecucion del comando.
             stmt.executeUpdate();
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            sqle.printStackTrace();
         } 
         closeConnection();
     }
@@ -126,8 +125,8 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt = con.prepareStatement(borrar);
                     stmt.setString(1, pCodUsr);
                     stmt.executeUpdate();
-        } catch (SQLException e) {
-            //TODO: handle exception
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
         closeConnection();
     }
@@ -187,7 +186,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
     
 
         } catch (SQLException sqle) {
-            System.out.println("Excepción grabando usuarie" + pUsuarie);
+            sqle.printStackTrace();
         }
         closeConnection();
     }
@@ -210,7 +209,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             pUsuarie.setNombre(rs.getString(3));
             pUsuarie.setApellido(rs.getString(4));
         } catch (SQLException sqle) {
-
+            sqle.printStackTrace();
         }
 
         closeConnection();
@@ -231,9 +230,9 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodUsr);
                 rs = stmt.executeQuery();
-                rs.next();
+                
             // búsqueda en la tabla individual.
-                 
+            if (rs.next())
             switch (type) {
                 case "AD" : pUsuarie = 
                     new Adminstrador(
@@ -302,10 +301,13 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                                 rsTwo.getString(1));
                     break;
             }  
+            else
+                return null;
         } catch (SQLException sqle) {
-            //TODO: handle exception
+            sqle.printStackTrace();
         } catch (NullPointerException npe) {
             System.out.println("Ha habido un error con los resultsets. Null pointer.");
+            npe.printStackTrace();
         }
         closeConnection();
         return pUsuarie;
@@ -329,8 +331,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                     pUsuarie);
             }
         } catch (SQLException sqle) {
-            //TODO: handle exception
-            System.out.println("something went wrong");
+            sqle.printStackTrace();
         }
         closeConnection();
         return pListaUsuaries;
@@ -390,7 +391,4 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
 
     private final String listarCodigos = 
         "SELECT codUsr from usuarie";
-
-    private final String cantidadUsers = 
-        "SELECT COUNT(*) FROM usuarie";
 }

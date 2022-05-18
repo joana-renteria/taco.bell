@@ -8,6 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
+import resources.fuentes.Fuentes;
 import users.Usuarie;
 import resources.Fuentes;
 
@@ -38,6 +39,7 @@ import java.awt.Frame;
 
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 public class VLogin extends JFrame implements ActionListener, FocusListener {
 
@@ -74,6 +76,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 	 * Create the frame.
 	 */
 	public VLogin() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VLogin.class.getResource("/resources/icon_marca_notext.png")));
 
 		setUndecorated(true);
 		setResizable(false);

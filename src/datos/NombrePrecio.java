@@ -1,4 +1,4 @@
-package view;
+package datos;
 
 public class NombrePrecio<String, Float> {
 	
