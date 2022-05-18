@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import users.*;
-import controller.ADUsuarie;
 import controller.factorias.UsuarieADFactory;
 
 @RunWith(OrderedRunner.class)
@@ -178,7 +177,7 @@ public class TestsADUsuarie {
      * 
      */
     @Test
-    @Order (order = 1)
+    @Order (order = 2)
     public void testAddUsuarie() {
         usuarie = null;
         usuarie = instanceUsuarie();
@@ -194,7 +193,7 @@ public class TestsADUsuarie {
      * y testar los cambios.
      */
     @Test
-    @Order (order = 2)
+    @Order (order = 3)
     public void testModificarUsuarie() {
         usuarie = buscar(pCodUsr);
         assertNotNull(usuarie);
@@ -214,7 +213,8 @@ public class TestsADUsuarie {
      * de forma efectiva, usando el mismo objeto de antes.
      */
     @Test
-    public void testBorrarUsuarie() {
+    @Order (order = 4)
+    public void testDeleteUsuarie() {
         usuarie = buscar(pCodUsr);
         assertNotNull(usuarie);
         
@@ -224,4 +224,33 @@ public class TestsADUsuarie {
         
         assertNull(buscar(pCodUsr));
     } 
+    /**Se comprueba que la lista de usauries generada es correcta,
+     * y que los códigos del KeySet corresponden a los de los 
+     * objetos.
+     */
+    @Test
+    public void testListarUsuaries() {
+        int total = UsuarieADFactory
+            .getAccessUsuaries()
+                .totalUsuaries();
+        // la cantidad total de elementos en la lista.
+        assertEquals(
+            total,
+            usuaries.size()
+        );
+        /**Se comprueba que todas las claves
+         * son las de los usuaries.
+         */
+        assertEquals(
+            total,
+            usuaries.values().stream()
+            .filter(u -> usuaries.keySet().contains(u.getCodUsr()))
+            .count());
+        /*
+        int clavesCorrectas =
+            usuaries.keySet().stream()
+                .filter(k -> {
+                    usuaries.get(k).getCodUsr().sub
+                });*/
+    }
 }
