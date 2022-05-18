@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import users.Usuarie;
+import resources.Fuentes;
 
 import javax.swing.BoxLayout;
 import java.awt.Color;

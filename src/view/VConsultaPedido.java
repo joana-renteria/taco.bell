@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import users.Usuarie;
+import resources.Fuentes;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -227,14 +228,11 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 				setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
 			}
 		});
-		System.out.println(1);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(1);
 		if (e.getSource().equals(btnAtras)) {
-			System.out.println(2);
 			dispose();
 			vMenuCliente.setVisible(true);
 		}

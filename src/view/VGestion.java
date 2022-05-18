@@ -24,6 +24,7 @@ import datos.Pedido;
 import users.Cliente;
 import users.Trabajador;
 import users.Usuarie;
+import resources.Fuentes;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -38,6 +39,7 @@ import java.awt.SystemColor;
 import java.awt.Point;
 import java.awt.Cursor;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class VGestion extends JDialog implements ActionListener {
 
@@ -49,7 +51,7 @@ public class VGestion extends JDialog implements ActionListener {
 	private final JPanel contentPanel = new JPanel();
 	
 	// Definir colores
-	private static Color colorMoradoClaro = new Color(118, 38, 161);
+	private static Color colorMoradoClaro = new Color(118, 38, 181);
 	private static Color colorRojoClaro = new Color(215, 7, 81);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
 	private static Color colorAzulClaro = new Color(21, 101, 170);
@@ -57,7 +59,7 @@ public class VGestion extends JDialog implements ActionListener {
 	//private static Point point = new Point(0, 0);
   private static JButton btnX;
 	private static JButton btnAtras;
-	private static JButton btnPedir;
+	private static JButton btnModificar;
 	private static JButton btnNuevo;
 	private static JButton btnEliminar;
 	private static JButton btnClientes;
@@ -71,6 +73,26 @@ public class VGestion extends JDialog implements ActionListener {
 	private String titulosPedido[] = {"Código Pedido","Fecha","Código cliente","Código repartidor","Código establecimiento","Menu"};
 	private String titulosTrabajadores[] = {"Código Trabajador","Nombre","Apellido","Código Establecimiento","Horario","Sueldo","Clase"};
 	private static Point point = new Point(0, 0);
+	private JTextField textCodigo;
+	private JTextField textCampo1;
+	private JTextField textCampo2;
+	private JTextField textCampo3;
+	private JTextField textCampo4;
+	private JTextField textCampo5;
+	private JTextField textCampo6;
+	private JLabel lblCampo1;
+	private JLabel lblCampo2;
+	private JLabel lblCampo3;
+	private JLabel lblCampo4;
+	private JLabel lblCampo5;
+	private JLabel lblCampo6;
+	private JSeparator separatorCampo1;
+	private JSeparator separatorCampo2;
+	private JSeparator separatorCampo3;
+	private JSeparator separatorCampo4;
+	private JSeparator separatorCampo5;
+	private JSeparator separatorCampo6;
+	private boolean modificarCambio;
 	
 	/**
 	 * Launch the application.
@@ -191,7 +213,7 @@ public class VGestion extends JDialog implements ActionListener {
 		btnClientes.setForeground(Color.WHITE);
 		btnClientes.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		btnClientes.setBorder(null);
-		btnClientes.setBackground(new Color(118, 38, 161));
+		btnClientes.setBackground(new Color(118, 38, 181));
 		panelClientes.add(btnClientes);
 		btnClientes.addActionListener(this);
 		
@@ -266,28 +288,164 @@ public class VGestion extends JDialog implements ActionListener {
 		panelPedido.setBounds(5, 118, 399, 537);
 		contentPanel.add(panelPedido);
 		
-		btnPedir = new JButton("MODIFICAR");
-		btnPedir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnPedir.setForeground(Color.WHITE);
-		btnPedir.setBackground(colorVerdeClaro);
-		btnPedir.setBorder(null);
-		btnPedir.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
-		btnPedir.setBounds(10, 466, 379, 60);
-		panelPedido.add(btnPedir);
-		btnPedir.addActionListener(this);
-		btnPedir.addMouseListener(new MouseAdapter() {
+		btnModificar = new JButton("MODIFICAR");
+		btnModificar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnModificar.setForeground(Color.WHITE);
+		btnModificar.setBackground(colorVerdeClaro);
+		btnModificar.setBorder(null);
+		btnModificar.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 32));
+		btnModificar.setBounds(10, 466, 379, 60);
+		panelPedido.add(btnModificar);
+		btnModificar.addActionListener(this);
+		btnModificar.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
-				btnPedir.setBackground(new Color(10, 160, 112));
+				btnModificar.setBackground(new Color(10, 180, 112));
 			}
 			public void mouseExited(MouseEvent evt) {
-				btnPedir.setBackground(colorVerdeClaro);
+				btnModificar.setBackground(colorVerdeClaro);
 			}
 		});
 		
 		JPanel panelSeleccion = new JPanel();
 		panelSeleccion.setBounds(10, 11, 379, 355);
 		panelPedido.add(panelSeleccion);
-		panelSeleccion.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelSeleccion.setLayout(null);
+		
+		JPanel panelCodigo = new JPanel();
+		panelCodigo.setBorder(null);
+		panelCodigo.setBounds(99, 11, 197, 35);
+		panelSeleccion.add(panelCodigo);
+		panelCodigo.setLayout(new BoxLayout(panelCodigo, BoxLayout.Y_AXIS));
+		
+		textCodigo = new JTextField();
+		textCodigo.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 14));
+		textCodigo.setBorder(null);
+		panelCodigo.add(textCodigo);
+		textCodigo.setColumns(10);
+		textCodigo.setEditable(false);
+		
+		JSeparator separatorCodigo = new JSeparator();
+		panelCodigo.add(separatorCodigo);
+		
+		JPanel panelCampo1 = new JPanel();
+		panelCampo1.setBorder(null);
+		panelCampo1.setBounds(10, 121, 159, 35);
+		panelSeleccion.add(panelCampo1);
+		panelCampo1.setLayout(new BoxLayout(panelCampo1, BoxLayout.Y_AXIS));
+		
+		textCampo1 = new JTextField();
+		textCampo1.setBorder(null);
+		textCampo1.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 14));
+		panelCampo1.add(textCampo1);
+		textCampo1.setColumns(10);
+		
+		separatorCampo1 = new JSeparator();
+		panelCampo1.add(separatorCampo1);
+		
+		JPanel panelCampo3 = new JPanel();
+		panelCampo3.setBorder(null);
+		panelCampo3.setBounds(10, 210, 159, 35);
+		panelSeleccion.add(panelCampo3);
+		panelCampo3.setLayout(new BoxLayout(panelCampo3, BoxLayout.Y_AXIS));
+		
+		textCampo3 = new JTextField();
+		textCampo3.setBorder(null);
+		textCampo3.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 14));
+		textCampo3.setColumns(10);
+		panelCampo3.add(textCampo3);
+		
+		separatorCampo3 = new JSeparator();
+		panelCampo3.add(separatorCampo3);
+		
+		JPanel panelCampo5 = new JPanel();
+		panelCampo5.setBorder(null);
+		panelCampo5.setBounds(10, 297, 159, 35);
+		panelSeleccion.add(panelCampo5);
+		panelCampo5.setLayout(new BoxLayout(panelCampo5, BoxLayout.Y_AXIS));
+		
+		textCampo5 = new JTextField();
+		textCampo5.setBorder(null);
+		textCampo5.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 14));
+		textCampo5.setColumns(10);
+		panelCampo5.add(textCampo5);
+		
+		separatorCampo5 = new JSeparator();
+		panelCampo5.add(separatorCampo5);
+		
+		JPanel panelCampo2 = new JPanel();
+		panelCampo2.setBorder(null);
+		panelCampo2.setBounds(210, 121, 159, 35);
+		panelSeleccion.add(panelCampo2);
+		panelCampo2.setLayout(new BoxLayout(panelCampo2, BoxLayout.Y_AXIS));
+		
+		textCampo2 = new JTextField();
+		textCampo2.setBorder(null);
+		textCampo2.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 14));
+		textCampo2.setColumns(10);
+		panelCampo2.add(textCampo2);
+		
+		separatorCampo2 = new JSeparator();
+		panelCampo2.add(separatorCampo2);
+		
+		JPanel panelCampo4 = new JPanel();
+		panelCampo4.setBorder(null);
+		panelCampo4.setBounds(210, 210, 159, 35);
+		panelSeleccion.add(panelCampo4);
+		panelCampo4.setLayout(new BoxLayout(panelCampo4, BoxLayout.Y_AXIS));
+		
+		textCampo4 = new JTextField();
+		textCampo4.setBorder(null);
+		textCampo4.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 14));
+		textCampo4.setColumns(10);
+		panelCampo4.add(textCampo4);
+		
+		separatorCampo4 = new JSeparator();
+		panelCampo4.add(separatorCampo4);
+		
+		JPanel panelCampo6 = new JPanel();
+		panelCampo6.setBorder(null);
+		panelCampo6.setBounds(210, 297, 159, 35);
+		panelSeleccion.add(panelCampo6);
+		panelCampo6.setLayout(new BoxLayout(panelCampo6, BoxLayout.Y_AXIS));
+		
+		textCampo6 = new JTextField();
+		textCampo6.setBorder(null);
+		textCampo6.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 14));
+		textCampo6.setColumns(10);
+		panelCampo6.add(textCampo6);
+		
+		separatorCampo6 = new JSeparator();
+		panelCampo6.add(separatorCampo6);
+		
+		lblCampo1 = new JLabel("Nombre");
+		lblCampo1.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
+		lblCampo1.setBounds(10, 86, 159, 35);
+		panelSeleccion.add(lblCampo1);
+		
+		lblCampo2 = new JLabel("<html>C\u00F3digo<br>Establecimiento</html>");
+		lblCampo2.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
+		lblCampo2.setBounds(210, 69, 159, 48);
+		panelSeleccion.add(lblCampo2);
+		
+		lblCampo3 = new JLabel("Apellido");
+		lblCampo3.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
+		lblCampo3.setBounds(10, 178, 159, 35);
+		panelSeleccion.add(lblCampo3);
+		
+		lblCampo4 = new JLabel("Menu");
+		lblCampo4.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
+		lblCampo4.setBounds(210, 178, 159, 35);
+		panelSeleccion.add(lblCampo4);
+		
+		lblCampo5 = new JLabel("Correo");
+		lblCampo5.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
+		lblCampo5.setBounds(10, 263, 159, 35);
+		panelSeleccion.add(lblCampo5);
+		
+		lblCampo6 = new JLabel("Clase");
+		lblCampo6.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
+		lblCampo6.setBounds(210, 263, 159, 35);
+		panelSeleccion.add(lblCampo6);
 		
 		JPanel panelBotones = new JPanel();
 		panelBotones.setBounds(10, 377, 379, 78);
@@ -385,10 +543,37 @@ public class VGestion extends JDialog implements ActionListener {
 	private JTable actualizarTabla(int x) {
 		switch (x) {
 			case 1:
+			textCampo2.setVisible(true);
+			textCampo4.setVisible(true);
+			textCampo6.setVisible(false);
+			separatorCampo2.setVisible(true);
+			separatorCampo4.setVisible(true);
+			separatorCampo6.setVisible(false);
+			lblCampo2.setVisible(true);
+			lblCampo4.setVisible(true);
+			lblCampo6.setVisible(false);
 			return new JTable(tablaPedidos(),titulosPedido);
 			case 2:
+			textCampo2.setVisible(true);
+			textCampo4.setVisible(true);
+			textCampo6.setVisible(true);
+			separatorCampo2.setVisible(true);
+			separatorCampo4.setVisible(true);
+			separatorCampo6.setVisible(true);
+			lblCampo2.setVisible(true);
+			lblCampo4.setVisible(true);
+			lblCampo6.setVisible(true);
 			return new JTable(tablaTrabajadores(),titulosTrabajadores);
 			default:
+			textCampo2.setVisible(false);
+			textCampo4.setVisible(false);
+			textCampo6.setVisible(false);
+			separatorCampo2.setVisible(false);
+			separatorCampo4.setVisible(false);
+			separatorCampo6.setVisible(false);
+			lblCampo2.setVisible(false);
+			lblCampo4.setVisible(false);
+			lblCampo6.setVisible(false);
 			return new JTable(tablaClientes(),titulosCliente);
 		}
 		
@@ -405,7 +590,7 @@ public class VGestion extends JDialog implements ActionListener {
 		JTableHeader tableHeader = table.getTableHeader();
 		tableHeader.setBackground(colorVerdeClaro);
 		tableHeader.setForeground(Color.WHITE);
-		tableHeader.setFont(new Font("Iosevka ", Font.BOLD, 15));
+		tableHeader.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 15));
 		tableHeader.setBorder(null);
 		tableHeader.setEnabled(false);
 	}
@@ -461,8 +646,8 @@ public class VGestion extends JDialog implements ActionListener {
 				matrizTabla[i][2] = listaTrabajadores.get(i).getApellido();
 				matrizTabla[i][3] = ((Trabajador)listaTrabajadores.get(i)).getCodEst();
 				matrizTabla[i][4] = ((Trabajador)listaTrabajadores.get(i)).getHorario();
-				matrizTabla[i][6] = String.valueOf(((Trabajador)listaTrabajadores.get(i)).getSueldo());
-				matrizTabla[i][7] = ((Trabajador)listaTrabajadores.get(i)).getClass().toString().contains("Auxiliar")?"Auxiliar":"Repartidor";	
+				matrizTabla[i][5] = String.valueOf(((Trabajador)listaTrabajadores.get(i)).getSueldo());
+				matrizTabla[i][6] = ((Trabajador)listaTrabajadores.get(i)).getClass().toString().contains("Auxiliar")?"Auxiliar":"Repartidor";	
 			}
 		}
 		return matrizTabla;
@@ -487,13 +672,30 @@ public class VGestion extends JDialog implements ActionListener {
 			refreshTabla();
 		}
 		if (e.getSource().equals(btnEliminar)) {
-			// TODO
+			int row = table.getSelectedRow();
+			if (table.getRowCount() == 1) {
+				String codAux = (String)table.getValueAt(row, 1);
+				if (codAux.contains("CL")) {
+
+				}
+				if (codAux.contains("PE")) {
+					
+				}
+				if (codAux.contains("AU") || codAux.contains("RE")) {
+
+				}
+			}
 		}
 		if (e.getSource().equals(btnNuevo)) {
 			// TODO
 		}
-		if (e.getSource().equals(btnPedir)) {
-			// TODO
+		if (e.getSource().equals(btnModificar)) {
+			if (modificarCambio) {
+				btnModificar.setText("MODIFICAR");
+			} else {
+				btnModificar.setText("GUARDAR CAMBIOS");
+			}
+			modificarCambio = !modificarCambio;
 		}
 		if (e.getSource().equals(btnX)) {
 			this.dispose();

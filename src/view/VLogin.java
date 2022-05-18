@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
 import users.Usuarie;
+import resources.Fuentes;
 
 import java.awt.event.ActionEvent;
 

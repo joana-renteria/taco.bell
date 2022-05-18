@@ -6,7 +6,7 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
-import resources.fuentes.Fuentes;
+import resources.Fuentes;
 import users.Cliente;
 import users.Usuarie;
 
@@ -52,22 +52,6 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 	private VLogin vL;
 	private static Point point = new Point(0, 0);
 	private JTextField txtApellido;
-
-	/*
-	 * public static void main(String[] args) {
-	 * EventQueue.invokeLater(new Runnable() {
-	 * public void run() {
-	 * try {
-	 * cargarTipografia();
-	 * VRegister frame = new VRegister();
-	 * frame.setVisible(true);
-	 * } catch (Exception e) {
-	 * e.printStackTrace();
-	 * }
-	 * }
-	 * });
-	 * }
-	 */
 
 	public static void cargarTipografia() {
 		Fuentes fe = new Fuentes();
@@ -329,7 +313,7 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 				if (myPass.equals(myPass2)) {
 				userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
 				if (userAux == null) {
-					userAux = new Cliente(UsuarieADFactory.getAccessUsuaries().generateCodigo("CL"), myPass, txtNombre.getText(), "Apellido de prueba", txtCorreoElectronico.getText());
+					userAux = new Cliente(UsuarieADFactory.getAccessUsuaries().generateCodigo("CL"), myPass, txtNombre.getText(), txtApellido.getText(), txtCorreoElectronico.getText());
 					UsuarieADFactory.getAccessUsuaries().addUsuarie(userAux);
 					JOptionPane.showMessageDialog(this,
 							"Usuario BIEEEEEEN.",
