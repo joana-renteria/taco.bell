@@ -226,7 +226,7 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 		txtContrasea2.setForeground(new Color(131, 132, 133));
 		txtContrasea2.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
 		txtContrasea2.setFocusable(true);
-		txtContrasea2.setEchoChar('');
+		txtContrasea2.setEchoChar((char) 0);
 		txtContrasea2.setColumns(28);
 		txtContrasea2.setBorder(null);
 		panelPass2.add(txtContrasea2);
