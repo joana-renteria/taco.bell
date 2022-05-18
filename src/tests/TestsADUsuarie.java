@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import users.*;
+import controller.ADUsuarie;
 import controller.factorias.UsuarieADFactory;
 
 @RunWith(OrderedRunner.class)
@@ -31,41 +32,58 @@ public class TestsADUsuarie {
             nUsuarieRandom = 
             new Random().nextInt(totalUsuaries) + 1;
             // se genera un número de usuarie aleatorio..
-            String codUsuarieRandom = "00000";
-
-            if (nUsuarieRandom < 10)
-                codUsuarieRandom += "0" + nUsuarieRandom;
+            String codUsuarie = "000";
+        /**Si se desea un código no existente, se devuelve el número
+         * correspondiente al siguiente usuarie con un código 
+         * aleatorio.
+         */
+        if (!is) {
+            if (totalUsuaries + 1 < 10)
+                codUsuarie += "0" + (totalUsuaries + 1);
             else
-                codUsuarieRandom += nUsuarieRandom;
-        // en caso de uno que no exista, se devuelve con un prefijo cualquiera.
-        if (!is)
-            return type [(int) (Math.random()*4)] + codUsuarieRandom;
+                codUsuarie += (totalUsuaries + 1);
+            
+            return type [(int) (Math.random()*4)] + codUsuarie;
+        }
+        /**Si se desea un codigo existente, se comprueba que este 
+         * se genera un numero existente y después se busca 
+         * el prefijo correspondiente, comprobando que existe.
+         */
+        else
+            if (nUsuarieRandom < 10)
+                codUsuarie += "0" + nUsuarieRandom;
+            else
+                codUsuarie += nUsuarieRandom;
 
-        while ((buscar(codUsuarieRandom) == null) == is) 
-            codUsuarieRandom = 
-                type [(int) (Math.random()*4)] + 
-                codUsuarieRandom.substring(2);
+        boolean salir = false;
+        for (int i = 0; i < type.length && !salir; i++) 
+            if (buscar(type[i] + codUsuarie) != null) {
+                codUsuarie = type[i] + codUsuarie;
+                salir = true;  
+            }    
 
-        return codUsuarieRandom;
+        return codUsuarie;
     }
     /**Se genera un codigo de usuarie no existente previamente.
      * Después se harán las pruebas de la base de datos con el.
      */
-    private final static String pCodUsr =
-        generateRandomUserCode(false);
+    private final static String pCodUsr = generateRandomUserCode(false);
+        //generateRandomUserCode(false);
     
     /**Se genera un usuario de tipo aleatorio. 
      * Después se grabará en la base de datos.
     */
-    public static Usuarie instanceUsuarie() {
+    public Usuarie instanceUsuarie() {
         String
             pPasswd = "octafish",
             pNombre = "Captain",
             pApellido = "Beefheart",
             pCodEst = "ES00001",
             pHorario = "Nocturno";
+
         float pSueldo = 1941;
-        Usuarie u;
+
+        Usuarie u = null;
         // usuarie a grabar.
         switch (pCodUsr.substring(0, 2)) {
             case "CL" :
@@ -95,7 +113,7 @@ public class TestsADUsuarie {
             break;
 
             default :
-                u = null;
+                System.out.println("Linea 116.");
             break;
         }
         return u;
@@ -107,17 +125,21 @@ public class TestsADUsuarie {
      * método se genera de nuevo. Siempre esta
      * actualizada.
      */
-    private TreeMap <String, Usuarie> usuaries = 
+    private static TreeMap <String, Usuarie> usuaries = 
         UsuarieADFactory
             .getAccessUsuaries()
                 .listarUsuaries();
     /**Método auxiliar que muestra la tabla.
      * Se ejecuta antes de cada tests individual.
+     * La tabla se muestra ordenada segun el número
+     * de usuarie, se comparan los códigos.
      */
     @Before
-    @Test
     public void mostrarTablaCompleta() {
         usuaries.values().stream()
+            .sorted((u1, u2) -> 
+                u1.getCodUsr().substring(2).compareTo(
+                u2.getCodUsr().substring(2)))
             .forEach(u -> System.out.println(u));
         System.out.print("\n");
     }
@@ -150,61 +172,56 @@ public class TestsADUsuarie {
             usuarie.getClass().getName()
             .substring(6, 8).toUpperCase());
     }
+    /**Se usa un usuarie nuevo. Se instancia (de un tipo aleatorio)
+     * y después se graba en la base de datos para despues comprobar 
+     * que, efectivamente
+     * 
+     */
     @Test
     @Order (order = 1)
     public void testAddUsuarie() {
-        assertNull(usuarie);
+        usuarie = null;
         usuarie = instanceUsuarie();
-        System.out.println(
-            usuarie + 
-            usuarie.getClass().getName());
         // añadir a la base de datos.
         UsuarieADFactory
             .getAccessUsuaries()
                 .addUsuarie(usuarie);
         // comprobar los cambios.
-        //assertNotNull(buscar(pCodUsr));
-
-        assertEquals(usuarie, buscar(pCodUsr));
-        
+        assertNotNull(buscar(pCodUsr));
+        assertEquals(buscar(pCodUsr), usuarie);
     }
     /**Se usa el usuarie creado antes para modificarlo
      * y testar los cambios.
      */
-    //@Test
+    @Test
+    @Order (order = 2)
     public void testModificarUsuarie() {
-        Usuarie usuarie = buscar(pCodUsr);
-        // se comprueba que se instancia del tipo correcto.
-        assertTrue(usuarie instanceof Auxiliar);
-        assertEquals(pCodUsr, usuarie.getCodUsr());
-        // se modifica el objeto usuarie.
-        usuarie.setNombre("Frank");
+        usuarie = buscar(pCodUsr);
+        assertNotNull(usuarie);
+        usuarie.setNombre("Frank Vincent");
         usuarie.setApellido("Zappa");
-        usuarie.setPasswd("59'Chevy");
-        ((Auxiliar) usuarie).setSueldo(1940);
-        ((Auxiliar) usuarie).setPuesto("WOIFTM");
-        // se updatea en la base de datos.
+        usuarie.setPasswd("59' Chevy");
+
+        assertNotEquals(usuarie, buscar(pCodUsr));
+    
         UsuarieADFactory
             .getAccessUsuaries()
                 .modificarUsuarie(usuarie);
-        // comprobar los cambios.    
-        assertEquals(usuarie, buscar(pCodUsr));
-        // si no da errores, de nuevo se observa que ha cambiado en la BD.
+
+        assertEquals(buscar(pCodUsr), usuarie);
     }
     /**Se comprueba que el borrado de usuarie se hace 
      * de forma efectiva, usando el mismo objeto de antes.
      */
-    //@Test
+    @Test
     public void testBorrarUsuarie() {
-        // se comprueba que se encuentra en la base de datos.
-        assertEquals(buscar(pCodUsr).getCodUsr(), pCodUsr);
-        // se procede a borrarlo.
+        usuarie = buscar(pCodUsr);
+        assertNotNull(usuarie);
+        
         UsuarieADFactory
             .getAccessUsuaries()
                 .borrarUsuarie(pCodUsr);
-        // no debería poderse encontrar.
+        
         assertNull(buscar(pCodUsr));
-    }
-   
-    
+    } 
 }
