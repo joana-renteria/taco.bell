@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.TreeMap;
 
 import controller.interfaces.Usuariable;
+import exceptions.GestorExcepciones;
 import users.*;
 
 public class ADUsuarie extends MasterConnection implements Usuariable {
@@ -17,7 +18,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
      * se graba en las tablas correspondientes.
      */
     @Override
-    public void addUsuarie(Usuarie pUsuarie) {
+    public void addUsuarie(Usuarie pUsuarie) throws GestorExcepciones {
         // la variable choice almacena el tipo de usuarie a grabar en la BD.
         String type = pUsuarie.getClass().getName().substring(6);
         switch (type) {
@@ -38,104 +39,108 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
     }
     /**Método que graba el usuarie en la tabla principal.
     */
-    private void grabarUsuarie(Usuarie pUsuarie) {
-        openConnection();
-
+    private void grabarUsuarie(Usuarie pUsuarie) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(insertarUsuarie);
             stmt.setString(1, pUsuarie.getCodUsr());
             stmt.setString(2, pUsuarie.getPasswd());
             stmt.setString(3, pUsuarie.getNombre());
             stmt.setString(4, pUsuarie.getApellido());
             stmt.setString(5, pUsuarie.getClass().getName().substring(6));
-                stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            stmt.executeUpdate();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-
-        closeConnection();
     }
     /**Método que graba en la tabla cliente. */
-    private void grabarCliente(Cliente pCliente) {
-        grabarUsuarie(pCliente);
-        openConnection();
+    private void grabarCliente(Cliente pCliente) throws GestorExcepciones {
         try {
+            grabarUsuarie(pCliente);
+            openConnection();
             stmt = con.prepareStatement(insertarCliente);  
             stmt.setString(1, pCliente.getCodUsr());
             stmt.setString(2, pCliente.getCorreoLogin());
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
-    private void grabarTrabajador(Trabajador pTrabajador) {
-        openConnection();
+    private void grabarTrabajador(Trabajador pTrabajador) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(insertarTrabajador);
             stmt.setString(1, pTrabajador.getCodUsr());
             stmt.setString(2, pTrabajador.getCodEst());
             stmt.setString(3, pTrabajador.getHorario());
             stmt.setFloat(4, pTrabajador.getSueldo());
             stmt.setString(5, pTrabajador.getClass().getName().substring(6));
-                stmt.executeUpdate();
+            stmt.executeUpdate();
             
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
-    private void grabarAuxiliar(Auxiliar pAuxiliar) {
-        grabarUsuarie(pAuxiliar);
-        grabarTrabajador(pAuxiliar);
-        openConnection();
+    private void grabarAuxiliar(Auxiliar pAuxiliar) throws GestorExcepciones {
         try {
+            grabarUsuarie(pAuxiliar);
+            grabarTrabajador(pAuxiliar);
+            openConnection();
             stmt = con.prepareStatement(insertarAuxiliar);
             stmt.setString(1, pAuxiliar.getCodUsr());
             stmt.setString(2, pAuxiliar.getPuesto());
-                stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            stmt.executeUpdate();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
-    private void grabarRepartidor(Repartidor pRepartidor) {
-        grabarUsuarie(pRepartidor);
-        grabarTrabajador(pRepartidor);
-        openConnection();
+    private void grabarRepartidor(Repartidor pRepartidor) throws GestorExcepciones {
         try {
+            grabarUsuarie(pRepartidor);
+            grabarTrabajador(pRepartidor);
+            openConnection();
             stmt = con.prepareStatement(insertarRepartidor);
             stmt.setString(1, pRepartidor.getCodUsr());
             stmt.setString(2, pRepartidor.getCodVehiculo());
             // ejecucion del comando.
             stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        } 
-        closeConnection();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
+        }
     }
     @Override
-    public void borrarUsuarie(String pCodUsr) {
-        openConnection();
+    public void borrarUsuarie(String pCodUsr) throws GestorExcepciones {
         try {
+            openConnection();
             // borrado en cascada.
             stmt = con.prepareStatement(borrar);
                     stmt.setString(1, pCodUsr);
                     stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public void modificarUsuarie(Usuarie pUsuarie) {
-        openConnection();
+    public void modificarUsuarie(Usuarie pUsuarie) throws GestorExcepciones {
 
         try {
+            openConnection();
             String type = 
                 pUsuarie.getClass().getName().substring(6);
             String pCodUsr = pUsuarie.getCodUsr();
@@ -182,19 +187,19 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             stmt.setString(2, pUsuarie.getNombre());
             stmt.setString(3, pUsuarie.getApellido());
             stmt.setString(4, type);
-                stmt.executeUpdate();
+            stmt.executeUpdate();
     
-
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
     
-    public Usuarie buscarCliente(String pCorreo) {
+    public Usuarie buscarCliente(String pCorreo) throws GestorExcepciones {
         Usuarie pUsuarie = null;
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(buscarCliente);
             stmt.setString(1, pCorreo);
             rs = stmt.executeQuery();
@@ -208,24 +213,24 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             pUsuarie.setPasswd(rs.getString(2));
             pUsuarie.setNombre(rs.getString(3));
             pUsuarie.setApellido(rs.getString(4));
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
 
-        closeConnection();
         return pUsuarie;
     }
 
     @Override
-    public Usuarie buscarUsuarie(String pCodUsr) {
+    public Usuarie buscarUsuarie(String pCodUsr) throws GestorExcepciones {
         Usuarie pUsuarie = null;
         ResultSet rsTwo = null, rsThree = null;
         PreparedStatement stmtTwo = null, stmtThree = null;
         String type = pCodUsr.substring(0, 2);
 
-        openConnection();
-
         try {
+            openConnection();
             // búsqueda en la tabla usuarie.
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodUsr);
@@ -303,25 +308,23 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             }  
             else
                 return null;
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        } catch (NullPointerException npe) {
-            System.out.println("Ha habido un error con los resultsets. Null pointer.");
-            npe.printStackTrace();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
         return pUsuarie;
     }
 
     @Override
-    public TreeMap <String, Usuarie> listarUsuaries() {
+    public TreeMap <String, Usuarie> listarUsuaries() throws GestorExcepciones {
         Usuarie pUsuarie = null;
         TreeMap <String, Usuarie> pListaUsuaries = 
             new TreeMap <String, Usuarie> ();
 
         ResultSet rs2;
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(listarCodigos);
                 rs2 = stmt.executeQuery();
             while (rs2.next()) {
@@ -330,10 +333,11 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                     rs2.getString(1),
                     pUsuarie);
             }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
         return pListaUsuaries;
     }
 
@@ -341,7 +345,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
      * @param pCodUsr es el prefijo del código.
      */
     @Override
-    public String generateCodigo(String pCodUsr) {
+    public String generateCodigo(String pCodUsr) throws GestorExcepciones {
         String numUsers = String.valueOf(totalUsuaries() + 1);
         for (int i = 0; i < 5 - numUsers.length(); i++) 
             pCodUsr += "0";
@@ -351,7 +355,7 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
     }
 
     @Override
-    public int totalUsuaries() {
+    public int totalUsuaries() throws GestorExcepciones {
         return cantidadTotal("usuarie");
     }
 

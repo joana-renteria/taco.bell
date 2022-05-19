@@ -6,13 +6,14 @@ import java.util.TreeMap;
 
 import controller.interfaces.Menuable;
 import datos.Menu;
+import exceptions.GestorExcepciones;
 
 public class ADMenu extends MasterConnection implements Menuable {
 
     @Override
-    public void grabarMenu(Menu pMenu) {
-        openConnection();
+    public void grabarMenu(Menu pMenu) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pMenu.getCodMnu());
             stmt.setString(2, pMenu.getCodDsc());
@@ -27,17 +28,17 @@ public class ADMenu extends MasterConnection implements Menuable {
                 stmt.setString(2, pMenu.getCodPrds()[i]);
                     stmt.executeUpdate();
             }
-
-        } catch (SQLException sqle) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public void borrarMenu(Menu pMenu) {
-        openConnection();
+    public void borrarMenu(Menu pMenu) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(borrar);
             stmt.setString(1, pMenu.getCodMnu());
                 stmt.executeUpdate();
@@ -47,17 +48,17 @@ public class ADMenu extends MasterConnection implements Menuable {
                 stmt.setString(1, pMenu.getCodMnu());
                 stmt.setString(2, pMenu.getCodPrds()[i]);
             }
-
-        } catch (SQLException sqle) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public void modificarMenu(Menu pMenu) {
-        openConnection();
+    public void modificarMenu(Menu pMenu) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(modificar);
             stmt.setString(1, pMenu.getCodDsc());
             stmt.setFloat(2, pMenu.getPrecio());
@@ -76,19 +77,19 @@ public class ADMenu extends MasterConnection implements Menuable {
                 stmt.setString(4, pMenuAux.getCodPrds()[i]);
                     stmt.executeUpdate();
             }    
-        } catch (SQLException sqle) {
-            System.out.println("fallo leyendo los menus");
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-
-        closeConnection();
     }
 
     @Override
-    public Menu buscarMenuPorCodigo(String pCodMnu) {
+    public Menu buscarMenuPorCodigo(String pCodMnu) throws GestorExcepciones {
         Menu pMenu = null;
         String [] pCodPrds = getCodigosProductos(pCodMnu);
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodMnu);
                 rs = stmt.executeQuery();
@@ -101,20 +102,20 @@ public class ADMenu extends MasterConnection implements Menuable {
                 pCodPrds,
                 rs.getFloat(3),
                 rs.getString(4));
-
-        } catch (SQLException e) {
-            // TODO: handle exception
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
         return pMenu;
     }
 
     @Override
-    public String [] getCodigosProductos(Menu pMenu) {
+    public String [] getCodigosProductos(Menu pMenu) throws GestorExcepciones {
         return getCodigosProductos(pMenu.getCodMnu());
     }
 
-    private String [] getCodigosProductos(String pCodMnu) {
+    private String [] getCodigosProductos(String pCodMnu) throws GestorExcepciones {
         String [] codigosProductos = 
             new String [3];
 
@@ -125,25 +126,25 @@ public class ADMenu extends MasterConnection implements Menuable {
          * a toda la clase podría ser sobreescrito, y para evitar esto
          * se utiliza otro.
          */
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(buscarCodigosProductos);
             stmt.setString(1, pCodMnu);
                 rs2 = stmt.executeQuery();
 
             for (int i = 0; i < codigosProductos.length && rs2.next(); i++) 
                 codigosProductos[i] = rs2.getString(1);
-            
-        } catch (SQLException sle) {
-            //TODO: handle exception.
-            System.out.println("wtf");
+
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
         return codigosProductos;
     }
 
     @Override
-    public TreeMap <String, Menu> listarMenus() {
+    public TreeMap <String, Menu> listarMenus() throws GestorExcepciones {
         Menu pMenu = null;
         
         String [] pCodPrds =
@@ -151,8 +152,8 @@ public class ADMenu extends MasterConnection implements Menuable {
 
         TreeMap <String, Menu> pProductos = 
             new TreeMap <String, Menu> ();
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(listarTodo);
                 rs = stmt.executeQuery();
             while (rs.next()) {
@@ -170,17 +171,16 @@ public class ADMenu extends MasterConnection implements Menuable {
 
                 pProductos.put(pMenu.getCodMnu(), pMenu);
             }
-            
-        } catch (SQLException sqle) {
-            // TODO: handle exception
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
-        
         return pProductos;
     }
 
 	@Override
-	public String generateCodigo() {
+	public String generateCodigo() throws GestorExcepciones {
 		String pCodMnu = "ME";
         String numMnu = String.valueOf(totalMenus() + 1);
         for (int i = 0; i < 8 - numMnu.length(); i++)
@@ -192,7 +192,7 @@ public class ADMenu extends MasterConnection implements Menuable {
 	}
 
     @Override
-    public int totalMenus() {
+    public int totalMenus() throws GestorExcepciones {
         return cantidadTotal("menu");
     }
     
@@ -205,4 +205,5 @@ public class ADMenu extends MasterConnection implements Menuable {
     private final String buscarCodigosProductos = "SELECT codPrd FROM menu_producto WHERE codMnu = ?";
     private final String buscar = "SELECT * FROM menu WHERE CodMnu = ?";
     private final String listarTodo = "SELECT * FROM menu";
+
 }

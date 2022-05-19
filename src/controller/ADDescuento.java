@@ -25,10 +25,11 @@ public class ADDescuento extends MasterConnection implements Descontable {
             stmt.setObject(4, pDescuento.getFechaInicio());
             stmt.setObject(5, pDescuento.getFechaFin());
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
     /**Este método recibe como parámetro un String y lo introduce
      * en una sentencia SQL que lo borra de la tabla.
