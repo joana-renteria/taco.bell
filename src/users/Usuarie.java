@@ -1,6 +1,6 @@
 package users;
 
-public abstract class Usuarie {
+public abstract class Usuarie implements Comparable <Usuarie> {
     private final String codUsr;
     private String passwd;
     private String nombre;
@@ -66,6 +66,14 @@ public abstract class Usuarie {
         else 
             return false;
     }
+
+    @Override
+    public int compareTo(Usuarie pUsuarie) {
+        //return codUsr.compareTo(pUsuarie.getCodUsr());
+
+        return codUsr.substring(2).compareTo(pUsuarie.getCodUsr().substring(2));
+    }
+    
     
     @Override
     public String toString() {
