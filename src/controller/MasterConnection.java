@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import exceptions.GestorExcepciones;
+
 public abstract class MasterConnection {
     protected Connection con;
     protected PreparedStatement stmt;
@@ -20,12 +22,13 @@ public abstract class MasterConnection {
         pass = configFile.getString("PASSWORD");
     
 
-    protected void openConnection() {
+    protected void openConnection() throws GestorExcepciones {
         con = null;
         try {
             con = DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
             System.out.println("Error al intentar abrir la BD");
+            throw new GestorExcepciones(1);
         }
     }
 
@@ -44,21 +47,22 @@ public abstract class MasterConnection {
      * in the database.
      * @throws SQLException in case something goes wrong.
      */
-    protected int cantidadTotal(String database) {
+    protected int cantidadTotal(String database) throws GestorExcepciones {
         int pTotal = -1;
         database = "SELECT COUNT(*) FROM " + database;
-        openConnection();
         
         try {
+            openConnection();
             stmt = con.prepareStatement(database);
             rs = stmt.executeQuery();
                 rs.next();
             pTotal = rs.getInt(1);
-        } catch (SQLException sqle) {
-            // TODO Handle exception
+        } catch (GestorExcepciones | SQLException sqle) {
+            throw new GestorExcepciones(1);
+        } finally {
+            closeConnection();
         }
         
-        closeConnection();
         return pTotal;
     }
 }
