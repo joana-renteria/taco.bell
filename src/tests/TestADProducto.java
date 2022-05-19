@@ -59,19 +59,25 @@ public class TestADProducto {
         int totalProductos = ProductoADFactory
             .getAccessProductos()
                 .totalProductos(),
-            nProductoRandom = 
-            new Random().nextInt(totalProductos) + 1;
+            cont = 0;
         // se genera un código aleatorio.
-        String codPrdRandom = "PR000000" ;
+        String codPrdRandom = null;
+        
+        productos.keySet();
 
-        if (nProductoRandom < 10) 
-            codPrdRandom += "0" + nProductoRandom;
-        else
-            codPrdRandom += nProductoRandom;
+        for (int i = 1; i <= totalProductos; i++) {
+            codPrdRandom = "PR000000";
+            if (i < 10) 
+                codPrdRandom += "0" + i;
+            else
+                codPrdRandom += i;
+            
+            cont = (buscar(codPrdRandom) != null) ? 
+                cont + 1 :
+                cont;
+        }
         // se comprueba que se genera el producto correcto.
-        assertEquals(
-            codPrdRandom,
-            buscar(codPrdRandom).getCodPrd());
+        
     }
     /**Se comprueba que el método equals
      * @see Producto equals()
