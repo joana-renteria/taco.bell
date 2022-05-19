@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 
 import resources.fuentes.Fuentes;
 import users.Usuarie;
-import resources.Fuentes;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

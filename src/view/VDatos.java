@@ -16,7 +16,6 @@ import javax.swing.border.EmptyBorder;
 
 import resources.fuentes.Fuentes;
 import users.Usuarie;
-import resources.Fuentes;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -25,7 +24,6 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.JSeparator;
-import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.Cursor;
 import javax.swing.JTextField;
@@ -52,7 +50,7 @@ public class VDatos extends JDialog implements ActionListener {
 	private static JButton btnPedir;
 	private static JButton btnEliminar; 
 	private static JDialog vMC;
-	private JTextField textField;
+	private JTextField textCodigo;
 	
 	/**
 	 * Launch the application.
@@ -184,17 +182,18 @@ public class VDatos extends JDialog implements ActionListener {
 		contentPanel.add(panelProductos);
 		panelProductos.setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(34, 76, 205, 39);
-		panelProductos.add(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		JPanel panelCodigo = new JPanel();
+		panelCodigo.setBounds(295, 24, 205, 39);
+		panelProductos.add(panelCodigo);
+		panelCodigo.setLayout(new BoxLayout(panelCodigo, BoxLayout.Y_AXIS));
 		
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setColumns(10);
+		textCodigo = new JTextField();
+		textCodigo.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		panelCodigo.add(textCodigo);
+		textCodigo.setColumns(10);
 		
-		JSeparator separator_1 = new JSeparator();
-		panel.add(separator_1);
+		JSeparator separatorCodigo = new JSeparator();
+		panelCodigo.add(separatorCodigo);
 		
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.DARK_GRAY);
