@@ -278,8 +278,8 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 			if (txtCorreoElectronico.getText().isEmpty() || myPass.isEmpty()
 					|| txtCorreoElectronico.equals("Correo Electronico") || myPass.equals("Contrase\u00F1a")) {
 				JOptionPane.showMessageDialog(this,
-						"WARNING.",
-						"Warning",
+						"Rellene todos los campos.",
+						"Error.",
 						JOptionPane.WARNING_MESSAGE);
 			} else {
 				userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
