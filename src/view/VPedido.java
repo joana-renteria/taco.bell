@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 
 import controller.factorias.MenuADFactory;
 import controller.factorias.ProductoADFactory;
-import resources.Fuentes;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
