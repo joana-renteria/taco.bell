@@ -1,6 +1,8 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 import controller.interfaces.Productable;
@@ -134,8 +136,21 @@ public class ADProducto extends MasterConnection implements Productable {
 
     @Override
     public String generateCodigo() {
+        Set <String> keys = listarProductos().keySet();
+
+        Optional <String> lastKey = 
+            keys.stream()
+            .max((k1, k2) -> 
+                k1.substring(2)
+                .compareTo(k2.substring(2)));
+
+        int k = 0;
+
+        if (lastKey.isPresent())
+            k = Integer.parseInt(lastKey.get().substring(2));
+
         String pCodDsc = "PR";
-        String numDsc = String.valueOf(totalProductos() + 1);
+        String numDsc = String.valueOf(k + 1);
         for (int i = 0; i < 8 - numDsc.length(); i++)
             pCodDsc += "0";
 
