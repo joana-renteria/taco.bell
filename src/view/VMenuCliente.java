@@ -335,6 +335,11 @@ public class VMenuCliente extends JDialog implements ActionListener{
 		
 	}
 
+	public static void volverLogin() {
+		this.dispose();
+		vLogin.setVisible(true);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnX)){
