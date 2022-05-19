@@ -10,12 +10,14 @@ import exceptions.GestorExcepciones;
 import users.*;
 
 public class ADUsuarie extends MasterConnection implements Usuariable {
+
     /**Para grabar un usuario se recurre a la clase
      * @GenerateUsers que genera un usuario del tipo
      * indicado por el usuario. Después se llama a 
      * grabarUsuarie(), que almacena el dato en la tabla 
      * usuarie. Después según el tipo de usuario creado 
      * se graba en las tablas correspondientes.
+     * @param pUsuarie usuarie a añadirse
      */
     @Override
     public void addUsuarie(Usuarie pUsuarie) throws GestorExcepciones {
@@ -31,13 +33,13 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
                 break;
             case "Repartidor": grabarRepartidor((Repartidor) pUsuarie);
                 break;
-            default: System.out.println(
-                "Error con el tipo " + 
-                pUsuarie.getClass().getName()); 
-                break; //TODO caso por defecto: cliente.
+            default: 
+                throw new GestorExcepciones(23);
         }
     }
-    /**Método que graba el usuarie en la tabla principal.
+
+    /**Método que graba le usuarie en la tabla principal.
+     * @param pUsuarie
     */
     private void grabarUsuarie(Usuarie pUsuarie) throws GestorExcepciones {
         try {
@@ -55,7 +57,10 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             closeConnection();
         }
     }
-    /**Método que graba en la tabla cliente. */
+
+    /**Método que graba en la tabla cliente. 
+     * @param pCliente
+    */
     private void grabarCliente(Cliente pCliente) throws GestorExcepciones {
         try {
             grabarUsuarie(pCliente);
@@ -71,6 +76,9 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         }
     }
 
+    /**Método que graba en la tabla trabajador. 
+     * @param pTrabajador
+    */
     private void grabarTrabajador(Trabajador pTrabajador) throws GestorExcepciones {
         try {
             openConnection();
@@ -88,7 +96,10 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             closeConnection();
         }
     }
-
+    
+    /**Método que graba en la tabla auxiliar. 
+     * @param pAuxiliar
+    */
     private void grabarAuxiliar(Auxiliar pAuxiliar) throws GestorExcepciones {
         try {
             grabarUsuarie(pAuxiliar);
@@ -105,6 +116,9 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         }
     }
 
+    /**Método que graba en la tabla Repartidor. 
+     * @param pRepartidor
+    */
     private void grabarRepartidor(Repartidor pRepartidor) throws GestorExcepciones {
         try {
             grabarUsuarie(pRepartidor);
@@ -121,6 +135,10 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
             closeConnection();
         }
     }
+
+    /**Método que borra en la tabla Usuarie. 
+     * @param pCodUsr
+    */
     @Override
     public void borrarUsuarie(String pCodUsr) throws GestorExcepciones {
         try {
@@ -136,9 +154,11 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         }
     }
 
+    /**Método que modifica en la tabla Usuarie. 
+     * @param pUsuarie
+    */
     @Override
     public void modificarUsuarie(Usuarie pUsuarie) throws GestorExcepciones {
-
         try {
             openConnection();
             String type = 
@@ -196,6 +216,11 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         }
     }
     
+    /**Método para buscar en la tabla Usuarie por correo
+     * Solo funciona con clientes
+     * @param pCorreo correo electronico
+     * @return Usuarie si lo encuentra, sino null
+    */
     public Usuarie buscarCliente(String pCorreo) throws GestorExcepciones {
         Usuarie pUsuarie = null;
         try {
@@ -218,10 +243,14 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         } finally {
             closeConnection();
         }
-
         return pUsuarie;
     }
 
+    /**Método para buscar en la tabla Usuarie por codigo
+     * distingue entre distintos tipos de usuaries segun su codigo
+     * @param pCodUsr codigo de usuarie
+     * @return Usuarie si lo encuentra, sino null
+    */
     @Override
     public Usuarie buscarUsuarie(String pCodUsr) throws GestorExcepciones {
         Usuarie pUsuarie = null;
@@ -316,6 +345,9 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
         return pUsuarie;
     }
 
+    /**Método para listar de la tabla Usuarie
+     * @return TreeMap de usuaries
+    */
     @Override
     public TreeMap <String, Usuarie> listarUsuaries() throws GestorExcepciones {
         Usuarie pUsuarie = null;

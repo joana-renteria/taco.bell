@@ -30,6 +30,9 @@ public class GestorExcepciones extends Exception {
 			case 22:
 				msg = "Prefijo de usuarie erroneo";
 				break;
+			case 23:
+				msg = "Error al crear usuarie";
+				break;
 			case 31:
 				msg = "Error al abrir la ventana";
 				break;
