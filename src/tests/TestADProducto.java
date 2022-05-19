@@ -52,8 +52,8 @@ public class TestADProducto {
     /**Se comprueba la búsqueda de un producto 
      * en la base de datos. El código coincide.
      */
-    @Test
-    @Order (order = 0)
+    /*@Test
+    @Order (order = 0)*/
     public void testBuscarProducto() {
         // se calcula el número total de productos.
         int totalProductos = ProductoADFactory
@@ -123,7 +123,7 @@ public class TestADProducto {
         producto = 
             new Producto(
             pCodPrd,
-            795/100, 
+            7, 
             "Quesarito y Taco",
             pIngredientes,
             "Comida");
@@ -131,7 +131,9 @@ public class TestADProducto {
         ProductoADFactory
             .getAccessProductos()
                 .grabarProducto(producto);
+        System.out.println(pCodPrd);
         // comprobar los cambios.
+        System.out.println(pCodPrd);
         assertEquals(buscar(pCodPrd), producto);
     }
     /**Se modifica el producto creado en el test

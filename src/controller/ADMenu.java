@@ -2,6 +2,8 @@ package controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 import controller.interfaces.Menuable;
@@ -181,8 +183,21 @@ public class ADMenu extends MasterConnection implements Menuable {
 
 	@Override
 	public String generateCodigo() {
+        Set <String> keys = listarMenus().keySet();
+
+        Optional <String> lastKey = 
+            keys.stream()
+            .max((k1, k2) -> 
+                k1.substring(2)
+                .compareTo(k2.substring(2)));
+
+        int k = 0;
+
+        if (lastKey.isPresent())
+            k = Integer.parseInt(lastKey.get().substring(2));
+            
 		String pCodMnu = "ME";
-        String numMnu = String.valueOf(totalMenus() + 1);
+        String numMnu = String.valueOf(k + 1);
         for (int i = 0; i < 8 - numMnu.length(); i++)
             pCodMnu += "0";
 

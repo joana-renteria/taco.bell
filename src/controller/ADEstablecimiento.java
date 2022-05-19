@@ -1,6 +1,8 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 import controller.interfaces.Establecimientable;
@@ -106,8 +108,21 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
 
     @Override
     public String generateCodigo() {
+        Set <String> keys = listarEstablecimientos().keySet();
+
+        Optional <String> lastKey = 
+            keys.stream()
+            .max((k1, k2) -> 
+                k1.substring(2)
+                .compareTo(k2.substring(2)));
+
+        int k = 0;
+
+        if (lastKey.isPresent())
+            k = Integer.parseInt(lastKey.get().substring(2));
+
         String pCodEst = "ES";
-        String numEst = String.valueOf(totalEstablecimientos() + 1);
+        String numEst = String.valueOf(k + 1);
         for (int i = 0; i < 5 - numEst.length(); i++)
             pCodEst += "0";
 

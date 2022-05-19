@@ -1,6 +1,8 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 import controller.factorias.MenuADFactory;
@@ -117,8 +119,21 @@ public class ADPedido extends MasterConnection implements Pedible {
 
     @Override
     public String generateCodigo() {
+        Set <String> keys = listarPedidos().keySet();
+
+        Optional <String> lastKey = 
+            keys.stream()
+            .max((k1, k2) -> 
+                k1.substring(2)
+                .compareTo(k2.substring(2)));
+
+        int k = 0;
+
+        if (lastKey.isPresent())
+            k = Integer.parseInt(lastKey.get().substring(2));
+
         String pCodPed = "PE";
-        String numPed = String.valueOf(listarPedidos().size()+1);
+        String numPed = String.valueOf(k + 1);
         for (int i = 0; i < 8 - numPed.length(); i++)
             pCodPed += "0";
 
