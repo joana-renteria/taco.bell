@@ -7,13 +7,14 @@ import java.util.TreeMap;
 
 import controller.interfaces.Productable;
 import datos.Producto;
+import exceptions.GestorExcepciones;
 
 public class ADProducto extends MasterConnection implements Productable {
 
     @Override
-    public void grabarProducto(Producto pProducto) {
-        openConnection();
+    public void grabarProducto(Producto pProducto) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pProducto.getCodPrd());
             stmt.setFloat(2, pProducto.getPrecio());
@@ -24,31 +25,31 @@ public class ADProducto extends MasterConnection implements Productable {
                 
             stmt.setString(9, pProducto.getTipo());
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            System.out.println("Error en insertar producto.");
-        } catch (NullPointerException npe) {
-            System.out.println("Valor nulo en producto insertado.");
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public void borrarProducto(String pCodPrd) {
-        openConnection();
+    public void borrarProducto(String pCodPrd) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(borrar);
             stmt.setString(1, pCodPrd);
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            //TODO: handle exception
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public void modificarProducto(Producto pProducto) {
-        openConnection();
+    public void modificarProducto(Producto pProducto) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(modificar);
             stmt.setString(1, pProducto.getCodPrd());
             stmt.setFloat(2, pProducto.getPrecio());
@@ -60,19 +61,19 @@ public class ADProducto extends MasterConnection implements Productable {
             stmt.setString(8, pProducto.getIngredientes()[4]);
             stmt.setString(9, pProducto.getTipo());
             stmt.setString(10, pProducto.getCodPrd());
-                stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            // TODO: Exception.
-            // TODO: TENER EN CUENTA LA LONGITUD MÁXIMA DE LOS STRINGS.
+            stmt.executeUpdate();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public Producto buscarProductoPorCodigo(String pCodPrd) {
+    public Producto buscarProductoPorCodigo(String pCodPrd) throws GestorExcepciones {
         Producto pProducto = null;
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodPrd);
                 rs = stmt.executeQuery();
@@ -92,23 +93,24 @@ public class ADProducto extends MasterConnection implements Productable {
                 pIngredientes,
                 rs.getString(9));
 
-        } catch (SQLException sqle) {
-            //TODO: handle exception
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
         return pProducto;
     }
 
     @Override
-    public TreeMap <String, Producto> listarProductos() {
+    public TreeMap <String, Producto> listarProductos() throws GestorExcepciones {
         Producto pProducto = null;
         String [] pIngredientes =
             new String [5];
 
         TreeMap <String, Producto> pProductos = 
             new TreeMap <String, Producto> ();
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(listarTodo);
                 rs = stmt.executeQuery();
             while (rs.next()) {
@@ -126,16 +128,17 @@ public class ADProducto extends MasterConnection implements Productable {
                 pProductos.put(pProducto.getCodPrd(), pProducto);
             }
             
-        } catch (SQLException sqle) {
-            // TODO: handle exception
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
         
         return pProductos;
     }
 
     @Override
-    public String generateCodigo() {
+    public String generateCodigo() throws GestorExcepciones {
         Set <String> keys = listarProductos().keySet();
 
         Optional <String> lastKey = 
@@ -160,7 +163,7 @@ public class ADProducto extends MasterConnection implements Productable {
     }
 
     @Override
-    public int totalProductos() {
+    public int totalProductos() throws GestorExcepciones {
         return cantidadTotal("producto");
     }
     

@@ -54,23 +54,30 @@ public class TestsADEstablecimiento {
     @Test
     @Order (order = 0)
     public void testBuscarEstablecimiento() {
-        // calcular el número de establecimientos.
-        int totalEstablecimientos = EstablecimientoADFactory
-            .getAccessEstablecimiento()
-                .totalEstablecimientos(),
-            nEstablecimientoRandom = 
-            new Random().nextInt(totalEstablecimientos) + 1;
-            // se genera un código aleatorio.
-            String codEstRandom = "ES000";
+        // se calcula el número total de productos.
+        int maxEstablecimientos = Integer.parseInt(
+            pCodEst.substring(2)),
+            cont = 0;
+        // se genera un código aleatorio.
+        String codDscRandom = null;
 
-            if (nEstablecimientoRandom < 10)
-                codEstRandom += "0" + nEstablecimientoRandom;
+        for (int i = 1; i <= maxEstablecimientos; i++) {
+            codDscRandom = "ES000";
+            if (i < 10) 
+                codDscRandom += "0" + i;
             else
-                codEstRandom += nEstablecimientoRandom;
-        // se comprueba el establecimiento.
+                codDscRandom += i;
+            
+            cont = (buscar(codDscRandom) != null) ? 
+                cont + 1 :
+                cont;
+        }
+        // se comprueba que se genera el producto correcto.
         assertEquals(
-            codEstRandom,
-            buscar(codEstRandom).getCodEst());
+            cont,
+            EstablecimientoADFactory
+                .getAccessEstablecimiento()
+                    .totalEstablecimientos());
     }
     /**Se comprueba que el método equals
      * @see Establecimiento equals()

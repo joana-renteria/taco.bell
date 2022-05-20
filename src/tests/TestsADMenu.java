@@ -54,25 +54,30 @@ public class TestsADMenu {
     @Test
     @Order (order = 0)
     public void testBuscarMenu() {
-        int totalMenus = MenuADFactory
-            .getAccessMenu()
-                .totalMenus(),
-            nMenuRandom = 
-            new Random().nextInt(totalMenus) + 1;
-        // se genera, pues, un código aleatorio.
-        String codMnuRandom = "PR000000";
+        // se calcula el número total de productos.
+        int maxMenus = Integer.parseInt(
+            pCodMnu.substring(2)),
+            cont = 0;
+        // se genera un código aleatorio.
+        String codMnuRandom = null;
 
-        if (nMenuRandom < 10)
-            codMnuRandom += "0" + nMenuRandom;
-        else
-            codMnuRandom += nMenuRandom;
-        // se comprueba que el producto generado es el correcto.
-        Menu buscar =
-            buscar(codMnuRandom);
-
+        for (int i = 1; i <= maxMenus; i++) {
+            codMnuRandom = "ME000000";
+            if (i < 10) 
+                codMnuRandom += "0" + i;
+            else
+                codMnuRandom += i;
+            
+            cont = (buscar(codMnuRandom) != null) ? 
+                cont + 1 :
+                cont;
+        }
+        // se comprueba que se genera el producto correcto.
         assertEquals(
-            buscar,
-            buscar(codMnuRandom));
+            cont,
+            MenuADFactory
+                .getAccessMenu()
+                    .totalMenus());
     }
     /**Se comprueba el método equals
      * @see Producto equals()

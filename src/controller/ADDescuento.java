@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import controller.interfaces.Descontable;
 import datos.Descuento;
+import exceptions.GestorExcepciones;
 
 public class ADDescuento extends MasterConnection implements Descontable {
     /**Este método recibe como parámetro un objeto de tipo
@@ -16,9 +17,9 @@ public class ADDescuento extends MasterConnection implements Descontable {
      * tabla.
      */
     @Override
-    public void grabarDescuento(Descuento pDescuento) {
-        openConnection();   
+    public void grabarDescuento(Descuento pDescuento) throws GestorExcepciones {
         try {
+            openConnection();   
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pDescuento.getCodDsc());
             stmt.setFloat(2, pDescuento.getUsos());
@@ -26,26 +27,28 @@ public class ADDescuento extends MasterConnection implements Descontable {
             stmt.setObject(4, pDescuento.getFechaInicio());
             stmt.setObject(5, pDescuento.getFechaFin());
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
     /**Este método recibe como parámetro un String y lo introduce
      * en una sentencia SQL que lo borra de la tabla.
      * @param pCodDsc descuento a borrar de la base de datos.
      */
     @Override
-    public void borrarDescuento(String pCodDsc) {
-        openConnection();
+    public void borrarDescuento(String pCodDsc) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(borrar);
             stmt.setString(1, pCodDsc);
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
     /**Este método recibe como parámetro un Descuento, y prepara
      * una sentencia SQL para modificarlo de la base de datos.
@@ -53,9 +56,9 @@ public class ADDescuento extends MasterConnection implements Descontable {
      * @param pDescuento descuento que se modifica en las tablas.
      */
     @Override
-    public void modificarDescuento(Descuento pDescuento) {
-        openConnection();
+    public void modificarDescuento(Descuento pDescuento) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(modificar);
             stmt.setString(5, pDescuento.getCodDsc());
             stmt.setFloat(1, pDescuento.getUsos());
@@ -63,10 +66,11 @@ public class ADDescuento extends MasterConnection implements Descontable {
             stmt.setObject(3, pDescuento.getFechaInicio());
             stmt.setObject(4, pDescuento.getFechaFin());
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            // TODO tratar excepción.
+        } catch (GestorExcepciones | SQLException sqle) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
     /**Este método recibe como parámetro un codigo de descuento, 
      * y prepara una sentencia SQL que busca en la base de datos 
@@ -76,10 +80,10 @@ public class ADDescuento extends MasterConnection implements Descontable {
      * En caso de no encontrarlo, devuelve null.
     */
     @Override
-    public Descuento buscarDescuentoPorCodigo(String pCodDsc) {
+    public Descuento buscarDescuentoPorCodigo(String pCodDsc) throws GestorExcepciones {
         Descuento pDescuento = null;
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodDsc);
             rs = stmt.executeQuery();
@@ -91,10 +95,11 @@ public class ADDescuento extends MasterConnection implements Descontable {
                 rs.getFloat(3),
                 rs.getDate(4).toLocalDate(),
                 rs.getDate(5).toLocalDate());
-        } catch (SQLException e) {
-            //TODO: handle exception
+        } catch (GestorExcepciones | SQLException sqle) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
         return pDescuento;
     }
     /**Este método devuelve un TreeMap con todos los descuentos.
@@ -103,12 +108,12 @@ public class ADDescuento extends MasterConnection implements Descontable {
      * @return TreeMap con todos los descuentos de la base de datos.
      */
     @Override
-    public TreeMap <String, Descuento> listarDescuentos() {
+    public TreeMap <String, Descuento> listarDescuentos() throws GestorExcepciones {
         Descuento pDescuento = null;
         TreeMap <String, Descuento> pListaDescuentos = 
             new TreeMap<String, Descuento> ();
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(listarTodo);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -124,9 +129,11 @@ public class ADDescuento extends MasterConnection implements Descontable {
                     pDescuento);
             }
 
-        } catch (SQLException sqle) {
-            // TODO tratar la excepción.
-        }   
+        } catch (GestorExcepciones | SQLException sqle) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
+        }
         return pListaDescuentos;
     }
     /**Este método genera el código correspondiente al siguiente
@@ -134,7 +141,7 @@ public class ADDescuento extends MasterConnection implements Descontable {
      * @return String correspondiente al siguiente código.
     */
     @Override
-    public String generateCodigo() {
+    public String generateCodigo() throws GestorExcepciones {
         Set <String> keys = listarDescuentos().keySet();
 
         Optional <String> lastKey = 
@@ -163,7 +170,7 @@ public class ADDescuento extends MasterConnection implements Descontable {
      * @see MasterConnection
      */
     @Override
-    public int totalDescuentos() {
+    public int totalDescuentos() throws GestorExcepciones {
         return cantidadTotal("descuento");
     }
 

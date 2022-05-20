@@ -14,7 +14,6 @@ import datos.Menu;
 import controller.factorias.EstablecimientoADFactory;
 import controller.factorias.MenuADFactory;
 import controller.factorias.ProductoADFactory;
-import controller.factorias.UsuarieADFactory;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
