@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 import controller.factorias.UsuarieADFactory;
 import resources.fuentes.Fuentes;
 import users.Usuarie;
-import resources.fuentes.Fuentes;
 
 import java.awt.event.ActionEvent;
 
