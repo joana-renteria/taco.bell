@@ -8,14 +8,14 @@ import java.util.TreeMap;
 import controller.factorias.MenuADFactory;
 import controller.interfaces.Pedible;
 import datos.Pedido;
+import exceptions.GestorExcepciones;
 
 public class ADPedido extends MasterConnection implements Pedible {
 
     @Override
-    public void grabarPedido(Pedido pPedido) {
-        openConnection();
-
+    public void grabarPedido(Pedido pPedido) throws GestorExcepciones {
         try {
+        openConnection();
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pPedido.getCodPed());
             stmt.setString(2, pPedido.getCodCle());
@@ -25,32 +25,32 @@ public class ADPedido extends MasterConnection implements Pedible {
             stmt.setObject(6, pPedido.getFechaPed());
             // ejecución del comando.
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public void borrarPedido(String pCodPed) {
-        openConnection();
+    public void borrarPedido(String pCodPed) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(borrar);
             stmt.setString(1, pCodPed);
             // ejecución del comando.
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-
-        closeConnection();
     }
 
     @Override
-    public void modificarPedido(Pedido pPedido) {
-        openConnection();
-
+    public void modificarPedido(Pedido pPedido) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(modificar);
             stmt.setString(6, pPedido.getCodPed());
             stmt.setString(1, pPedido.getCodCle());
@@ -58,18 +58,19 @@ public class ADPedido extends MasterConnection implements Pedible {
             stmt.setString(3, pPedido.getMenu().getCodMnu());
             stmt.setString(4, pPedido.getCodEst());
             stmt.setObject(5, pPedido.getFechaPed());
-                stmt.executeUpdate();
-        } catch (SQLException esql) {
-            // TODO tratar excepción.
+            stmt.executeUpdate();
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
     @Override
-    public Pedido buscarPorCodigo(String pCodPed) {
-        openConnection();
+    public Pedido buscarPorCodigo(String pCodPed) throws GestorExcepciones {
         Pedido pPedido = null;
         try {
+            openConnection();
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodPed); 
             rs = stmt.executeQuery();
@@ -84,20 +85,21 @@ public class ADPedido extends MasterConnection implements Pedible {
                     .getAccessMenu()
                         .buscarMenuPorCodigo(
                             rs.getString(4)));
-        } catch (SQLException sqle) {
-            
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-            
         return pPedido;
     }
 
     @Override
-    public TreeMap <String, Pedido> listarPedidos() {
+    public TreeMap <String, Pedido> listarPedidos() throws GestorExcepciones {
         TreeMap <String, Pedido> pListaPedidos = 
             new TreeMap <String, Pedido>();
 
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(listarTodo);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -111,14 +113,16 @@ public class ADPedido extends MasterConnection implements Pedible {
                     rs.getString(5),
                     MenuADFactory.getAccessMenu().buscarMenuPorCodigo(rs.getString(4))));
             }
-        } catch (SQLException e) {
-            // TODO tratar la excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
         return pListaPedidos;
     }
 
     @Override
-    public String generateCodigo() {
+    public String generateCodigo() throws GestorExcepciones {
         Set <String> keys = listarPedidos().keySet();
 
         Optional <String> lastKey = 
@@ -143,7 +147,7 @@ public class ADPedido extends MasterConnection implements Pedible {
     }
 
     @Override
-    public int totalPedidos() {
+    public int totalPedidos() throws GestorExcepciones {
         return cantidadTotal("pedido");
     }
 
@@ -152,4 +156,5 @@ public class ADPedido extends MasterConnection implements Pedible {
     private final String modificar = "UPDATE pedido SET codCle = ?, codRep = ?, codMnu = ?, codEst = ?, fechaPed = ? WHERE codPed = ? ";
     private final String buscar = "SELECT * FROM pedido WHERE codPed = ?";
     private final String listarTodo = "SELECT * FROM pedido";
+
 }
