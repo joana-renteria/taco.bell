@@ -3,24 +3,30 @@ package tests;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.Random;
 import java.util.TreeMap;
 import java.time.LocalDate;
-
-import org.junit.Before;
 
 import org.junit.runner.RunWith;
 
 import datos.Descuento;
+import exceptions.GestorExcepciones;
 import controller.factorias.DescuentoADFactory;
 
 @RunWith(OrderedRunner.class)
 public class TestsADDescuento {
     // conservar el código del Descuento creado.
-    private final static String pCodDsc = 
-        DescuentoADFactory
+    private final static String pCodDsc = generateCodigo();
+    // se evita la excepcion con un método auxiliar.
+    private static String generateCodigo() {
+        try {
+            return DescuentoADFactory
             .getAccessDescuento()
                 .generateCodigo();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return "DE00000000";
+        }
+    }
     // un Descuento auxiliar.
     private Descuento descuento = null;
     /**Genera una lista con todos los descuentos.
@@ -28,34 +34,38 @@ public class TestsADDescuento {
      * método se genera de nuevo, por lo que 
      * siempre se mantiene actualizada.
      */
-    private TreeMap <String, Descuento> descuentos = 
-        DescuentoADFactory
-            .getAccessDescuento()
-                .listarDescuentos();
-    /**Método auxiliar que muestra la tabla. 
-    * Se ejecuta antes de cada test individual.
-    */
-    @Before
-    public void mostrarTablaCompleta() {
-        descuentos.values().stream()
-            .forEach(d -> System.out.println(d));
-        System.out.print("\n");
+    private TreeMap <String, Descuento> descuentos = listarDescuentos();
+    private TreeMap <String, Descuento> listarDescuentos() {
+        try {
+            return DescuentoADFactory
+                .getAccessDescuento()
+                    .listarDescuentos();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return new TreeMap <String, Descuento> ();
+        }
     }
     /**Un método auxiliar para ahorrar la sentencia.
      * Usando la factoría se busca el Descuento por código.
      * @param pCodDsc código del descuento a buscar.
      */
     private Descuento buscar(String pCodDsc) {
-        return DescuentoADFactory
-                .getAccessDescuento() // busqueda de un código.
-                    .buscarDescuentoPorCodigo(pCodDsc);
+        try {
+            return DescuentoADFactory
+                    .getAccessDescuento() // busqueda de un código.
+                        .buscarDescuentoPorCodigo(pCodDsc);
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return null;
+        }
     }
     /**Se comprueba la búsqueda de un descuento
      * en la base de datos. El código debe coincidir.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 0)
-    public void testBuscarDescuento() {
+    public void testBuscarDescuento() throws GestorExcepciones {
         // se calcula el número total de productos.
         int maxDescuentos = Integer.parseInt(
             pCodDsc.substring(2)),
@@ -110,10 +120,11 @@ public class TestsADDescuento {
     }
     /**Se añade un usuarie de prueba.
      * Después se comprueba que se ha grabado.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 2)
-    public void testAddDescuento() {
+    public void testAddDescuento() throws GestorExcepciones {
         // crear un descuento.
         descuento = 
             new Descuento(
@@ -131,10 +142,11 @@ public class TestsADDescuento {
     }
     /**Se comprueba que se puede modificar un Descuento 
      * por su código, y se cambia el creado antes (salvo código).
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 3)
-    public void testModificarDescuento() {
+    public void testModificarDescuento() throws GestorExcepciones {
         descuento = buscar(pCodDsc);
 
         assertNotNull(descuento);
@@ -153,10 +165,11 @@ public class TestsADDescuento {
     }
     /**De nuevo usando el creado antes se comprueba que 
      * se borra de forma efectiva de la base de datos.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 4)
-    public void testBorrarDescuento() {
+    public void testBorrarDescuento() throws GestorExcepciones {
         descuento = buscar(pCodDsc);
         
         assertNotNull(descuento);
@@ -181,10 +194,11 @@ public class TestsADDescuento {
     /**Se comprueba la generación del TreeMap
      * mirando el tamaño y comprobando todos los
      * elementos del mismo.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 5)
-    public void testListarDescuentos() {
+    public void testListarDescuentos() throws GestorExcepciones {
         int total = DescuentoADFactory
             .getAccessDescuento()
                 .totalDescuentos();
@@ -208,7 +222,6 @@ public class TestsADDescuento {
         descuentos.keySet().stream()
             .forEach(k -> {
                 assertTrue(descuentos.containsValue(buscar(k)));
-                System.out.println(descuentos.containsKey(k));
             });
     }
 

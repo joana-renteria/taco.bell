@@ -1,11 +1,11 @@
 package tests;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import java.util.TreeMap;
 
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import datos.Producto;
@@ -15,10 +15,19 @@ import controller.factorias.ProductoADFactory;
 @RunWith(OrderedRunner.class)
 public class TestADProducto {
     // conservar el código del Producto creado.
-    private final static String pCodPrd = 
-        ProductoADFactory
+    private final static String pCodPrd = generateCodigo();
+    // se trata la excepción del método generateCodigo().
+    private static String generateCodigo() {
+        try {
+            return ProductoADFactory
             .getAccessProductos()
                 .generateCodigo();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return "PR00000000";
+        }
+    }
+        
     // producto auxiliar.
     private Producto producto = null;
    /**Genera una lista con todos los descuentos.
@@ -26,40 +35,46 @@ public class TestADProducto {
      * método se genera de nuevo, por lo que 
      * siempre se mantiene actualizada.
      */
-    private TreeMap <String, Producto> productos = 
-        ProductoADFactory
-            .getAccessProductos()
-                .listarProductos();
-    /**Método auxiliar que muestra la tabla. 
-     * Se ejecuta antes de cada test individual.
-     */
-    @Before
-    public void mostrarTablaCompleta() {
-        productos.values().stream() 
-            .forEach(p -> System.out.println(p));
-        System.out.println("\n");
+    private TreeMap <String, Producto> productos = listarProductos();
+    // se trata la excepción del método listarProductos.
+    private TreeMap <String, Producto> listarProductos() {
+        try {
+            return ProductoADFactory
+                .getAccessProductos()
+                    .listarProductos();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return new TreeMap<String, Producto> ();
+        }
     }
     /**Un método auxiliar para ahorrar la sentencia.
      * Usando la factoría se busca el Producto por código.
      * @param pCodPrd
+     * @throws GestorExcepciones
      */
     private Producto buscar(String pCodPrd) {
-        return ProductoADFactory
+        try {
+            return ProductoADFactory
             .getAccessProductos()
                 .buscarProductoPorCodigo(pCodPrd);
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return null;
+        }
     }
     /**Se comprueba la búsqueda de un producto 
      * en la base de datos. El código coincide.
      */
     @Test/*
     @Order (order = 0)*/
-    public void testBuscarProducto() {
+    public void testBuscarProducto() throws GestorExcepciones {
         // se calcula el número total de productos.
         int maxProductos = Integer.parseInt(
             pCodPrd.substring(2)),
             cont = 0;
         // se genera un código aleatorio.
         String codPrdRandom = null;
+        
 
         for (int i = 1; i <= maxProductos; i++) {
             codPrdRandom = "PR000000";
@@ -115,10 +130,11 @@ public class TestADProducto {
     }
     /**Se añade un producto de prueba, y se comprueba que 
      * se ha grabado correctamente.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 2)
-    public void testAddProducto() {
+    public void testAddProducto() throws GestorExcepciones {
         String [] pIngredientes = {"Carne", "Queso", "Arroz", "Tomate"};
         producto = 
             new Producto(
@@ -131,17 +147,17 @@ public class TestADProducto {
         ProductoADFactory
             .getAccessProductos()
                 .grabarProducto(producto);
-        System.out.println(pCodPrd);
+
         // comprobar los cambios.
-        System.out.println(pCodPrd);
         assertEquals(buscar(pCodPrd), producto);
     }
     /**Se modifica el producto creado en el test
      * anterior (excepto el código).
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 3)
-    public void testModificarProducto() {
+    public void testModificarProducto() throws GestorExcepciones {
         producto = buscar(pCodPrd);
         
         assertNotNull(producto);
@@ -166,10 +182,11 @@ public class TestADProducto {
     }
     /**Se elimina el producto creado anteriormente
      * y se comprueba que ya no está almacenado.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 4)
-    public void testBorrarProducto() {
+    public void testBorrarProducto() throws GestorExcepciones {
         producto = buscar(pCodPrd);
 
         assertNotNull(producto);
@@ -194,10 +211,11 @@ public class TestADProducto {
     /**Se comprueba que el TreeMap se genera 
      * correctamente mirando el tamaño, y comprobando
      * todos los elementos..
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 5)
-    public void testListarProductos() {
+    public void testListarProductos() throws GestorExcepciones {
         int total = ProductoADFactory
             .getAccessProductos()
                 .totalProductos();
@@ -220,7 +238,6 @@ public class TestADProducto {
         productos.keySet().stream()
             .forEach(k -> {
                 assertTrue(productos.containsValue(buscar(k)));
-                System.out.println(productos.containsKey(k));
             });
     }
 }

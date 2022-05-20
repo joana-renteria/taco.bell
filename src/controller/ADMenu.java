@@ -39,6 +39,7 @@ public class ADMenu extends MasterConnection implements Menuable {
             throw new GestorExcepciones(3);
         } finally {
             closeConnection();
+           
         }
     }
 
@@ -55,13 +56,8 @@ public class ADMenu extends MasterConnection implements Menuable {
             stmt.setString(1, pMenu.getCodMnu());
                 stmt.executeUpdate();
 
-            for (int i = 0; i < 3; i++) {
-                stmt = con.prepareStatement(borrarNM);
-                stmt.setString(1, pMenu.getCodMnu());
-                stmt.setString(2, pMenu.getCodPrds()[i]);
-            }
-
         } catch (SQLException | GestorExcepciones e) {
+            e.printStackTrace();
             throw new GestorExcepciones(3);
         } finally {
             closeConnection();
@@ -75,6 +71,8 @@ public class ADMenu extends MasterConnection implements Menuable {
      */
     @Override
     public void modificarMenu(Menu pMenu) throws GestorExcepciones {
+        Menu pMenuAux = 
+                buscarMenuPorCodigo(pMenu.getCodMnu());
         try {
             openConnection();
             stmt = con.prepareStatement(modificar);
@@ -83,9 +81,6 @@ public class ADMenu extends MasterConnection implements Menuable {
             stmt.setString(3, pMenu.getNombre());
             stmt.setString(4, pMenu.getCodMnu());
                 stmt.executeUpdate();
-
-            Menu pMenuAux = 
-                buscarMenuPorCodigo(pMenu.getCodMnu());
 
             for (int i = 0; i < 3; i++) {
                 stmt = con.prepareStatement(modificarNM);

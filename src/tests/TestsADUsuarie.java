@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import users.*;
 import controller.factorias.UsuarieADFactory;
+import exceptions.GestorExcepciones;
 
 @RunWith(OrderedRunner.class)
 public class TestsADUsuarie {
@@ -32,10 +32,17 @@ public class TestsADUsuarie {
     /**Se genera un codigo de usuarie no existente previamente.
      * Después se harán las pruebas de la base de datos con el.
      */
-    private final static String pCodUsr = UsuarieADFactory
+    private final static String pCodUsr = generateCodigo();
+    private static String generateCodigo() {
+        try {
+            return UsuarieADFactory
             .getAccessUsuaries()
                 .generateCodigo(type[(int) (Math.random()*3)]);
-        //generateRandomUserCode(false);
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return "CL00000";
+        } 
+    }
     
     /**Se genera un usuario de tipo aleatorio. 
      * Después se grabará en la base de datos.
@@ -78,10 +85,6 @@ public class TestsADUsuarie {
                 new Adminstrador(pCodUsr, pPasswd, pNombre,
                 pApellido);
             break;
-
-            default :
-                System.out.println("Linea 116.");
-            break;
         }
         return u;
     }
@@ -92,32 +95,30 @@ public class TestsADUsuarie {
      * método se genera de nuevo. Siempre esta
      * actualizada.
      */
-    private static TreeMap <String, Usuarie> usuaries = 
-        UsuarieADFactory
-            .getAccessUsuaries()
-                .listarUsuaries();
-    /**Método auxiliar que muestra la tabla.
-     * Se ejecuta antes de cada tests individual.
-     * La tabla se muestra ordenada segun el número
-     * de usuarie, se comparan los códigos.
-     */
-    //@Before
-    public void mostrarTablaCompleta() {
-        usuaries.values().stream()
-            .sorted((u1, u2) -> 
-                u1.getCodUsr().substring(2).compareTo(
-                u2.getCodUsr().substring(2)))
-            .forEach(u -> System.out.println(u));
-        System.out.print("\n");
+    private static TreeMap <String, Usuarie> usuaries = listarUsuaries();
+    private static TreeMap <String, Usuarie> listarUsuaries() {
+        try {
+            return UsuarieADFactory
+                .getAccessUsuaries()
+                    .listarUsuaries();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return new TreeMap <String, Usuarie> ();
+        }
     }
     /**Un método especial para ahorrar toda la sentencia.
      * Usando la factoría, se busca en la base de datos.
      * @param pCodUsr
      */
     private static Usuarie buscar(String pCodUsr) {
-        return UsuarieADFactory
-            .getAccessUsuaries()
-                .buscarUsuarie(pCodUsr);
+        try {
+            return UsuarieADFactory
+                .getAccessUsuaries()
+                    .buscarUsuarie(pCodUsr);
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return null;
+        }
     }
     /**Se añade un usuario de prueba (Captain Beefheart.)
      * Después se busca y se muestra por pantalla.
@@ -142,11 +143,12 @@ public class TestsADUsuarie {
     /**Se usa un usuarie nuevo. Se instancia (de un tipo aleatorio)
      * y después se graba en la base de datos para despues comprobar 
      * que, efectivamente
+     * @throws GestorExcepciones
      * 
      */
     @Test
     @Order (order = 2)
-    public void testAddUsuarie() {
+    public void testAddUsuarie() throws GestorExcepciones {
         usuarie = null;
         usuarie = instanceUsuarie();
         // añadir a la base de datos.
@@ -159,10 +161,11 @@ public class TestsADUsuarie {
     }
     /**Se usa el usuarie creado antes para modificarlo
      * y testar los cambios.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 3)
-    public void testModificarUsuarie() {
+    public void testModificarUsuarie() throws GestorExcepciones {
         usuarie = buscar(pCodUsr);
         assertNotNull(usuarie);
         usuarie.setNombre("Frank Vincent");
@@ -179,10 +182,11 @@ public class TestsADUsuarie {
     }
     /**Se comprueba que el borrado de usuarie se hace 
      * de forma efectiva, usando el mismo objeto de antes.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 4)
-    public void testDeleteUsuarie() {
+    public void testDeleteUsuarie() throws GestorExcepciones {
         usuarie = buscar(pCodUsr);
         assertNotNull(usuarie);
         
@@ -195,9 +199,10 @@ public class TestsADUsuarie {
     /**Se comprueba que la lista de usauries generada es correcta,
      * y que los códigos del KeySet corresponden a los de los 
      * objetos.
+     * @throws GestorExcepciones
      */
     @Test
-    public void testListarUsuaries() {
+    public void testListarUsuaries() throws GestorExcepciones {
         int total = UsuarieADFactory
             .getAccessUsuaries()
                 .totalUsuaries();
@@ -214,11 +219,5 @@ public class TestsADUsuarie {
             usuaries.values().stream()
             .filter(u -> usuaries.keySet().contains(u.getCodUsr()))
             .count());
-        /*
-        int clavesCorrectas =
-            usuaries.keySet().stream()
-                .filter(k -> {
-                    usuaries.get(k).getCodUsr().sub
-                });*/
     }
 }
