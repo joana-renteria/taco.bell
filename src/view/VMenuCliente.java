@@ -78,7 +78,7 @@ public class VMenuCliente extends JDialog implements ActionListener{
 	public VMenuCliente(VLogin vL, Usuarie pCliente) {
 		super(vL,"Taco Bell", true);
 		vLogin = vL;
-		pCliente = pUsuarie;
+		pUsuarie = pCliente;
 
 		cargarTipografia();
 		this.setUndecorated(true);
@@ -333,6 +333,10 @@ public class VMenuCliente extends JDialog implements ActionListener{
 			}
 		});
 		
+	}
+
+	public static void volverLogin() {
+		vLogin.setVisible(true);
 	}
 
 	@Override
