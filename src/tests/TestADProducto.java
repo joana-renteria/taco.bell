@@ -52,26 +52,32 @@ public class TestADProducto {
     /**Se comprueba la búsqueda de un producto 
      * en la base de datos. El código coincide.
      */
-    @Test
-    @Order (order = 0)
+    /*@Test
+    @Order (order = 0)*/
     public void testBuscarProducto() {
         // se calcula el número total de productos.
         int totalProductos = ProductoADFactory
             .getAccessProductos()
                 .totalProductos(),
-            nProductoRandom = 
-            new Random().nextInt(totalProductos) + 1;
+            cont = 0;
         // se genera un código aleatorio.
-        String codPrdRandom = "PR000000" ;
+        String codPrdRandom = null;
+        
+        productos.keySet();
 
-        if (nProductoRandom < 10) 
-            codPrdRandom += "0" + nProductoRandom;
-        else
-            codPrdRandom += nProductoRandom;
+        for (int i = 1; i <= totalProductos; i++) {
+            codPrdRandom = "PR000000";
+            if (i < 10) 
+                codPrdRandom += "0" + i;
+            else
+                codPrdRandom += i;
+            
+            cont = (buscar(codPrdRandom) != null) ? 
+                cont + 1 :
+                cont;
+        }
         // se comprueba que se genera el producto correcto.
-        assertEquals(
-            codPrdRandom,
-            buscar(codPrdRandom).getCodPrd());
+        
     }
     /**Se comprueba que el método equals
      * @see Producto equals()
@@ -117,7 +123,7 @@ public class TestADProducto {
         producto = 
             new Producto(
             pCodPrd,
-            795/100, 
+            7, 
             "Quesarito y Taco",
             pIngredientes,
             "Comida");
@@ -125,7 +131,9 @@ public class TestADProducto {
         ProductoADFactory
             .getAccessProductos()
                 .grabarProducto(producto);
+        System.out.println(pCodPrd);
         // comprobar los cambios.
+        System.out.println(pCodPrd);
         assertEquals(buscar(pCodPrd), producto);
     }
     /**Se modifica el producto creado en el test

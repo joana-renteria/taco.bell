@@ -3,6 +3,8 @@ package controller;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 import controller.interfaces.Usuariable;
@@ -378,7 +380,20 @@ public class ADUsuarie extends MasterConnection implements Usuariable {
      */
     @Override
     public String generateCodigo(String pCodUsr) throws GestorExcepciones {
-        String numUsers = String.valueOf(totalUsuaries() + 1);
+        Set <String> keys = listarUsuaries().keySet();
+
+        Optional <String> lastKey = 
+            keys.stream()
+            .max((k1, k2) -> 
+                k1.substring(2)
+                .compareTo(k2.substring(2)));
+
+        int k = 0;
+
+        if (lastKey.isPresent())
+            k = Integer.parseInt(lastKey.get().substring(2));
+
+        String numUsers = String.valueOf(k + 1);
         for (int i = 0; i < 5 - numUsers.length(); i++) 
             pCodUsr += "0";
             

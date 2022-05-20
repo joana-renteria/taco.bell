@@ -1,6 +1,8 @@
 package controller;
 
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 import controller.interfaces.Establecimientable;
@@ -31,6 +33,10 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         }
     }
 
+    /**
+     * borra establecimiento por codigo
+     * @param pCodEst el codigo del establecimiento
+     */
     @Override
     public void borrarEstablecimiento(String pCodEst) throws GestorExcepciones {
         try {
@@ -47,6 +53,10 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         }
     }
 
+    /**
+     * modifica un establecimiento
+     * @param pEstablecimiento con los nuevos datos
+     */
     @Override
     public void modificarEstablecimiento(Establecimiento pEstablecimiento) throws GestorExcepciones {
         try {
@@ -63,6 +73,11 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         }
     }
 
+    /**
+     * busca establecimientos por su codigo
+     * @param pCodEst
+     * @return Establecimiento si lo encuentra, sino null
+     */
     @Override
     public Establecimiento buscarEstablecimientoPorCodigo(String pCodEst) throws GestorExcepciones {
         Establecimiento pEstablecimiento = null;
@@ -78,11 +93,14 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
                 rs.getString(3));
         } catch (SQLException | GestorExcepciones e) {
             throw new GestorExcepciones(3);
+        } catch (NullPointerException ne) {
+            throw new GestorExcepciones(404);
         } finally {
             closeConnection();
         }
         return pEstablecimiento;
     }
+
 
     @Override
     public TreeMap <String, Establecimiento> listarEstablecimientos() throws GestorExcepciones {
@@ -111,10 +129,28 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         return pListaEstablecientos;
     }
 
+    /**
+     * genera un codigo para un establecimiento
+     * busca entre todos y genera uno con el ultimo numero
+     * @return String el codigo generado con su respectivo prefijo
+     */
     @Override
     public String generateCodigo() throws GestorExcepciones {
+        Set <String> keys = listarEstablecimientos().keySet();
+
+        Optional <String> lastKey = 
+            keys.stream()
+            .max((k1, k2) -> 
+                k1.substring(2)
+                .compareTo(k2.substring(2)));
+
+        int k = 0;
+
+        if (lastKey.isPresent())
+            k = Integer.parseInt(lastKey.get().substring(2));
+
         String pCodEst = "ES";
-        String numEst = String.valueOf(totalEstablecimientos() + 1);
+        String numEst = String.valueOf(k + 1);
         for (int i = 0; i < 5 - numEst.length(); i++)
             pCodEst += "0";
 
@@ -123,6 +159,11 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         return pCodEst;
     }
 
+    /**
+     * numero total de establecimientos
+     * metodo ayudante
+     * @return int
+     */
     @Override
     public int totalEstablecimientos() throws GestorExcepciones {
         return cantidadTotal("establecimiento");

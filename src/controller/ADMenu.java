@@ -2,6 +2,8 @@ package controller;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 import controller.interfaces.Menuable;
@@ -11,6 +13,11 @@ import exceptions.GestorExcepciones;
 public class ADMenu extends MasterConnection implements Menuable {
 
     @Override
+    /**
+     * guarda un menu en la base de datos
+     * @param pMenu el menu con sus datos
+     * @throws GestorExcepciones
+     */
     public void grabarMenu(Menu pMenu) throws GestorExcepciones {
         try {
             openConnection();
@@ -35,6 +42,11 @@ public class ADMenu extends MasterConnection implements Menuable {
         }
     }
 
+    /**
+     * borra un menu en la base de datos
+     * @param pMenu el menu ha ser borrado
+     * @throws GestorExcepciones
+     */
     @Override
     public void borrarMenu(Menu pMenu) throws GestorExcepciones {
         try {
@@ -55,6 +67,11 @@ public class ADMenu extends MasterConnection implements Menuable {
         }
     }
 
+    /**
+     * modifica un menu en la base de datos
+     * @param pMenu el menu con sus datos actualizados
+     * @throws GestorExcepciones
+     */
     @Override
     public void modificarMenu(Menu pMenu) throws GestorExcepciones {
         try {
@@ -84,6 +101,11 @@ public class ADMenu extends MasterConnection implements Menuable {
         }
     }
 
+    /**
+     * devuelve un menu segun su codigo
+     * @param pCodMenu el codigo del menu
+     * @throws GestorExcepciones
+     */
     @Override
     public Menu buscarMenuPorCodigo(String pCodMnu) throws GestorExcepciones {
         Menu pMenu = null;
@@ -110,17 +132,29 @@ public class ADMenu extends MasterConnection implements Menuable {
         return pMenu;
     }
 
+    /**
+     * Devuelve los codigos de los productos de un menu
+     * @param pMenu el objeto menu
+     * @return String[] los distintos codigos de productos
+     * @throws GestorExcepciones
+     */
     @Override
     public String [] getCodigosProductos(Menu pMenu) throws GestorExcepciones {
         return getCodigosProductos(pMenu.getCodMnu());
     }
 
+    /**
+     * Devuelve los codigos de los productos de un menu
+     * @param pCodMnu el codigo del menu
+     * @return String[] los distintos codigos de productos
+     * @throws GestorExcepciones
+     */
     private String [] getCodigosProductos(String pCodMnu) throws GestorExcepciones {
         String [] codigosProductos = 
             new String [3];
 
         ResultSet rs2 = null;
-        /**Se crea un nuevo resultset para no sobreescribir el valor
+        /*Se crea un nuevo resultset para no sobreescribir el valor
          * del original. Dado que se va llamar a este método desde otro
          * que accede a datos, el valor contenido en el ResultSet común
          * a toda la clase podría ser sobreescrito, y para evitar esto
@@ -137,6 +171,8 @@ public class ADMenu extends MasterConnection implements Menuable {
 
         } catch (SQLException | GestorExcepciones e) {
             throw new GestorExcepciones(3);
+        } catch(NullPointerException ne) {
+            throw new GestorExcepciones(404);
         } finally {
             closeConnection();
         }
@@ -144,6 +180,11 @@ public class ADMenu extends MasterConnection implements Menuable {
     }
 
     @Override
+    /**
+     * Lista todos los menus
+     * @return TreeMap<String,Menu> el String es la clave primaria
+     * @throws GestorExcepciones
+     */
     public TreeMap <String, Menu> listarMenus() throws GestorExcepciones {
         Menu pMenu = null;
         
@@ -180,9 +221,27 @@ public class ADMenu extends MasterConnection implements Menuable {
     }
 
 	@Override
+    /**
+     * Genera codigo con su prefijo respectivo
+     * @return String
+     * @throws GestorExcepciones
+     */
 	public String generateCodigo() throws GestorExcepciones {
+        Set <String> keys = listarMenus().keySet();
+
+        Optional <String> lastKey = 
+            keys.stream()
+            .max((k1, k2) -> 
+                k1.substring(2)
+                .compareTo(k2.substring(2)));
+
+        int k = 0;
+
+        if (lastKey.isPresent())
+            k = Integer.parseInt(lastKey.get().substring(2));
+            
 		String pCodMnu = "ME";
-        String numMnu = String.valueOf(totalMenus() + 1);
+        String numMnu = String.valueOf(k + 1);
         for (int i = 0; i < 8 - numMnu.length(); i++)
             pCodMnu += "0";
 
@@ -192,6 +251,11 @@ public class ADMenu extends MasterConnection implements Menuable {
 	}
 
     @Override
+    /**
+     * Devuelve la cantidad total de menus
+     * @return int
+     * @throws GestorExcepciones
+     */
     public int totalMenus() throws GestorExcepciones {
         return cantidadTotal("menu");
     }
