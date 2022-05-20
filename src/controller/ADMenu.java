@@ -60,6 +60,7 @@ public class ADMenu extends MasterConnection implements Menuable {
                 stmt.setString(1, pMenu.getCodMnu());
                 stmt.setString(2, pMenu.getCodPrds()[i]);
             }
+
         } catch (SQLException | GestorExcepciones e) {
             throw new GestorExcepciones(3);
         } finally {
@@ -94,6 +95,7 @@ public class ADMenu extends MasterConnection implements Menuable {
                 stmt.setString(4, pMenuAux.getCodPrds()[i]);
                     stmt.executeUpdate();
             }    
+
         } catch (SQLException | GestorExcepciones e) {
             throw new GestorExcepciones(3);
         } finally {
@@ -124,6 +126,7 @@ public class ADMenu extends MasterConnection implements Menuable {
                 pCodPrds,
                 rs.getFloat(3),
                 rs.getString(4));
+
         } catch (SQLException | GestorExcepciones e) {
             throw new GestorExcepciones(3);
         } finally {
@@ -175,6 +178,7 @@ public class ADMenu extends MasterConnection implements Menuable {
             throw new GestorExcepciones(404);
         } finally {
             closeConnection();
+
         }
         return codigosProductos;
     }
@@ -212,6 +216,7 @@ public class ADMenu extends MasterConnection implements Menuable {
 
                 pProductos.put(pMenu.getCodMnu(), pMenu);
             }
+
         } catch (SQLException | GestorExcepciones e) {
             throw new GestorExcepciones(3);
         } finally {

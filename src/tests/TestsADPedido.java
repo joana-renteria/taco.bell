@@ -57,24 +57,30 @@ public class TestsADPedido {
     @Test
     @Order (order = 0)
     public void testBuscarPedido() {
-        int totalPedidos = PedidoADFactory
-            .getAccessPedido()
-                .totalPedidos(),
-            nPedidoRandom = 
-            new Random().nextInt(totalPedidos) + 1;
-        // se genera, pues, un código aleatorio.
-        String codPedRandom = "PE000000";
+        // se calcula el número total de productos.
+        int maxPedidos = Integer.parseInt(
+            pCodPed.substring(2)),
+            cont = 0;
+        // se genera un código aleatorio.
+        String codPedRandom = null;
 
-        if (nPedidoRandom < 10)
-            codPedRandom += "0" + nPedidoRandom;
-        else
-            codPedRandom += nPedidoRandom;
-
-        Pedido buscar = buscar(codPedRandom);
-        // se comprueban mediante una comparación.
+        for (int i = 1; i <= maxPedidos; i++) {
+            codPedRandom = "PE000000";
+            if (i < 10) 
+                codPedRandom += "0" + i;
+            else
+                codPedRandom += i;
+            
+            cont = (buscar(codPedRandom) != null) ? 
+                cont + 1 :
+                cont;
+        }
+        // se comprueba que se genera el producto correcto.
         assertEquals(
-            buscar,
-            buscar(codPedRandom));
+            cont,
+            PedidoADFactory
+                .getAccessPedido()
+                    .totalPedidos());
     }
    /**Se comprueba el método equals
     * @see Pedido equals()

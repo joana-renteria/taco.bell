@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import java.time.LocalDate;
 
 import org.junit.Before;
+
 import org.junit.runner.RunWith;
 
 import datos.Descuento;
@@ -55,23 +56,30 @@ public class TestsADDescuento {
     @Test
     @Order (order = 0)
     public void testBuscarDescuento() {
-        // calcular el número de descuentos.
-        int totalDescuentos = DescuentoADFactory
-            .getAccessDescuento()
-                .totalDescuentos(),
-            nDescuentoRandom = 
-            new Random().nextInt(totalDescuentos) + 1;
+        // se calcula el número total de productos.
+        int maxDescuentos = Integer.parseInt(
+            pCodDsc.substring(2)),
+            cont = 0;
         // se genera un código aleatorio.
-        String codDscRandom = "DE000000";
+        String codDscRandom = null;
 
-        if (nDescuentoRandom < 10) 
-            codDscRandom += "0" + nDescuentoRandom;
-        else
-            codDscRandom += nDescuentoRandom;
-        // se comprueba que se genera el descuento con el codigo.
+        for (int i = 1; i <= maxDescuentos; i++) {
+            codDscRandom = "DE000000";
+            if (i < 10) 
+                codDscRandom += "0" + i;
+            else
+                codDscRandom += i;
+            
+            cont = (buscar(codDscRandom) != null) ? 
+                cont + 1 :
+                cont;
+        }
+        // se comprueba que se genera el producto correcto.
         assertEquals(
-            codDscRandom,
-            buscar(codDscRandom).getCodDsc());
+            cont,
+            DescuentoADFactory
+                .getAccessDescuento()
+                    .totalDescuentos());
     }
     /**Se comprueba que el método equals
      * @see Descuento equals() 

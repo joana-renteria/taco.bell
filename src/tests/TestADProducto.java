@@ -3,7 +3,6 @@ package tests;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.Random;
 import java.util.TreeMap;
 
 import org.junit.Before;
@@ -52,20 +51,17 @@ public class TestADProducto {
     /**Se comprueba la búsqueda de un producto 
      * en la base de datos. El código coincide.
      */
-    /*@Test
+    @Test/*
     @Order (order = 0)*/
     public void testBuscarProducto() {
         // se calcula el número total de productos.
-        int totalProductos = ProductoADFactory
-            .getAccessProductos()
-                .totalProductos(),
+        int maxProductos = Integer.parseInt(
+            pCodPrd.substring(2)),
             cont = 0;
         // se genera un código aleatorio.
         String codPrdRandom = null;
-        
-        productos.keySet();
 
-        for (int i = 1; i <= totalProductos; i++) {
+        for (int i = 1; i <= maxProductos; i++) {
             codPrdRandom = "PR000000";
             if (i < 10) 
                 codPrdRandom += "0" + i;
@@ -77,7 +73,11 @@ public class TestADProducto {
                 cont;
         }
         // se comprueba que se genera el producto correcto.
-        
+        assertEquals(
+            cont,
+            ProductoADFactory
+                .getAccessProductos()
+                    .totalProductos());
     }
     /**Se comprueba que el método equals
      * @see Producto equals()
