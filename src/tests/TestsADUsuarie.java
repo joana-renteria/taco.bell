@@ -3,8 +3,9 @@ package tests;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
- 
-import java.util.Random;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import org.junit.Before;
@@ -23,50 +24,17 @@ public class TestsADUsuarie {
      * @return codigo de un Usuarie que se encuentra en la base 
      * de datos o no.
     */
-    private static String generateRandomUserCode(boolean is) {
-        // calcular el número total de usuaries.
-        int totalUsuaries = UsuarieADFactory
-            .getAccessUsuaries()
-                .totalUsuaries(),
-            nUsuarieRandom = 
-            new Random().nextInt(totalUsuaries) + 1;
-            // se genera un número de usuarie aleatorio..
-            String codUsuarie = "000";
-        /**Si se desea un código no existente, se devuelve el número
-         * correspondiente al siguiente usuarie con un código 
-         * aleatorio.
-         */
-        if (!is) {
-            if (totalUsuaries + 1 < 10)
-                codUsuarie += "0" + (totalUsuaries + 1);
-            else
-                codUsuarie += (totalUsuaries + 1);
-            
-            return type [(int) (Math.random()*4)] + codUsuarie;
-        }
-        /**Si se desea un codigo existente, se comprueba que este 
-         * se genera un numero existente y después se busca 
-         * el prefijo correspondiente, comprobando que existe.
-         */
-        else
-            if (nUsuarieRandom < 10)
-                codUsuarie += "0" + nUsuarieRandom;
-            else
-                codUsuarie += nUsuarieRandom;
+    private static String generateRandomUserCode() {
+        List <String> l = new ArrayList <String> (usuaries.keySet());
 
-        boolean salir = false;
-        for (int i = 0; i < type.length && !salir; i++) 
-            if (buscar(type[i] + codUsuarie) != null) {
-                codUsuarie = type[i] + codUsuarie;
-                salir = true;  
-            }    
-
-        return codUsuarie;
+        return l.get((int) (Math.random()*l.size()));
     }
     /**Se genera un codigo de usuarie no existente previamente.
      * Después se harán las pruebas de la base de datos con el.
      */
-    private final static String pCodUsr = generateRandomUserCode(false);
+    private final static String pCodUsr = UsuarieADFactory
+            .getAccessUsuaries()
+                .generateCodigo(type[(int) (Math.random()*3)]);
         //generateRandomUserCode(false);
     
     /**Se genera un usuario de tipo aleatorio. 
@@ -158,7 +126,7 @@ public class TestsADUsuarie {
     @Order (order = 0)
     public void testBuscarUsuarie() {
         // se genera un código aleatorio de un usuarie existente.
-        String pCodRandom = generateRandomUserCode(true);
+        String pCodRandom = generateRandomUserCode();
         usuarie = buscar(pCodRandom);
         // se comprueba que se ha devuelto un usuarie.
         assertNotNull(usuarie);

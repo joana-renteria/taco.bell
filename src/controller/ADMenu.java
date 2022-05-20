@@ -31,7 +31,7 @@ public class ADMenu extends MasterConnection implements Menuable {
             }
 
         } catch (SQLException sqle) {
-            // TODO tratar excepción.
+            sqle.printStackTrace();
         }
         closeConnection();
     }
@@ -51,7 +51,7 @@ public class ADMenu extends MasterConnection implements Menuable {
             }
 
         } catch (SQLException sqle) {
-            // TODO tratar excepción.
+            sqle.printStackTrace();
         }
         closeConnection();
     }
@@ -79,7 +79,7 @@ public class ADMenu extends MasterConnection implements Menuable {
                     stmt.executeUpdate();
             }    
         } catch (SQLException sqle) {
-            System.out.println("fallo leyendo los menus");
+            sqle.printStackTrace();
         }
 
         closeConnection();
@@ -104,8 +104,8 @@ public class ADMenu extends MasterConnection implements Menuable {
                 rs.getFloat(3),
                 rs.getString(4));
 
-        } catch (SQLException e) {
-            // TODO: handle exception
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
         closeConnection();
         return pMenu;
@@ -136,9 +136,8 @@ public class ADMenu extends MasterConnection implements Menuable {
             for (int i = 0; i < codigosProductos.length && rs2.next(); i++) 
                 codigosProductos[i] = rs2.getString(1);
             
-        } catch (SQLException sle) {
-            //TODO: handle exception.
-            System.out.println("wtf");
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
         closeConnection();
         return codigosProductos;
@@ -174,7 +173,7 @@ public class ADMenu extends MasterConnection implements Menuable {
             }
             
         } catch (SQLException sqle) {
-            // TODO: handle exception
+            sqle.printStackTrace();
         }
         closeConnection();
         
