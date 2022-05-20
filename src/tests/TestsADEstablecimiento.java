@@ -3,22 +3,29 @@ package tests;
 import org.junit.Test;
 import static org.junit.Assert.*;
  
-import java.util.Random;
 import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import datos.Establecimiento;
+import exceptions.GestorExcepciones;
 import controller.factorias.EstablecimientoADFactory;
 
 @RunWith(OrderedRunner.class)
 public class TestsADEstablecimiento {
     // conservar el código del Establecimiento creado.
-    private final static String pCodEst = 
-        EstablecimientoADFactory
-            .getAccessEstablecimiento()
-                .generateCodigo();
+    private final static String pCodEst = generateCodigo();
+    private static String generateCodigo() {
+         try {
+            return EstablecimientoADFactory
+                .getAccessEstablecimiento()
+                    .generateCodigo();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return "ES00000";
+        }
+    }
     // un objeto Establecimiento auxiliar.
     private Establecimiento establecimiento = null;
     /**Genera una lista con todos los establecimientos.
@@ -27,33 +34,38 @@ public class TestsADEstablecimiento {
      * siempre se mantiene actualizada.
      */
     private TreeMap <String, Establecimiento> establecimientos = 
-        EstablecimientoADFactory
+        listarEsablecimientos();
+    private TreeMap <String, Establecimiento> listarEsablecimientos() {
+        try {
+            return EstablecimientoADFactory
             .getAccessEstablecimiento()
                 .listarEstablecimientos();
-    /**Método auxiliar que muestra la tabla.
-     * Se ejecuta antes de cada test individual.
-     */
-    @Before
-    public void mostrarTablaCompleta() {
-        establecimientos.values().stream()
-            .forEach(e -> System.out.println(e));
-        System.out.print("\n");
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return new TreeMap <String, Establecimiento>  ();
+        }
     }
     /**Un método auxiliar para ahorrarnos la sentencia.
      * Usando la factoría se busca el Establecimiento por código.
      * @param pCodEst
      */
     public Establecimiento buscar(String pCodEst) {
-        return EstablecimientoADFactory
-            .getAccessEstablecimiento()
-                .buscarEstablecimientoPorCodigo(pCodEst);
+        try {
+            return EstablecimientoADFactory
+                .getAccessEstablecimiento()
+                    .buscarEstablecimientoPorCodigo(pCodEst);
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return null;
+        }
     }
     /**Se comprueba la búsqueda de un Establecimiento en 
      * la base de datos.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 0)
-    public void testBuscarEstablecimiento() {
+    public void testBuscarEstablecimiento() throws GestorExcepciones {
         // se calcula el número total de productos.
         int maxEstablecimientos = Integer.parseInt(
             pCodEst.substring(2)),
@@ -102,10 +114,11 @@ public class TestsADEstablecimiento {
     }
     /**Se añade un descuento de prueba. 
      * Después se comprueba que se ha grabado.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 2)
-    public void testAddEstablecimiento() {
+    public void testAddEstablecimiento() throws GestorExcepciones {
         // crear un establecimiento con datos.
         establecimiento = 
             new Establecimiento(
@@ -121,10 +134,11 @@ public class TestsADEstablecimiento {
     }
     /**Se comprueba que se puede modificar un Establecimiento
      * por su código, y se cambia el creado antes (salvo su código)
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 3)
-    public void testModificarEstablecimiento() {
+    public void testModificarEstablecimiento() throws GestorExcepciones {
         establecimiento = buscar(pCodEst);
 
         assertNotNull(establecimiento);
@@ -141,10 +155,11 @@ public class TestsADEstablecimiento {
     }
     /**Se vuelve a utilizar el modificado antes para poder 
      * verificar que se puede borrar de forma efectiva.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 4)
-    public void testBorrarEstablecimiento() {
+    public void testBorrarEstablecimiento() throws GestorExcepciones {
         establecimiento = buscar(pCodEst);
 
         assertNotNull(establecimiento);
@@ -169,10 +184,11 @@ public class TestsADEstablecimiento {
     /**Ser revisa que la lista generada
      * no tiene ningún error revisando 
      * los elementos que contiene.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 5)
-    public void testListarEstablecimientos() {
+    public void testListarEstablecimientos() throws GestorExcepciones {
         int total = EstablecimientoADFactory
             .getAccessEstablecimiento()
                 .totalEstablecimientos();

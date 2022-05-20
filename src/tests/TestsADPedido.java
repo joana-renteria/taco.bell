@@ -4,23 +4,30 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
-import java.util.Random;
 import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import datos.Pedido;
+import exceptions.GestorExcepciones;
 import controller.factorias.MenuADFactory;
 import controller.factorias.PedidoADFactory;
 
 @RunWith(OrderedRunner.class)
 public class TestsADPedido {
     // conservar el código del Pedido creado.
-    private final static String pCodPed = 
-        PedidoADFactory
-            .getAccessPedido()
-                .generateCodigo();
+    private final static String pCodPed = generateCodigo();
+    private static String generateCodigo() {
+        try {
+            return PedidoADFactory
+                .getAccessPedido()
+                    .generateCodigo();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return "PE00000000";
+        }
+    }
     // pedido auxiliar.
     private Pedido pedido = null;
     /**Genera un TreeMap con todos los pedidos de la tabla.
@@ -28,10 +35,18 @@ public class TestsADPedido {
      * se genera de nuevo, por lo que siempre
      * se encuentra actualizada.
      */
-    private TreeMap <String, Pedido> pedidos = 
-         PedidoADFactory
+    private TreeMap <String, Pedido> pedidos = listarPedidos();
+         
+    private TreeMap <String, Pedido> listarPedidos() {
+        try {
+            return PedidoADFactory
             .getAccessPedido()
                 .listarPedidos();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return new TreeMap <String, Pedido> ();
+        }
+    }
     /**Método auxiliar que muestra la tabla.
      * Se ejecuta antes de cada test. // TODO: borrarlo.
      */
@@ -47,16 +62,22 @@ public class TestsADPedido {
      * @param pCodPed
      */
     public Pedido buscar(String pCodPed) {
-        return PedidoADFactory
-            .getAccessPedido()
-                .buscarPorCodigo(pCodPed);
+        try {
+            return PedidoADFactory
+                .getAccessPedido()
+                    .buscarPorCodigo(pCodPed);
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return null;
+        }
     }
     /**Se comprueba que la búsqueda de un producto elegido
      * de forma aleatoria funciona de la forma esperada.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 0)
-    public void testBuscarPedido() {
+    public void testBuscarPedido() throws GestorExcepciones {
         // se calcula el número total de productos.
         int maxPedidos = Integer.parseInt(
             pCodPed.substring(2)),
@@ -83,11 +104,12 @@ public class TestsADPedido {
                     .totalPedidos());
     }
    /**Se comprueba el método equals
+ * @throws GestorExcepciones
     * @see Pedido equals()
     */
     @Test
     @Order (order = 1)
-    public void testEqualsPedido() {
+    public void testEqualsPedido() throws GestorExcepciones {
         /**Los códigos del cliente, el establecimiento y 
          * el repartidor deben existir en la base de datos.
          */
@@ -116,17 +138,18 @@ public class TestsADPedido {
         assertTrue(pedido.equals(pedido2));
     }
     /**Se testa el grabado en la base de datos.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 2)
-    public void testAddPedido() {
+    public void testAddPedido() throws GestorExcepciones {
         // crear un pedido con datos.
         pedido = 
             new Pedido(
             pCodPed,
             LocalDate.now(),
             "CL00004",
-            "RE00003",
+            "RE00007",
             "ES00001",
             MenuADFactory
                 .getAccessMenu()
@@ -140,10 +163,11 @@ public class TestsADPedido {
     }
     /**Se usa el pedido anterior, y se modifica en la base
      * de datos, para después comprobar que ha cambiado.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 3)
-    public void testModificarPedido() {
+    public void testModificarPedido() throws GestorExcepciones {
         pedido = buscar(pCodPed);
         
         assertNotNull(pedido);
@@ -160,7 +184,7 @@ public class TestsADPedido {
     }
     @Test
     @Order (order = 4)
-    public void testDeletePedido() {
+    public void testDeletePedido() throws GestorExcepciones {
         pedido = buscar(pCodPed);
         
         assertNotNull(pedido);
@@ -187,10 +211,11 @@ public class TestsADPedido {
     /**Se comprueba que se genera el TreeMap de forma correcta,
      * y que se incluyen todos los elementos, con el par de 
      * objeto y código.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 5)
-    public void testListarPedidos() {
+    public void testListarPedidos() throws GestorExcepciones {
         int total = PedidoADFactory
             .getAccessPedido()
                 .totalPedidos();

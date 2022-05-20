@@ -3,22 +3,28 @@ package tests;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import java.util.Random;
 import java.util.TreeMap;
 
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import datos.Menu;
+import exceptions.GestorExcepciones;
 import controller.factorias.MenuADFactory;
 
 @RunWith(OrderedRunner.class)
 public class TestsADMenu {
     // conservar el código del Menu creado.
-    private final static String pCodMnu = 
-        MenuADFactory
-            .getAccessMenu()
-                .generateCodigo();
+    private final static String pCodMnu = generateCodigo();
+    private static String generateCodigo() {
+        try {
+            return MenuADFactory
+                .getAccessMenu()
+                    .generateCodigo();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return "ME00000000";
+        }
+    }
     // producto auxiliar.
     private Menu menu = null;
     /**Genera un TreeMap con todos los menus.
@@ -26,34 +32,39 @@ public class TestsADMenu {
      * se genera de nuevo, por lo que siempre
      * se encuentra actualizada.
      */
-    private TreeMap <String, Menu> menus = 
-        MenuADFactory
-            .getAccessMenu()
-                .listarMenus();
-    /**Método auxiliar que muestra ala tabla.
-     * Se ejecuta antes de cada test individual.
-     */
-    @Before
-    public void mostrarTablaCompleta() {
-        menus.values().stream()
-            .forEach(m -> System.out.println(m));
-        System.out.print("\n");
+    private TreeMap <String, Menu> menus = listarMenus();
+        
+    private TreeMap <String, Menu> listarMenus() {
+        try {
+            return MenuADFactory
+                .getAccessMenu()
+                    .listarMenus();
+        } catch (GestorExcepciones ge) {
+            System.out.println(ge.getFullMsg());
+            return new TreeMap <String, Menu> ();
+        }
     }
     /**Método auxiliar para ahorrar la sentencia de búsqueda.
      * Se usa la factoría, y se busca el Menu por código.
      * @param pCodMnu
      */
     private Menu buscar(String pCodMnu) {
-        return MenuADFactory
-            .getAccessMenu()
-                .buscarMenuPorCodigo(pCodMnu);
+        try {
+            return MenuADFactory
+                .getAccessMenu()
+                    .buscarMenuPorCodigo(pCodMnu);
+        } catch (GestorExcepciones ge) {
+            System.out.println("No encontrada");
+            return null;
+        }
     }
     /**Se comprueba que la búsqueda de un producto
      * en la base de datos funciona bien. Se mira el código.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 0)
-    public void testBuscarMenu() {
+    public void testBuscarMenu() throws GestorExcepciones {
         // se calcula el número total de productos.
         int maxMenus = Integer.parseInt(
             pCodMnu.substring(2)),
@@ -113,17 +124,18 @@ public class TestsADMenu {
         assertTrue(menu2.equals(menu));
     }
     /** Se testa el grabado de datos.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 2)
-    public void testAddMenu() {
+    public void testAddMenu() throws GestorExcepciones {
         // crear un establecimiento con datos.
         String[] pCodPrds = 
         {"PR00000004", "PR00000003", "PR00000007"};
         menu = 
             new Menu(
             pCodMnu,
-            "DE00000002",
+            "DE00000001",
             pCodPrds,
             (float) 186161,
             "Comida Mexicana Estereotipica");
@@ -136,10 +148,11 @@ public class TestsADMenu {
     }
     /**Se modifica el menu del test anterior, salvo su 
      * codigo, y se verifica que ha cambiado.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 3)
-    public void testModificarMenu() {
+    public void testModificarMenu() throws GestorExcepciones {
         menu = buscar(pCodMnu);
 
         assertNotNull(buscar(pCodMnu));
@@ -158,13 +171,13 @@ public class TestsADMenu {
     }
     /**Se elimina, y se observa que ya no 
      * está en la tabla.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 4)
-    public void testDeleteMenu() {
+    public void testDeleteMenu() throws GestorExcepciones {
         menu = buscar(pCodMnu);
 
-        System.out.println(pCodMnu);
         assertNotNull(menu);
         assertEquals(pCodMnu, menu.getCodMnu());
         // conservar la cantidad de menus total.
@@ -187,10 +200,11 @@ public class TestsADMenu {
     /**Se comprueba el TreeMap, y se observa que 
      * se genera correctamente mirando el tamaño
      * y sus elementos.
+     * @throws GestorExcepciones
      */
     @Test
     @Order (order = 5)
-    public void testListarMenus() {
+    public void testListarMenus() throws GestorExcepciones {
         int total = MenuADFactory
             .getAccessMenu()
                 .totalMenus();
