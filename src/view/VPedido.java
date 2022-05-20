@@ -70,14 +70,17 @@ public class VPedido extends JDialog implements ActionListener {
 	private static JButton btnBebida;
 	private JButton btnPedir;
 	private JScrollPane scrollPane;
-	private TreeMap<String,Establecimiento> listado;
+	private TreeMap<String, Establecimiento> listado;
 	private JComboBox<String> comboEstablecimiento;
 	private JTable table;
-	private String titulos[] = { "", "", ""};
+	private String titulos[] = { "", "", "" };
 	private static Point point = new Point(0, 0);
-	private ImageIcon icon = new ImageIcon(getClass().getResource("/resources/icon_aperitivos.png"));
+	private ImageIcon icon1 = new ImageIcon(getClass().getResource("/resources/icon_placeholder_menu.png"));
+	private ImageIcon icon2 = new ImageIcon(getClass().getResource("/resources/icon_placeholder_comida.png"));
+	private ImageIcon icon3 = new ImageIcon(getClass().getResource("/resources/icon_placeholder_aperitivo.png"));
+	private ImageIcon icon4 = new ImageIcon(getClass().getResource("/resources/icon_placeholder_bebida.png"));
 
-	//private float descuento = 0;
+	// private float descuento = 0;
 	private float precioTotal = 0;
 
 	private ArrayList<Menu> carritoMenus;
@@ -95,7 +98,7 @@ public class VPedido extends JDialog implements ActionListener {
 	public static void main(String[] args) {
 		try {
 			cargarTipografia();
-			VPedido dialog = new VPedido(null,null);
+			VPedido dialog = new VPedido(null, null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -112,13 +115,13 @@ public class VPedido extends JDialog implements ActionListener {
 		fe.cargarTipografia();
 	}
 
-	
 	/**
 	 * Actualizar pedido actual segun listas
 	 *
-	 * <p> Lee la listas de productos y menus y devuelve una tabla con el listado.
+	 * <p>
+	 * Lee la listas de productos y menus y devuelve una tabla con el listado.
 	 *
-	 * @return	tabla con listado de pedidos
+	 * @return tabla con listado de pedidos
 	 */
 	private JTable actualizarPedido() {
 		Object[][] listadoCarrito = null;
@@ -135,26 +138,26 @@ public class VPedido extends JDialog implements ActionListener {
 		int menuSize = carritoMenus.size();
 		listadoCarrito = new Object[listSize][2];
 
-		for(int i = 0; i < listSize; i++) {
-			if(i > menuSize) {
+		for (int i = 0; i < listSize; i++) {
+			if (i > menuSize) {
 				listadoCarrito[i][0] = carritoMenus.get(i).getNombre();
 				listadoCarrito[i][1] = carritoMenus.get(i).getPrecio();
 			} else {
-				listadoCarrito[i][0] = carritoProductos.get(i-menuSize).getNombre();
-				listadoCarrito[i][1] = carritoProductos.get(i-menuSize).getPrecio();
+				listadoCarrito[i][0] = carritoProductos.get(i - menuSize).getNombre();
+				listadoCarrito[i][1] = carritoProductos.get(i - menuSize).getPrecio();
 			}
 		}
 
 		precioTotal = precioMenus + precioProductos;
 
-		return null; //provisional
+		return null; // provisional
 	}
 
 	/**
 	 * Create the dialog.
 	 */
 	public VPedido(JDialog vMC, Usuarie pUsuarie) {
-		super(vMC,"Taco Bell",true);
+		super(vMC, "Taco Bell", true);
 		setUndecorated(true);
 		vMenuMenu = vMC;
 
@@ -198,6 +201,7 @@ public class VPedido extends JDialog implements ActionListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnAtras.setBackground(new Color(98, 18, 141));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnAtras.setBackground(colorMoradoClaro);
 			}
@@ -222,6 +226,7 @@ public class VPedido extends JDialog implements ActionListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnMenus.setBackground(new Color(98, 18, 141));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnMenus.setBackground(colorMoradoClaro);
 			}
@@ -245,6 +250,7 @@ public class VPedido extends JDialog implements ActionListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnComida.setBackground(new Color(98, 18, 141));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnComida.setBackground(colorMoradoClaro);
 			}
@@ -269,6 +275,7 @@ public class VPedido extends JDialog implements ActionListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnAperitivos.setBackground(new Color(98, 18, 141));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnAperitivos.setBackground(colorMoradoClaro);
 			}
@@ -292,6 +299,7 @@ public class VPedido extends JDialog implements ActionListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnBebida.setBackground(new Color(98, 18, 141));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnBebida.setBackground(colorMoradoClaro);
 			}
@@ -326,6 +334,7 @@ public class VPedido extends JDialog implements ActionListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnPedir.setBackground(new Color(10, 160, 112));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnPedir.setBackground(colorVerdeClaro);
 			}
@@ -335,21 +344,21 @@ public class VPedido extends JDialog implements ActionListener {
 		panelSeleccion.setBounds(10, 26, 300, 396);
 		panelPedido.add(panelSeleccion);
 		panelSeleccion.setLayout(null);
-		
+
 		JPanel panelTextDescuento = new JPanel();
 		panelTextDescuento.setBounds(10, 348, 182, 37);
 		panelSeleccion.add(panelTextDescuento);
 		panelTextDescuento.setLayout(new BoxLayout(panelTextDescuento, BoxLayout.Y_AXIS));
-		
+
 		textDescuento = new JTextField();
 		textDescuento.setBorder(null);
 		textDescuento.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 20));
 		panelTextDescuento.add(textDescuento);
 		textDescuento.setColumns(10);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		panelTextDescuento.add(separator_1);
-		
+
 		JButton btnDescuento = new JButton("OK");
 		btnDescuento.setActionCommand("OK");
 		btnDescuento.setForeground(Color.WHITE);
@@ -358,20 +367,26 @@ public class VPedido extends JDialog implements ActionListener {
 		btnDescuento.setBackground(new Color(30, 180, 132));
 		btnDescuento.setBounds(209, 348, 81, 37);
 		panelSeleccion.add(btnDescuento);
-		
+
 		JLabel lblEstablecimiento = new JLabel("Establecimiento");
 		lblEstablecimiento.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 20));
 		lblEstablecimiento.setBounds(10, 310, 145, 27);
 		panelSeleccion.add(lblEstablecimiento);
-		
+
 		comboEstablecimiento = new JComboBox<>();
 		comboEstablecimiento.setBounds(165, 310, 125, 27);
 		panelSeleccion.add(comboEstablecimiento);
-		listado = EstablecimientoADFactory.getAccessEstablecimiento().listarEstablecimientos();
+		try {
+			listado = EstablecimientoADFactory.getAccessEstablecimiento().listarEstablecimientos();
+		} catch (GestorExcepciones ex) {
+			JOptionPane.showMessageDialog(this,
+					ex.getMsg(),
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
+		}
 		for (Establecimiento e : listado.values()) {
 			comboEstablecimiento.addItem(e.getNombre());
 		}
-		
 
 		JPanel panelDescuento = new JPanel();
 		panelDescuento.setBounds(10, 401, 300, 54);
@@ -410,6 +425,7 @@ public class VPedido extends JDialog implements ActionListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
 			}
@@ -432,13 +448,7 @@ public class VPedido extends JDialog implements ActionListener {
 		panelProductos.add(scrollPane);
 
 		table = actualizarTabla(0);
-		table.setSelectionBackground(colorMoradoClaro);
-		table.setSelectionForeground(Color.WHITE);
-		table.setRowMargin(0);
-		table.setRowHeight(25);
-		table.setShowVerticalLines(false);
-		table.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 12));
-		table.setDefaultRenderer(Object.class, new IconCellRender());
+		refreshTabla();
 		scrollPane.setViewportView(table);
 		JTableHeader tableHeader = table.getTableHeader();
 		tableHeader.setBackground(colorVerdeClaro);
@@ -450,22 +460,22 @@ public class VPedido extends JDialog implements ActionListener {
 
 	private JTable actualizarTabla(int x) {
 		try {
-		switch (x) {
-			case 1:// Menús
+			switch (x) {
+				case 1:// Menús
 					return cargarDatos(0);
-				
-			case 2:// Comida
-				return cargarDatos(1);
-			case 3:// Aperitivos
-				return cargarDatos(2);
-			default:// Bebida
-				return cargarDatos(3);
-		}
-	}catch (GestorExcepciones e) { // TODO Excepción bien
-		JOptionPane.showMessageDialog(this,
-		e.getMessage(),
-		"Warning",
-		JOptionPane.WARNING_MESSAGE);
+
+				case 2:// Comida
+					return cargarDatos(1);
+				case 3:// Aperitivos
+					return cargarDatos(2);
+				default:// Bebida
+					return cargarDatos(3);
+			}
+		} catch (GestorExcepciones e) { // TODO Excepción bien
+			JOptionPane.showMessageDialog(this,
+					e.getMessage(),
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 	}
@@ -474,74 +484,73 @@ public class VPedido extends JDialog implements ActionListener {
 		table.setSelectionBackground(colorMoradoClaro);
 		table.setSelectionForeground(Color.WHITE);
 		table.setRowMargin(0);
-		table.setRowHeight(25);
-		table.setShowVerticalLines(false);
-		table.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 12));
+		table.setRowHeight(225);
+		table.setShowVerticalLines(true);
+		table.setDefaultRenderer(Object.class, new IconCellRender());
+		table.getColumnModel().getColumn(2).setWidth(1);
+		table.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 26));
 		scrollPane.setViewportView(table);
 	}
 
 	/**
 	 * Carga de selecciones para los distintos menus
 	 *
-	 * <p> Necesario para cargar los distintos productos/menus disponibles segun pestaña elegida.
+	 * <p>
+	 * Necesario para cargar los distintos productos/menus disponibles segun pestaña
+	 * elegida.
 	 *
-	 * @param menu	indica la pestaña seleccionada
-	 * @return	tabla con los productos disponibles
-	 * @throws GestorExcepciones 
+	 * @param menu indica la pestaña seleccionada
+	 * @return tabla con los productos disponibles
+	 * @throws GestorExcepciones
 	 */
 	private JTable cargarDatos(int menu) throws GestorExcepciones {
 
-		List<NombrePrecio<String,Float>> nombrePrecio = null;
-    
+		List<NombrePrecio<String, Float>> nombrePrecio = null;
+
 		// menus
-		if(menu == 0) {
+		if (menu == 0) {
 			Collection<Menu> menues = MenuADFactory.getAccessMenu().listarMenus().values();
 			nombrePrecio = menues.stream()
-					.map(p -> 
-					new NombrePrecio(p.getNombre(), p.getPrecio()))
+					.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
 					.collect(Collectors.toList());
-		}
-		else {
+		} else {
 			Collection<Producto> productos = ProductoADFactory.getAccessProductos().listarProductos().values();
 			// comida
-			if(menu == 1) {
+			if (menu == 1) {
 				nombrePrecio = productos.stream()
 						.filter(p -> p.getTipo().equals("Comida"))
-						.map(p -> 
-							new NombrePrecio(p.getNombre(), p.getPrecio()))
+						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
 						.collect(Collectors.toList());
 			}
 			// aperitivos
-			else if(menu == 2) {
+			else if (menu == 2) {
 				nombrePrecio = productos.stream()
-						.filter(p -> p.getTipo().equals("Aperitivos"))
-						.map(p -> 
-							new NombrePrecio(p.getNombre(), p.getPrecio()))
+						.filter(p -> p.getTipo().equals("Aperitivo"))
+						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
 						.collect(Collectors.toList());
 			}
 			// bebidas
-			else if(menu == 3) {
+			else if (menu == 3) {
 				nombrePrecio = productos.stream()
 						.filter(p -> p.getTipo().equals("Bebida"))
-						.map(p -> 
-							new NombrePrecio(p.getNombre(), p.getPrecio()))
+						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
 						.collect(Collectors.toList());
 			}
 			// error
-			else throw new GestorExcepciones(011);
+			else
+				throw new GestorExcepciones(011);
 		}
 
 		Object[][] listado = new Object[nombrePrecio.size()][3];
-		for(int i = 0; i < nombrePrecio.size(); i++) {
-			listado[i][0] = new JLabel(icon);
-			listado[i][1] = nombrePrecio.get(i).getFst()+"€";
-			listado[i][2] = nombrePrecio.get(i).getSnd()+"€";
+		for (int i = 0; i < nombrePrecio.size(); i++) {
+			listado[i][0] = new JLabel((menu==0)?icon1:(menu==1)?icon2:(menu==2)?icon3:icon4);
+			listado[i][1] = nombrePrecio.get(i).getFst();
+			listado[i][2] = nombrePrecio.get(i).getSnd() + "€";
 		}
-		String[] titulo = {"","",""};
+		String[] titulo = { "", "", "" };
 
-		return new JTable(listado, titulo);	
+		return new JTable(listado, titulo);
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -570,17 +579,17 @@ public class VPedido extends JDialog implements ActionListener {
 			refreshTabla();
 		}
 		if (e.getSource().equals(btnPedir)) {
-			Optional <Establecimiento> est = 
-			listado.values().stream()
-			.filter(estab -> 
-			estab.getNombre().equalsIgnoreCase((String)comboEstablecimiento.getSelectedItem())).findFirst();
+			Optional<Establecimiento> est = listado.values().stream()
+					.filter(estab -> estab.getNombre()
+							.equalsIgnoreCase((String) comboEstablecimiento.getSelectedItem()))
+					.findFirst();
 
-		if (est.isPresent()) {
-			JOptionPane.showMessageDialog(this,
-			est.get().getCodEst(),
-							"Warning",
-							JOptionPane.WARNING_MESSAGE);
-		}
+			if (est.isPresent()) {
+				JOptionPane.showMessageDialog(this,
+						est.get().getCodEst(),
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 }
