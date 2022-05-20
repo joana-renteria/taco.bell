@@ -133,7 +133,7 @@ public class TestsADUsuarie {
      * La tabla se muestra ordenada segun el número
      * de usuarie, se comparan los códigos.
      */
-    @Before
+    //@Before
     public void mostrarTablaCompleta() {
         usuaries.values().stream()
             .sorted((u1, u2) -> 
