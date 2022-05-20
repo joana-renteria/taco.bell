@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
  
 import java.util.TreeMap;
 
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import datos.Establecimiento;
@@ -211,7 +210,6 @@ public class TestsADEstablecimiento {
         establecimientos.keySet().stream()
             .forEach(k -> {
                 assertTrue(establecimientos.containsValue(buscar(k)));
-                System.out.println();
             });
     }
 }

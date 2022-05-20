@@ -148,10 +148,7 @@ public class TestADProducto {
             .getAccessProductos()
                 .grabarProducto(producto);
 
-        
-        System.out.println(pCodPrd);
         // comprobar los cambios.
-        System.out.println(pCodPrd);
         assertEquals(buscar(pCodPrd), producto);
     }
     /**Se modifica el producto creado en el test
@@ -241,7 +238,6 @@ public class TestADProducto {
         productos.keySet().stream()
             .forEach(k -> {
                 assertTrue(productos.containsValue(buscar(k)));
-                System.out.println(productos.containsKey(k));
             });
     }
 }

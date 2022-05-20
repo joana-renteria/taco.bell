@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import java.time.LocalDate;
 import java.util.TreeMap;
 
-import org.junit.Before;
 import org.junit.runner.RunWith;
 
 import datos.Pedido;
@@ -46,16 +45,6 @@ public class TestsADPedido {
             System.out.println(ge.getFullMsg());
             return new TreeMap <String, Pedido> ();
         }
-    }
-    /**Método auxiliar que muestra la tabla.
-     * Se ejecuta antes de cada test. // TODO: borrarlo.
-     */
-    //@Test
-    @Before
-    public void mostrarTablaCompleta() {
-        pedidos.values().stream()
-            .forEach(p -> System.out.println(p));
-        System.out.print("\n");
     }
     /**Método para buscar más cómodamente y ahorrar 
      * la sentencia. Busca por código,
@@ -205,8 +194,6 @@ public class TestsADPedido {
             PedidoADFactory
                 .getAccessPedido()
                     .totalPedidos());
-
-        mostrarTablaCompleta();
     }
     /**Se comprueba que se genera el TreeMap de forma correcta,
      * y que se incluyen todos los elementos, con el par de 
