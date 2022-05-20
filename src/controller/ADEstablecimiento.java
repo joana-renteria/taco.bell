@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import controller.interfaces.Establecimientable;
 import datos.Establecimiento;
+import exceptions.GestorExcepciones;
 
 public class ADEstablecimiento extends MasterConnection implements Establecimientable {
     /**El método recibe como parámetro un objeto de tipo
@@ -16,56 +17,72 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
      * a grabar en la tabla.
      */
     @Override
-    public void grabarEstablecimiento(Establecimiento pEstablecimiento) {
-        openConnection();
+    public void grabarEstablecimiento(Establecimiento pEstablecimiento) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(insertar);
             stmt.setString(1, pEstablecimiento.getCodEst());
             stmt.setString(2, pEstablecimiento.getNombre());
             stmt.setString(3, pEstablecimiento.getLoc());
             // ejecución del comando.
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
+    /**
+     * borra establecimiento por codigo
+     * @param pCodEst el codigo del establecimiento
+     */
     @Override
-    public void borrarEstablecimiento(String pCodEst) {
-        openConnection();
+    public void borrarEstablecimiento(String pCodEst) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(borrar);
             stmt.setString(1, pCodEst);
 
             // ejecución del comando.
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
+    /**
+     * modifica un establecimiento
+     * @param pEstablecimiento con los nuevos datos
+     */
     @Override
-    public void modificarEstablecimiento(Establecimiento pEstablecimiento) {
-        openConnection();
+    public void modificarEstablecimiento(Establecimiento pEstablecimiento) throws GestorExcepciones {
         try {
+            openConnection();
             stmt = con.prepareStatement(modificar);
             stmt.setString(1, pEstablecimiento.getNombre());
             stmt.setString(2, pEstablecimiento.getLoc());
             stmt.setString(3, pEstablecimiento.getCodEst());
                 stmt.executeUpdate();
-        } catch (SQLException sqle) {
-            // TODO tratar excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
-        closeConnection();
     }
 
+    /**
+     * busca establecimientos por su codigo
+     * @param pCodEst
+     * @return Establecimiento si lo encuentra, sino null
+     */
     @Override
-    public Establecimiento buscarEstablecimientoPorCodigo(String pCodEst) {
-        openConnection();
+    public Establecimiento buscarEstablecimientoPorCodigo(String pCodEst) throws GestorExcepciones {
         Establecimiento pEstablecimiento = null;
         try {
+            openConnection();
             stmt = con.prepareStatement(buscar);
             stmt.setString(1, pCodEst);
             rs = stmt.executeQuery();
@@ -74,19 +91,24 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
                 rs.getString(1),
                 rs.getString(2),
                 rs.getString(3));
-        } catch (Exception e) {
-            //TODO: handle exception
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } catch (NullPointerException ne) {
+            throw new GestorExcepciones(404);
+        } finally {
+            closeConnection();
         }
         return pEstablecimiento;
     }
 
+
     @Override
-    public TreeMap <String, Establecimiento> listarEstablecimientos() {
+    public TreeMap <String, Establecimiento> listarEstablecimientos() throws GestorExcepciones {
         Establecimiento pEstablecimiento = null;
         TreeMap <String, Establecimiento> pListaEstablecientos = 
             new TreeMap <String, Establecimiento>();
-        openConnection();
         try {
+            openConnection();
             stmt = con.prepareStatement(listar);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -99,15 +121,21 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
                     pEstablecimiento.getCodEst(),
                     pEstablecimiento);
             }
-                
-        } catch (SQLException sqle) {
-            // TODO tratar la excepción.
+        } catch (SQLException | GestorExcepciones e) {
+            throw new GestorExcepciones(3);
+        } finally {
+            closeConnection();
         }
         return pListaEstablecientos;
     }
 
+    /**
+     * genera un codigo para un establecimiento
+     * busca entre todos y genera uno con el ultimo numero
+     * @return String el codigo generado con su respectivo prefijo
+     */
     @Override
-    public String generateCodigo() {
+    public String generateCodigo() throws GestorExcepciones {
         Set <String> keys = listarEstablecimientos().keySet();
 
         Optional <String> lastKey = 
@@ -131,8 +159,13 @@ public class ADEstablecimiento extends MasterConnection implements Establecimien
         return pCodEst;
     }
 
+    /**
+     * numero total de establecimientos
+     * metodo ayudante
+     * @return int
+     */
     @Override
-    public int totalEstablecimientos() {
+    public int totalEstablecimientos() throws GestorExcepciones {
         return cantidadTotal("establecimiento");
     }
 

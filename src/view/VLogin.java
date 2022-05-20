@@ -8,7 +8,9 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
+import resources.fuentes.Fuentes;
 import users.Usuarie;
+import resources.fuentes.Fuentes;
 
 import java.awt.event.ActionEvent;
 
@@ -37,6 +39,7 @@ import java.awt.Frame;
 
 import javax.swing.JSeparator;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 public class VLogin extends JFrame implements ActionListener, FocusListener {
 
@@ -47,6 +50,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 	private JButton btnEntrar;
 	private JButton btnX;
 	private JButton btnMinimizar;
+	private JButton btnRegister;
 	private static Point point = new Point(0, 0);
 
 	public static void main(String[] args) {
@@ -72,6 +76,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 	 * Create the frame.
 	 */
 	public VLogin() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VLogin.class.getResource("/resources/icon_marca_notext.png")));
 
 		setUndecorated(true);
 		setResizable(false);
@@ -208,12 +213,14 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		panel.setBackground(Color.WHITE);
 		panelBotones.add(panel);
 
-		JLabel lblRegister = new JLabel("\u00BFA\u00FAn no te has registrado? \u00A1Registrate ya!");
-		lblRegister.setBackground(Color.WHITE);
-		lblRegister.setForeground(new Color(69, 157, 213));
-		lblRegister.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 17));
-		lblRegister.setAlignmentX(0.5f);
-		panel.add(lblRegister);
+		btnRegister = new JButton("\u00BFA\u00FAn no te has registrado? \u00A1Registrate ya!");
+		btnRegister.setBackground(Color.WHITE);
+		btnRegister.setForeground(new Color(69, 157, 213));
+		btnRegister.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 17));
+		btnRegister.setAlignmentX(0.5f);
+		btnRegister.setBorder(null);
+		panel.add(btnRegister);
+		btnRegister.addActionListener(this);
 		
 		JPanel panelBotonesSuperiores = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panelBotonesSuperiores.getLayout();
@@ -229,7 +236,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		btnMinimizar.setBorder(null);
 		panelBotonesSuperiores.add(btnMinimizar);
 		btnMinimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnMinimizar.setFocusable(false);
+		btnMinimizar.setFocusable(true);
 		btnMinimizar.addActionListener(this);
 		btnMinimizar.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
@@ -271,8 +278,8 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 			if (txtCorreoElectronico.getText().isEmpty() || myPass.isEmpty()
 					|| txtCorreoElectronico.equals("Correo Electronico") || myPass.equals("Contrase\u00F1a")) {
 				JOptionPane.showMessageDialog(this,
-						"WARNING.",
-						"Warning",
+						"Rellene todos los campos.",
+						"Error.",
 						JOptionPane.WARNING_MESSAGE);
 			} else {
 				userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
@@ -312,12 +319,16 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 
 			}
 		}
-
 		if (e.getSource().equals(btnX)) {
 			this.dispose();
 		}
 		if (e.getSource().equals(btnMinimizar)) {
 			this.setState(Frame.ICONIFIED);
+		}
+		if (e.getSource().equals(btnRegister)) {
+			VRegister vR = new VRegister(this);
+			this.dispose();
+			vR.setVisible(true);
 		}
 	}
 

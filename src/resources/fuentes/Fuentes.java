@@ -1,4 +1,4 @@
-package view;
+package resources.fuentes;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -6,7 +6,7 @@ import java.io.File;
 
 public class Fuentes {
 
-	File fontFile = new File("src/resources/iosevka-aile-heavy.ttf");
+	File fontFile = new File("src/resources/fuentes/iosevka-aile-heavy.ttf");
 
 	GraphicsEnvironment ge = GraphicsEnvironment
 	        .getLocalGraphicsEnvironment();
