@@ -8,6 +8,7 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
+import exceptions.GestorExcepciones;
 import resources.fuentes.Fuentes;
 import users.Usuarie;
 
@@ -75,7 +76,8 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 	 * Create the frame.
 	 */
 	public VLogin() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(VLogin.class.getResource("/resources/icon_marca_notext.png")));
+		setIconImage(
+				Toolkit.getDefaultToolkit().getImage(VLogin.class.getResource("/resources/icon_marca_notext.png")));
 
 		setUndecorated(true);
 		setResizable(false);
@@ -153,7 +155,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		panelLogin.add(panelUser);
 
 		txtCorreoElectronico = new JTextField();
-		txtCorreoElectronico.setForeground(new Color(131,132,133));
+		txtCorreoElectronico.setForeground(new Color(131, 132, 133));
 		txtCorreoElectronico.setText("Correo Electronico");
 		txtCorreoElectronico.setBorder(null);
 		txtCorreoElectronico.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
@@ -171,7 +173,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		panelPass.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		txtContrasea = new JPasswordField();
-		txtContrasea.setForeground(new Color(131,132,133));
+		txtContrasea.setForeground(new Color(131, 132, 133));
 		txtContrasea.setText("Contrase\u00F1a");
 		txtContrasea.setBorder(null);
 		txtContrasea.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
@@ -195,7 +197,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 
 		btnEntrar = new JButton("Entrar");
 		btnEntrar.setMargin(new Insets(20, 20, 20, 20));
-		//Color c=new Color(1f,0f,0f,.5f );
+		// Color c=new Color(1f,0f,0f,.5f );
 		btnEntrar.setBackground(new Color(118, 38, 161));
 		panelEntrar.add(btnEntrar);
 		btnEntrar.setBorder(null);
@@ -220,7 +222,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		btnRegister.setBorder(null);
 		panel.add(btnRegister);
 		btnRegister.addActionListener(this);
-		
+
 		JPanel panelBotonesSuperiores = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panelBotonesSuperiores.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
@@ -228,7 +230,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		panelBotonesSuperiores.setBackground(Color.WHITE);
 		panelBotonesSuperiores.setBounds(1105, 0, 106, 29);
 		contentPane.add(panelBotonesSuperiores);
-		
+
 		btnMinimizar = new JButton("");
 		btnMinimizar.setBackground(Color.WHITE);
 		btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_inactive.png")));
@@ -241,11 +243,12 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_active.png")));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnMinimizar.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_minimizar_inactive.png")));
 			}
 		});
-		
+
 		btnX = new JButton("");
 		btnX.setBackground(Color.WHITE);
 		btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
@@ -258,6 +261,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 			public void mouseEntered(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_active.png")));
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VLogin.class.getResource("/resources/icon_x_inactive.png")));
 			}
@@ -270,7 +274,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
+
 		if (e.getSource().equals(btnEntrar)) {
 			Usuarie userAux;
 			String myPass = String.valueOf(txtContrasea.getPassword());
@@ -281,41 +285,47 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 						"Error.",
 						JOptionPane.WARNING_MESSAGE);
 			} else {
-				userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
-				if (userAux == null) {
-					userAux = UsuarieADFactory.getAccessUsuaries().buscarUsuarie(txtCorreoElectronico.getText());
-					if (userAux != null && userAux.getPasswd().equals(myPass)) {
-						VGestion vG = new VGestion(this, userAux);
-						this.dispose();
-						vG.setVisible(true);
-						txtCorreoElectronico.setText("Correo Electronico");
-						txtContrasea.setText("Contrase\u00F1a");
-						txtContrasea.setEchoChar((char) 0);
-						txtCorreoElectronico.setForeground(new Color(131, 132, 133));
-						txtContrasea.setForeground(new Color(131, 132, 133));
-					} else { // TODO Error correcto
-						JOptionPane.showMessageDialog(this,
-								"Usuario o contraseña MAAAAAAL.",
-								"Warning",
-								JOptionPane.WARNING_MESSAGE);
+				try {
+					userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
+					if (userAux == null) {
+						userAux = UsuarieADFactory.getAccessUsuaries().buscarUsuarie(txtCorreoElectronico.getText());
+						if (userAux != null && userAux.getPasswd().equals(myPass)) {
+							VGestion vG = new VGestion(this, userAux);
+							this.dispose();
+							vG.setVisible(true);
+							txtCorreoElectronico.setText("Correo Electronico");
+							txtContrasea.setText("Contrase\u00F1a");
+							txtContrasea.setEchoChar((char) 0);
+							txtCorreoElectronico.setForeground(new Color(131, 132, 133));
+							txtContrasea.setForeground(new Color(131, 132, 133));
+						} else { // TODO Error correcto
+							JOptionPane.showMessageDialog(this,
+									"Usuario o contraseña MAAAAAAL.",
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
+						}
+					} else {
+						if (userAux.getPasswd().equals(myPass)) {
+							VMenuCliente vMC = new VMenuCliente(this, userAux);
+							this.dispose();
+							vMC.setVisible(true);
+							txtCorreoElectronico.setText("Correo Electronico");
+							txtContrasea.setText("Contrase\u00F1a");
+							txtContrasea.setEchoChar((char) 0);
+							txtCorreoElectronico.setForeground(new Color(131, 132, 133));
+							txtContrasea.setForeground(new Color(131, 132, 133));
+						} else // TODO Error correcto
+							JOptionPane.showMessageDialog(this,
+									"Usuario o contraseña MAAAAAAL.",
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
 					}
-				} else {
-					if (userAux.getPasswd().equals(myPass)) {
-						VMenuCliente vMC = new VMenuCliente(this, userAux);
-						this.dispose();
-						vMC.setVisible(true);
-						txtCorreoElectronico.setText("Correo Electronico");
-						txtContrasea.setText("Contrase\u00F1a");
-						txtContrasea.setEchoChar((char) 0);
-						txtCorreoElectronico.setForeground(new Color(131, 132, 133));
-						txtContrasea.setForeground(new Color(131, 132, 133));
-					} else // TODO Error correcto
-						JOptionPane.showMessageDialog(this,
-								"Usuario o contraseña MAAAAAAL.",
-								"Warning",
-								JOptionPane.WARNING_MESSAGE);
+				} catch (GestorExcepciones ex) {
+					JOptionPane.showMessageDialog(this,
+							ex.getMsg(),
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 				}
-
 			}
 		}
 		if (e.getSource().equals(btnX)) {
@@ -337,12 +347,12 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		String myPass = String.valueOf(txtContrasea.getPassword());
 		if (e.getSource().equals(txtContrasea) && myPass.equals("Contrase\u00F1a")) {
 			txtContrasea.setEchoChar('*');
-					txtContrasea.setText("");
-					txtContrasea.setForeground(new Color(0,0,0));
+			txtContrasea.setText("");
+			txtContrasea.setForeground(new Color(0, 0, 0));
 		}
 		if (e.getSource().equals(txtCorreoElectronico) && txtCorreoElectronico.getText().equals("Correo Electronico")) {
 			txtCorreoElectronico.setText("");
-			txtCorreoElectronico.setForeground(new Color(0,0,0));
+			txtCorreoElectronico.setForeground(new Color(0, 0, 0));
 		}
 	}
 
@@ -352,11 +362,11 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 		if (e.getSource().equals(txtContrasea) && myPass.isEmpty()) {
 			txtContrasea.setEchoChar((char) 0);
 			txtContrasea.setText("Contrase\u00F1a");
-			txtContrasea.setForeground(new Color(131,132,133));
+			txtContrasea.setForeground(new Color(131, 132, 133));
 		}
 		if (e.getSource().equals(txtCorreoElectronico) && txtCorreoElectronico.getText().isEmpty()) {
 			txtCorreoElectronico.setText("Correo Electronico");
-			txtCorreoElectronico.setForeground(new Color(131,132,133));
+			txtCorreoElectronico.setForeground(new Color(131, 132, 133));
 		}
 	}
 }

@@ -16,6 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
+import exceptions.GestorExcepciones;
 import resources.fuentes.Fuentes;
 import users.Cliente;
 import users.Usuarie;
@@ -443,18 +444,25 @@ public class VDatos extends JDialog implements ActionListener {
 			vMC.setVisible(true);
 		}
 		if (e.getSource().equals(btnEliminar)) {
-			if (JOptionPane.showConfirmDialog(this,
-					"¿Estás seguro que quieres borrar sus datos? Esta acción es irreversible.", "ATENCIÓN",
-					JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE) == 0) {
-				UsuarieADFactory.getAccessUsuaries().borrarUsuarie(pUser.getCodUsr());
-				this.dispose();
-				VMenuCliente.volverLogin();
-			} else {
+			try {
+				if (JOptionPane.showConfirmDialog(this,
+						"¿Estás seguro que quieres borrar sus datos? Esta acción es irreversible.", "ATENCIÓN",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE) == 0) {
+					UsuarieADFactory.getAccessUsuaries().borrarUsuarie(pUser.getCodUsr());
+					this.dispose();
+					VMenuCliente.volverLogin();
+				} else {
+					JOptionPane.showMessageDialog(this,
+							"Abortado.",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			} catch (GestorExcepciones ex) {
 				JOptionPane.showMessageDialog(this,
-						"Abortado.",
-						"Warning",
-						JOptionPane.WARNING_MESSAGE);
+							ex.getMsg(),
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 			}
 		}
 		if (e.getSource().equals(btnModificar)) {
@@ -468,29 +476,36 @@ public class VDatos extends JDialog implements ActionListener {
 						JOptionPane.WARNING_MESSAGE);
 			} else {
 				if (myPass.equals(myPass2)) {
-					if (JOptionPane.showConfirmDialog(this,
-							"¿Estás seguro que quieres modificar sus datos? Esta acción es irreversible.", "ATENCIÓN",
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE) == 0) {
-						pUser.setNombre(textNombre.getText());
-						pUser.setApellido(textApellido.getText());
-						pUser.setPasswd(myPass);
-						((Cliente) pUser).setCorreoLogin(textCorreo.getText());
-						UsuarieADFactory.getAccessUsuaries().modificarUsuarie(pUser);
+					try {
+						if (JOptionPane.showConfirmDialog(this,
+								"¿Estás seguro que quieres modificar sus datos? Esta acción es irreversible.", "ATENCIÓN",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE) == 0) {
+							pUser.setNombre(textNombre.getText());
+							pUser.setApellido(textApellido.getText());
+							pUser.setPasswd(myPass);
+							((Cliente) pUser).setCorreoLogin(textCorreo.getText());
+							UsuarieADFactory.getAccessUsuaries().modificarUsuarie(pUser);
+							JOptionPane.showMessageDialog(this,
+									"Modificado satisfactoriamente.",
+									"Todo correcto",
+									JOptionPane.WARNING_MESSAGE);
+							String[] data = { "Código        | " + pUser.getCodUsr(),
+									"Nombre       | " + pUser.getNombre(),
+									"Apellido      | " + pUser.getApellido(), "Contraseña | ********",
+									"Correo       | " + ((Cliente) pUser).getCorreoLogin() };
+							listaDatos.setListData(data);
+						} else {
+							JOptionPane.showMessageDialog(this,
+									"Abortado.",
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
+						}
+					} catch (GestorExcepciones ex) {
 						JOptionPane.showMessageDialog(this,
-								"Modificado satisfactoriamente.",
-								"Todo correcto",
-								JOptionPane.WARNING_MESSAGE);
-						String[] data = { "Código        | " + pUser.getCodUsr(),
-								"Nombre       | " + pUser.getNombre(),
-								"Apellido      | " + pUser.getApellido(), "Contraseña | ********",
-								"Correo       | " + ((Cliente) pUser).getCorreoLogin() };
-						listaDatos.setListData(data);
-					} else {
-						JOptionPane.showMessageDialog(this,
-								"Abortado.",
-								"Warning",
-								JOptionPane.WARNING_MESSAGE);
+							ex.getMsg(),
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(this,

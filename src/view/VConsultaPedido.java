@@ -13,6 +13,7 @@ import controller.factorias.EstablecimientoADFactory;
 import controller.factorias.PedidoADFactory;
 import controller.factorias.UsuarieADFactory;
 import datos.Pedido;
+import exceptions.GestorExcepciones;
 import resources.fuentes.Fuentes;
 import users.Usuarie;
 
@@ -27,6 +28,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -244,34 +247,42 @@ public class VConsultaPedido extends JDialog implements ActionListener {
 	}
 
 	public String[][] tablaPedidos(int x) {
-		List<Pedido> listaPedidos = PedidoADFactory.getAccessPedido().listarPedidos().values().stream()
-				.filter(p -> p.getCodCle().equals(pUser.getCodUsr()))
-				.collect(Collectors.toList());
-		String matrizTabla[][] = new String[listaPedidos.size()][5];
-		if (listaPedidos.size() > 0) {
-			if (x == 1) {
-				for (int i = 0; i < listaPedidos.size(); i++) {
+		try {
+			List<Pedido> listaPedidos = PedidoADFactory.getAccessPedido().listarPedidos().values().stream()
+					.filter(p -> p.getCodCle().equals(pUser.getCodUsr()))
+					.collect(Collectors.toList());
+			String matrizTabla[][] = new String[listaPedidos.size()][5];
+			if (listaPedidos.size() > 0) {
+				if (x == 1) {
+					for (int i = 0; i < listaPedidos.size(); i++) {
 
-					matrizTabla[i][0] = listaPedidos.get(i).getCodPed();
-					matrizTabla[i][1] = listaPedidos.get(i).getFechaPed().toString();
-					matrizTabla[i][2] = UsuarieADFactory.getAccessUsuaries()
-							.buscarUsuarie(listaPedidos.get(i).getCodRep()).getNombre();
-					matrizTabla[i][3] = EstablecimientoADFactory.getAccessEstablecimiento()
-							.buscarEstablecimientoPorCodigo(listaPedidos.get(i).getCodEst()).getNombre();
-					matrizTabla[i][4] = listaPedidos.get(i).getMenu().getNombre();
+						matrizTabla[i][0] = listaPedidos.get(i).getCodPed();
+						matrizTabla[i][1] = listaPedidos.get(i).getFechaPed().toString();
+						matrizTabla[i][2] = UsuarieADFactory.getAccessUsuaries()
+								.buscarUsuarie(listaPedidos.get(i).getCodRep()).getNombre();
+						matrizTabla[i][3] = EstablecimientoADFactory.getAccessEstablecimiento()
+								.buscarEstablecimientoPorCodigo(listaPedidos.get(i).getCodEst()).getNombre();
+						matrizTabla[i][4] = listaPedidos.get(i).getMenu().getNombre();
+					}
+				} else {
+					matrizTabla[0][0] = listaPedidos.get(listaPedidos.size() - 1).getCodPed();
+					matrizTabla[0][1] = listaPedidos.get(listaPedidos.size() - 1).getFechaPed().toString();
+					matrizTabla[0][2] = UsuarieADFactory.getAccessUsuaries()
+							.buscarUsuarie(listaPedidos.get(listaPedidos.size() - 1).getCodRep()).getNombre();
+					matrizTabla[0][3] = EstablecimientoADFactory.getAccessEstablecimiento()
+							.buscarEstablecimientoPorCodigo(listaPedidos.get(listaPedidos.size() - 1).getCodEst())
+							.getNombre();
+					matrizTabla[0][4] = listaPedidos.get(listaPedidos.size() - 1).getMenu().getNombre();
 				}
-			} else {
-				matrizTabla[0][0] = listaPedidos.get(listaPedidos.size() - 1).getCodPed();
-				matrizTabla[0][1] = listaPedidos.get(listaPedidos.size() - 1).getFechaPed().toString();
-				matrizTabla[0][2] = UsuarieADFactory.getAccessUsuaries()
-						.buscarUsuarie(listaPedidos.get(listaPedidos.size() - 1).getCodRep()).getNombre();
-				matrizTabla[0][3] = EstablecimientoADFactory.getAccessEstablecimiento()
-						.buscarEstablecimientoPorCodigo(listaPedidos.get(listaPedidos.size() - 1).getCodEst())
-						.getNombre();
-				matrizTabla[0][4] = listaPedidos.get(listaPedidos.size() - 1).getMenu().getNombre();
+				return matrizTabla;
 			}
+		} catch (GestorExcepciones e) {
+			JOptionPane.showMessageDialog(this,
+							e.getMsg(),
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);	
 		}
-		return matrizTabla;
+		return null;
 	}
 
 	private JTable actualizarTabla(int x) {

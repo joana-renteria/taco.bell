@@ -23,6 +23,7 @@ import controller.factorias.MenuADFactory;
 import controller.factorias.PedidoADFactory;
 import controller.factorias.UsuarieADFactory;
 import datos.Pedido;
+import exceptions.GestorExcepciones;
 import users.Auxiliar;
 import users.Cliente;
 import users.Repartidor;
@@ -620,66 +621,91 @@ public class VGestion extends JDialog implements ActionListener {
 
 	public String[][] tablaClientes() {
 		List<Usuarie> listaCliente;
-		Collection<Usuarie> listaUser = UsuarieADFactory.getAccessUsuaries().listarUsuaries().values();
-		listaCliente = listaUser.stream()
-				.filter(p -> p.getClass().toString().contains("Cliente"))
-				.sorted((u1, u2) -> u1.compareTo(u2))
-				.collect(Collectors.toList());
-		String matrizTabla[][] = new String[listaCliente.size()][4];
-		if (listaCliente.size() > 0) {
-			for (int i = 0; i < listaCliente.size(); i++) {
-				matrizTabla[i][0] = listaCliente.get(i).getCodUsr();
-				matrizTabla[i][1] = listaCliente.get(i).getNombre();
-				matrizTabla[i][2] = listaCliente.get(i).getApellido();
-				matrizTabla[i][3] = ((Cliente) listaCliente.get(i)).getCorreoLogin();
+		try {
+			Collection<Usuarie> listaUser = UsuarieADFactory.getAccessUsuaries().listarUsuaries().values();
+			listaCliente = listaUser.stream()
+					.filter(p -> p.getClass().toString().contains("Cliente"))
+					.sorted((u1, u2) -> u1.compareTo(u2))
+					.collect(Collectors.toList());
+			String matrizTabla[][] = new String[listaCliente.size()][4];
+			if (listaCliente.size() > 0) {
+				for (int i = 0; i < listaCliente.size(); i++) {
+					matrizTabla[i][0] = listaCliente.get(i).getCodUsr();
+					matrizTabla[i][1] = listaCliente.get(i).getNombre();
+					matrizTabla[i][2] = listaCliente.get(i).getApellido();
+					matrizTabla[i][3] = ((Cliente) listaCliente.get(i)).getCorreoLogin();
+				}
 			}
+			return matrizTabla;
+		} catch (GestorExcepciones ex) {
+			JOptionPane.showMessageDialog(this,
+					ex.getMsg(),
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
 		}
-		return matrizTabla;
+		return null;
 	}
 
 	public String[][] tablaPedidos() {
-		List<Pedido> listaPedidos = PedidoADFactory.getAccessPedido().listarPedidos().values().stream()
-				.collect(Collectors.toList());
-		String matrizTabla[][] = new String[listaPedidos.size()][6];
-		if (listaPedidos.size() > 0) {
+		try {
+			List<Pedido> listaPedidos = PedidoADFactory.getAccessPedido().listarPedidos().values().stream()
+					.collect(Collectors.toList());
+			String matrizTabla[][] = new String[listaPedidos.size()][6];
+			if (listaPedidos.size() > 0) {
 
-			for (int i = 0; i < listaPedidos.size(); i++) {
+				for (int i = 0; i < listaPedidos.size(); i++) {
 
-				matrizTabla[i][0] = listaPedidos.get(i).getCodPed();
-				matrizTabla[i][1] = listaPedidos.get(i).getFechaPed().toString();
-				matrizTabla[i][2] = listaPedidos.get(i).getCodCle();
-				matrizTabla[i][3] = listaPedidos.get(i).getCodRep();
-				matrizTabla[i][4] = listaPedidos.get(i).getCodEst();
-				matrizTabla[i][5] = listaPedidos.get(i).getMenu().getNombre();
+					matrizTabla[i][0] = listaPedidos.get(i).getCodPed();
+					matrizTabla[i][1] = listaPedidos.get(i).getFechaPed().toString();
+					matrizTabla[i][2] = listaPedidos.get(i).getCodCle();
+					matrizTabla[i][3] = listaPedidos.get(i).getCodRep();
+					matrizTabla[i][4] = listaPedidos.get(i).getCodEst();
+					matrizTabla[i][5] = listaPedidos.get(i).getMenu().getNombre();
+				}
 			}
+			return matrizTabla;
+		} catch (GestorExcepciones ex) {
+			JOptionPane.showMessageDialog(this,
+					ex.getMsg(),
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
 		}
-		return matrizTabla;
+		return null;
 	}
 
 	public String[][] tablaTrabajadores() {
-		List<Usuarie> listaTrabajadores;
-		Collection<Usuarie> listaUser = UsuarieADFactory.getAccessUsuaries().listarUsuaries().values();
-		listaTrabajadores = listaUser.stream()
-				.filter(p -> p instanceof Trabajador)
-				.collect(Collectors.toList());
-		String matrizTabla[][] = new String[listaTrabajadores.size()][8];
+		try {
+			List<Usuarie> listaTrabajadores;
+			Collection<Usuarie> listaUser = UsuarieADFactory.getAccessUsuaries().listarUsuaries().values();
+			listaTrabajadores = listaUser.stream()
+					.filter(p -> p instanceof Trabajador)
+					.collect(Collectors.toList());
+			String matrizTabla[][] = new String[listaTrabajadores.size()][8];
 
-		if (listaTrabajadores.size() > 0) {
+			if (listaTrabajadores.size() > 0) {
 
-			for (int i = 0; i < listaTrabajadores.size(); i++) {
+				for (int i = 0; i < listaTrabajadores.size(); i++) {
 
-				matrizTabla[i][0] = listaTrabajadores.get(i).getCodUsr();
-				matrizTabla[i][1] = listaTrabajadores.get(i).getNombre();
-				matrizTabla[i][2] = listaTrabajadores.get(i).getApellido();
-				matrizTabla[i][3] = ((Trabajador) listaTrabajadores.get(i)).getCodEst();
-				matrizTabla[i][4] = ((Trabajador) listaTrabajadores.get(i)).getHorario();
-				matrizTabla[i][5] = String.valueOf(((Trabajador) listaTrabajadores.get(i)).getSueldo());
-				matrizTabla[i][6] = ((Trabajador) listaTrabajadores.get(i)).getClass().toString().contains("Auxiliar")
-						? "Auxiliar"
-						: "Repartidor";
+					matrizTabla[i][0] = listaTrabajadores.get(i).getCodUsr();
+					matrizTabla[i][1] = listaTrabajadores.get(i).getNombre();
+					matrizTabla[i][2] = listaTrabajadores.get(i).getApellido();
+					matrizTabla[i][3] = ((Trabajador) listaTrabajadores.get(i)).getCodEst();
+					matrizTabla[i][4] = ((Trabajador) listaTrabajadores.get(i)).getHorario();
+					matrizTabla[i][5] = String.valueOf(((Trabajador) listaTrabajadores.get(i)).getSueldo());
+					matrizTabla[i][6] = ((Trabajador) listaTrabajadores.get(i)).getClass().toString()
+							.contains("Auxiliar")
+									? "Auxiliar"
+									: "Repartidor";
+				}
 			}
+			return matrizTabla;
+		} catch (GestorExcepciones ex) {
+			JOptionPane.showMessageDialog(this,
+					ex.getMsg(),
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
 		}
-		return matrizTabla;
+		return null;
 	}
 
 	public void setTextDisable() {
@@ -769,17 +795,24 @@ public class VGestion extends JDialog implements ActionListener {
 						"¿Estás seguro que quieres borrar el elemento? Esta acción es irreversible.", "ATENCIÓN",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE) == 0) {
-					if (codAux.contains("CL")) {
-						UsuarieADFactory.getAccessUsuaries().borrarUsuarie(codAux);
-						table = actualizarTabla(0);
-					}
-					if (codAux.contains("PE")) {
-						PedidoADFactory.getAccessPedido().borrarPedido(codAux);
-						table = actualizarTabla(1);
-					}
-					if (codAux.contains("AU") || codAux.contains("RE")) {
-						UsuarieADFactory.getAccessUsuaries().borrarUsuarie(codAux);
-						table = actualizarTabla(2);
+					try {
+						if (codAux.contains("CL")) {
+							UsuarieADFactory.getAccessUsuaries().borrarUsuarie(codAux);
+							table = actualizarTabla(0);
+						}
+						if (codAux.contains("PE")) {
+							PedidoADFactory.getAccessPedido().borrarPedido(codAux);
+							table = actualizarTabla(1);
+						}
+						if (codAux.contains("AU") || codAux.contains("RE")) {
+							UsuarieADFactory.getAccessUsuaries().borrarUsuarie(codAux);
+							table = actualizarTabla(2);
+						}
+					} catch (GestorExcepciones ex) {
+						JOptionPane.showMessageDialog(this,
+								ex.getMsg(),
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
 					}
 					refreshTabla();
 				}
@@ -809,40 +842,62 @@ public class VGestion extends JDialog implements ActionListener {
 								JOptionPane.WARNING_MESSAGE);
 						break;
 					case 1:
-						textCampo1.setText(LocalDate.now().toString());
-						nuevoCambio = !nuevoCambio;
-						textCodigo.setText(PedidoADFactory.getAccessPedido().generateCodigo());
-						textCampo1.setEditable(false);
+						try {
+							textCampo1.setText(LocalDate.now().toString());
+							nuevoCambio = !nuevoCambio;
+							textCodigo.setText(PedidoADFactory.getAccessPedido().generateCodigo());
+							textCampo1.setEditable(false);
+						} catch (GestorExcepciones ex) {
+							JOptionPane.showMessageDialog(this,
+									ex.getMsg(),
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
+						}
 						break;
 					case 2:
-						nuevoCambio = !nuevoCambio;
-						Object[] options = { "AUXILIAR", "REPARTIDOR" };
-						if (JOptionPane.showOptionDialog(null, "¿Qué quiere añadir?", "Elija",
-								JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
-								null, options, options[0]) == 0) {
-							textCodigo.setText(UsuarieADFactory.getAccessUsuaries().generateCodigo("AU"));
-						} else {
-							textCodigo.setText(UsuarieADFactory.getAccessUsuaries().generateCodigo("RE"));
+						try {
+							nuevoCambio = !nuevoCambio;
+							Object[] options = { "AUXILIAR", "REPARTIDOR" };
+							if (JOptionPane.showOptionDialog(null, "¿Qué quiere añadir?", "Elija",
+									JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,
+									null, options, options[0]) == 0) {
+								textCodigo.setText(UsuarieADFactory.getAccessUsuaries().generateCodigo("AU"));
+							} else {
+								textCodigo.setText(UsuarieADFactory.getAccessUsuaries().generateCodigo("RE"));
+							}
+						} catch (GestorExcepciones ex) {
+							JOptionPane.showMessageDialog(this,
+									ex.getMsg(),
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
 						}
 						break;
 				}
 			} else {
 				switch (tablaActual) {
 					case 1:
-						if (textCampo3.getText().isEmpty() || textCampo5.getText().isEmpty()
-								|| textCampo2.getText().isEmpty() || textCampo4.getText().isEmpty()) {
+						try {
+							if (textCampo3.getText().isEmpty() || textCampo5.getText().isEmpty()
+									|| textCampo2.getText().isEmpty() || textCampo4.getText().isEmpty()) {
+								JOptionPane.showMessageDialog(this,
+										"Rellene todos los campos.",
+										"Campos vacíos",
+										JOptionPane.WARNING_MESSAGE);
+							} else {
+								PedidoADFactory.getAccessPedido()
+										.grabarPedido(new Pedido(textCodigo.getText(), LocalDate.now(),
+												textCampo3.getText(), textCampo5.getText(), textCampo2.getText(),
+												MenuADFactory.getAccessMenu()
+														.buscarMenuPorCodigo(textCampo4.getText())));
+								nuevoCambio = !nuevoCambio;
+								setTextEmpty();
+								setTextDisable();
+							}
+						} catch (GestorExcepciones ex) {
 							JOptionPane.showMessageDialog(this,
-									"Rellene todos los campos.",
-									"Campos vacíos",
+									ex.getMsg(),
+									"Warning",
 									JOptionPane.WARNING_MESSAGE);
-						} else {
-							PedidoADFactory.getAccessPedido()
-									.grabarPedido(new Pedido(textCodigo.getText(), LocalDate.now(),
-											textCampo3.getText(), textCampo5.getText(), textCampo2.getText(),
-											MenuADFactory.getAccessMenu().buscarMenuPorCodigo(textCampo4.getText())));
-							nuevoCambio = !nuevoCambio;
-							setTextEmpty();
-							setTextDisable();
 						}
 						break;
 					case 2:
@@ -854,154 +909,210 @@ public class VGestion extends JDialog implements ActionListener {
 									"Campos vacíos",
 									JOptionPane.WARNING_MESSAGE);
 						} else {
-							if (textCodigo.getText().contains("AU"))
-								UsuarieADFactory.getAccessUsuaries()
-										.addUsuarie(new Auxiliar(textCodigo.getText(), "abcd*1234",
-												textCampo1.getText(), textCampo3.getText(), textCampo5.getText(),
-												textCampo2.getText(), Float.parseFloat(textCampo4.getText()),
-												textCampo6.getText()));
-							else
-								UsuarieADFactory.getAccessUsuaries()
-										.addUsuarie(new Repartidor(textCodigo.getText(), "abcd*1234",
-												textCampo1.getText(), textCampo3.getText(), textCampo5.getText(),
-												textCampo2.getText(), Float.parseFloat(textCampo4.getText()),
-												textCampo6.getText()));
-							nuevoCambio = !nuevoCambio;
-							setTextEmpty();
-							setTextDisable();
+							try {
+								if (textCodigo.getText().contains("AU"))
+									UsuarieADFactory.getAccessUsuaries()
+											.addUsuarie(new Auxiliar(textCodigo.getText(), "abcd*1234",
+													textCampo1.getText(), textCampo3.getText(), textCampo5.getText(),
+													textCampo2.getText(), Float.parseFloat(textCampo4.getText()),
+													textCampo6.getText()));
+								else
+									UsuarieADFactory.getAccessUsuaries()
+											.addUsuarie(new Repartidor(textCodigo.getText(), "abcd*1234",
+													textCampo1.getText(), textCampo3.getText(), textCampo5.getText(),
+													textCampo2.getText(), Float.parseFloat(textCampo4.getText()),
+													textCampo6.getText()));
+								nuevoCambio = !nuevoCambio;
+								setTextEmpty();
+								setTextDisable();
+							} catch (GestorExcepciones ex) {
+								JOptionPane.showMessageDialog(this,
+										ex.getMsg(),
+										"Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
+							break;
 						}
-						break;
+						table = actualizarTabla(tablaActual);
+						refreshTabla();
+						btnNuevo.setBackground(colorAzulClaro);
 				}
-				table = actualizarTabla(tablaActual);
-				refreshTabla();
-				btnNuevo.setBackground(colorAzulClaro);
 			}
-		}
-		if (e.getSource().equals(btnModificar)) {
-			if (modificarCambio) { // Confirmar modificación
-				switch (tablaActual) {
-					case 0: // Cliente
-						if (textCampo1.getText().isEmpty() || textCampo3.getText().isEmpty()
-								|| textCampo5.getText().isEmpty()) {
-							JOptionPane.showMessageDialog(this,
-									"Rellene todos los campos.",
-									"Campos vacíos",
-									JOptionPane.WARNING_MESSAGE);
-						} else {
-							if (JOptionPane.showConfirmDialog(this,
-									"¿Estás seguro que quieres modificar el cliente? Esta acción es irreversible.",
-									"ATENCIÓN",
-									JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE) == 0) {
-								UsuarieADFactory.getAccessUsuaries()
-										.modificarUsuarie(new Cliente(textCodigo.getText(),
-												UsuarieADFactory.getAccessUsuaries().buscarUsuarie(textCodigo.getText())
-														.getPasswd(),
-												textCampo1.getText(), textCampo3.getText(), textCampo5.getText()));
+			if (e.getSource().equals(btnModificar)) {
+				if (modificarCambio) { // Confirmar modificación
+					switch (tablaActual) {
+						case 0: // Cliente
+							if (textCampo1.getText().isEmpty() || textCampo3.getText().isEmpty()
+									|| textCampo5.getText().isEmpty()) {
+								JOptionPane.showMessageDialog(this,
+										"Rellene todos los campos.",
+										"Campos vacíos",
+										JOptionPane.WARNING_MESSAGE);
+							} else {
+								try {
+									if (JOptionPane.showConfirmDialog(this,
+											"¿Estás seguro que quieres modificar el cliente? Esta acción es irreversible.",
+											"ATENCIÓN",
+											JOptionPane.YES_NO_OPTION,
+											JOptionPane.QUESTION_MESSAGE) == 0) {
+										UsuarieADFactory.getAccessUsuaries()
+												.modificarUsuarie(new Cliente(textCodigo.getText(),
+														UsuarieADFactory.getAccessUsuaries()
+																.buscarUsuarie(textCodigo.getText())
+																.getPasswd(),
+														textCampo1.getText(), textCampo3.getText(),
+														textCampo5.getText()));
+									}
+									btnModificar.setBackground(colorVerdeClaro);
+									btnModificar.setText("MODIFICAR");
+									modificarCambio = !modificarCambio;
+									setTextDisable();
+									setTextEmpty();
+								} catch (GestorExcepciones ex) {
+									JOptionPane.showMessageDialog(this,
+											ex.getMsg(),
+											"Warning",
+											JOptionPane.WARNING_MESSAGE);
+								}
 							}
-							btnModificar.setBackground(colorVerdeClaro);
-							btnModificar.setText("MODIFICAR");
-							modificarCambio = !modificarCambio;
-							setTextDisable();
-							setTextEmpty();
-						}
-						break;
-					case 1:
-						if (textCampo1.getText().isEmpty() || textCampo3.getText().isEmpty()
-								|| textCampo5.getText().isEmpty() || textCampo2.getText().isEmpty()
-								|| textCampo4.getText().isEmpty()) {
-							JOptionPane.showMessageDialog(this,
-									"Rellene todos los campos.",
-									"Campos vacíos",
-									JOptionPane.WARNING_MESSAGE);
-						} else {
-							if (JOptionPane.showConfirmDialog(this,
-									"¿Estás seguro que quieres modificar el pedido? Esta acción es irreversible.",
-									"ATENCIÓN",
-									JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE) == 0) {
-										PedidoADFactory.getAccessPedido().modificarPedido(new Pedido(textCodigo.getText(), LocalDate.now(), textCampo3.getText(), textCampo5.getText(), textCampo2.getText(), MenuADFactory.getAccessMenu().buscarMenuPorCodigo(textCampo4.getText())));
-							}
+							break;
+						case 1:
+							if (textCampo1.getText().isEmpty() || textCampo3.getText().isEmpty()
+									|| textCampo5.getText().isEmpty() || textCampo2.getText().isEmpty()
+									|| textCampo4.getText().isEmpty()) {
+								JOptionPane.showMessageDialog(this,
+										"Rellene todos los campos.",
+										"Campos vacíos",
+										JOptionPane.WARNING_MESSAGE);
+							} else {
+								try {
+									if (JOptionPane.showConfirmDialog(this,
+											"¿Estás seguro que quieres modificar el pedido? Esta acción es irreversible.",
+											"ATENCIÓN",
+											JOptionPane.YES_NO_OPTION,
+											JOptionPane.QUESTION_MESSAGE) == 0) {
+										PedidoADFactory.getAccessPedido()
+												.modificarPedido(new Pedido(textCodigo.getText(),
+														LocalDate.now(), textCampo3.getText(), textCampo5.getText(),
+														textCampo2.getText(),
+														MenuADFactory.getAccessMenu()
+																.buscarMenuPorCodigo(textCampo4.getText())));
+									}
 
-							btnModificar.setBackground(colorVerdeClaro);
-							btnModificar.setText("MODIFICAR");
-							modificarCambio = !modificarCambio;
-							setTextDisable();
-							setTextEmpty();
-						}
-						break;
-					case 2:
-						if (textCampo1.getText().isEmpty() || textCampo3.getText().isEmpty()
-								|| textCampo5.getText().isEmpty() || textCampo2.getText().isEmpty()
-								|| textCampo4.getText().isEmpty() || textCampo6.getText().isEmpty()) {
-							JOptionPane.showMessageDialog(this,
-									"Rellene todos los campos.",
-									"Campos vacíos",
-									JOptionPane.WARNING_MESSAGE);
-						} else {
-							if (JOptionPane.showConfirmDialog(this,
-									"¿Estás seguro que quieres modificar el trabajador? Esta acción es irreversible.",
-									"ATENCIÓN",
-									JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE) == 0) {
-										if (textCodigo.getText().contains("AU")) 
-											UsuarieADFactory.getAccessUsuaries().modificarUsuarie(new Auxiliar(textCodigo.getText(), UsuarieADFactory.getAccessUsuaries().buscarUsuarie(textCodigo.getText()).getPasswd(), textCampo1.getText(), textCampo3.getText(), textCampo5.getText(), textCampo2.getText(), Float.parseFloat(textCampo4.getText()) , textCampo6.getText()));
-										else 
-											UsuarieADFactory.getAccessUsuaries().modificarUsuarie(new Repartidor(textCodigo.getText(), UsuarieADFactory.getAccessUsuaries().buscarUsuarie(textCodigo.getText()).getPasswd(), textCampo1.getText(), textCampo3.getText(), textCampo5.getText(), textCampo2.getText(), Float.parseFloat(textCampo4.getText()) , textCampo6.getText()));
+									btnModificar.setBackground(colorVerdeClaro);
+									btnModificar.setText("MODIFICAR");
+									modificarCambio = !modificarCambio;
+									setTextDisable();
+									setTextEmpty();
+								} catch (GestorExcepciones ex) {
+									JOptionPane.showMessageDialog(this,
+											ex.getMsg(),
+											"Warning",
+											JOptionPane.WARNING_MESSAGE);
+								}
 							}
+							break;
+						case 2:
+							if (textCampo1.getText().isEmpty() || textCampo3.getText().isEmpty()
+									|| textCampo5.getText().isEmpty() || textCampo2.getText().isEmpty()
+									|| textCampo4.getText().isEmpty() || textCampo6.getText().isEmpty()) {
+								JOptionPane.showMessageDialog(this,
+										"Rellene todos los campos.",
+										"Campos vacíos",
+										JOptionPane.WARNING_MESSAGE);
+							} else {
+								try {
+									if (JOptionPane.showConfirmDialog(this,
+											"¿Estás seguro que quieres modificar el trabajador? Esta acción es irreversible.",
+											"ATENCIÓN",
+											JOptionPane.YES_NO_OPTION,
+											JOptionPane.QUESTION_MESSAGE) == 0) {
+										if (textCodigo.getText().contains("AU"))
+											UsuarieADFactory.getAccessUsuaries()
+													.modificarUsuarie(new Auxiliar(textCodigo.getText(),
+															UsuarieADFactory.getAccessUsuaries()
+																	.buscarUsuarie(textCodigo.getText()).getPasswd(),
+															textCampo1.getText(), textCampo3.getText(),
+															textCampo5.getText(), textCampo2.getText(),
+															Float.parseFloat(textCampo4.getText()),
+															textCampo6.getText()));
+										else
+											UsuarieADFactory.getAccessUsuaries()
+													.modificarUsuarie(new Repartidor(textCodigo.getText(),
+															UsuarieADFactory.getAccessUsuaries()
+																	.buscarUsuarie(textCodigo.getText()).getPasswd(),
+															textCampo1.getText(), textCampo3.getText(),
+															textCampo5.getText(), textCampo2.getText(),
+															Float.parseFloat(textCampo4.getText()),
+															textCampo6.getText()));
+									}
 
-							btnModificar.setBackground(colorVerdeClaro);
-							btnModificar.setText("MODIFICAR");
-							modificarCambio = !modificarCambio;
-							setTextDisable();
-							setTextEmpty();
-						}
-						break;
-				}
-				table = actualizarTabla(tablaActual);
-				refreshTabla();
-			} else { // Preparar modificación
-				int row = table.getSelectedRow();
-				if (table.getSelectedRowCount() == 1) {
-					textCodigo.setText((String) table.getValueAt(row, 0));
-					btnModificar.setBackground(new Color(0, 150, 82));
-					textCampo1.setText((String) table.getValueAt(row, 1));
-					textCampo3.setText((String) table.getValueAt(row, 2));
-					textCampo5.setText((String) table.getValueAt(row, 3));
-					if (tablaActual == 1) {
-						textCampo2.setText((String) table.getValueAt(row, 4));
-						textCampo4.setText((String) table.getValueAt(row, 5));
+									btnModificar.setBackground(colorVerdeClaro);
+									btnModificar.setText("MODIFICAR");
+									modificarCambio = !modificarCambio;
+									setTextDisable();
+									setTextEmpty();
+								} catch (GestorExcepciones ex) {
+									JOptionPane.showMessageDialog(this,
+											ex.getMsg(),
+											"Warning",
+											JOptionPane.WARNING_MESSAGE);
+								}
+							}
+							break;
 					}
-					if (tablaActual == 2) {
-						textCampo2.setText((String) table.getValueAt(row, 4));
-						textCampo4.setText((String) table.getValueAt(row, 5));
-						if (textCodigo.getText().contains("AU"))
-							textCampo6.setText(((Auxiliar) UsuarieADFactory.getAccessUsuaries()
-									.buscarUsuarie(textCodigo.getText())).getPuesto());
+					table = actualizarTabla(tablaActual);
+					refreshTabla();
+				} else { // Preparar modificación
+					int row = table.getSelectedRow();
+					if (table.getSelectedRowCount() == 1) {
+						textCodigo.setText((String) table.getValueAt(row, 0));
+						btnModificar.setBackground(new Color(0, 150, 82));
+						textCampo1.setText((String) table.getValueAt(row, 1));
+						textCampo3.setText((String) table.getValueAt(row, 2));
+						textCampo5.setText((String) table.getValueAt(row, 3));
+						if (tablaActual == 1) {
+							textCampo2.setText((String) table.getValueAt(row, 4));
+							textCampo4.setText((String) table.getValueAt(row, 5));
+						}
+						try {
+							if (tablaActual == 2) {
+								textCampo2.setText((String) table.getValueAt(row, 4));
+								textCampo4.setText((String) table.getValueAt(row, 5));
+								if (textCodigo.getText().contains("AU"))
+									textCampo6.setText(((Auxiliar) UsuarieADFactory.getAccessUsuaries()
+											.buscarUsuarie(textCodigo.getText())).getPuesto());
+								else
+									textCampo6.setText(((Repartidor) UsuarieADFactory.getAccessUsuaries()
+											.buscarUsuarie(textCodigo.getText())).getCodVehiculo());
+							}
+						} catch (GestorExcepciones ex) {
+							JOptionPane.showMessageDialog(this,
+									ex.getMsg(),
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
+						}
+						setTextEnable();
+						btnModificar.setText("GUARDAR CAMBIOS");
+						modificarCambio = !modificarCambio;
+					} else {
+						if (table.getSelectedRowCount() == 0)
+							JOptionPane.showMessageDialog(this,
+									"Ninguna seleccionada.",
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
 						else
-							textCampo6.setText(((Repartidor) UsuarieADFactory.getAccessUsuaries()
-									.buscarUsuarie(textCodigo.getText())).getCodVehiculo());
+							JOptionPane.showMessageDialog(this,
+									"Muchas seleccionadas.",
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
 					}
-					setTextEnable();
-					btnModificar.setText("GUARDAR CAMBIOS");
-					modificarCambio = !modificarCambio;
-				} else {
-					if (table.getSelectedRowCount() == 0)
-						JOptionPane.showMessageDialog(this,
-								"Ninguna seleccionada.",
-								"Warning",
-								JOptionPane.WARNING_MESSAGE);
-					else
-						JOptionPane.showMessageDialog(this,
-								"Muchas seleccionadas.",
-								"Warning",
-								JOptionPane.WARNING_MESSAGE);
 				}
 			}
-		}
-		if (e.getSource().equals(btnX)) {
-			this.dispose();
-			vLogin.dispose();
+			if (e.getSource().equals(btnX)) {
+				this.dispose();
+				vLogin.dispose();
+			}
 		}
 	}
-}
+} 
