@@ -4,10 +4,12 @@ public class NombrePrecio<String, Float> {
 	
 	Object nombre;
 	Object precio;
+	Object cod;
 
-	public NombrePrecio(String nombre, Float precio) {
+	public NombrePrecio(String nombre, Float precio, String cod) {
 		this.nombre = nombre;
 		this.precio = precio;
+		this.cod = cod;
 	}
 	
 	public Object getFst() {
@@ -16,6 +18,10 @@ public class NombrePrecio<String, Float> {
 
 	public Object getSnd() {
 		return precio;
+	}
+
+	public Object getTrd() {
+		return cod;
 	}
 
 }
