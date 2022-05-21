@@ -279,7 +279,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 			Usuarie userAux;
 			String myPass = String.valueOf(txtContrasea.getPassword());
 			if (txtCorreoElectronico.getText().isEmpty() || myPass.isEmpty()
-					|| txtCorreoElectronico.equals("Correo Electronico") || myPass.equals("Contrase\u00F1a")) {
+					|| txtCorreoElectronico.getText().equals("Correo Electronico") || myPass.equals("Contrase\u00F1a")) {
 				JOptionPane.showMessageDialog(this,
 						"Rellene todos los campos.",
 						"Error.",
@@ -298,11 +298,6 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 							txtContrasea.setEchoChar((char) 0);
 							txtCorreoElectronico.setForeground(new Color(131, 132, 133));
 							txtContrasea.setForeground(new Color(131, 132, 133));
-						} else { // TODO Error correcto
-							JOptionPane.showMessageDialog(this,
-									"Usuario o contraseña MAAAAAAL.",
-									"Warning",
-									JOptionPane.WARNING_MESSAGE);
 						}
 					} else {
 						if (userAux.getPasswd().equals(myPass)) {
@@ -314,15 +309,11 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 							txtContrasea.setEchoChar((char) 0);
 							txtCorreoElectronico.setForeground(new Color(131, 132, 133));
 							txtContrasea.setForeground(new Color(131, 132, 133));
-						} else // TODO Error correcto
-							JOptionPane.showMessageDialog(this,
-									"Usuario o contraseña MAAAAAAL.",
-									"Warning",
-									JOptionPane.WARNING_MESSAGE);
+						}
 					}
 				} catch (GestorExcepciones ex) {
 					JOptionPane.showMessageDialog(this,
-							ex.getMsg(),
+					"Usuario o contraseña errónea.",
 							"Warning",
 							JOptionPane.WARNING_MESSAGE);
 				}

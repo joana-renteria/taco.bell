@@ -9,11 +9,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.JTableHeader;
 
+import datos.Descuento;
 import datos.Establecimiento;
 import datos.Menu;
+import controller.factorias.DescuentoADFactory;
 import controller.factorias.EstablecimientoADFactory;
 import controller.factorias.MenuADFactory;
+import controller.factorias.PedidoADFactory;
 import controller.factorias.ProductoADFactory;
+import resources.IconCellRender;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -25,7 +29,6 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +39,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.time.LocalDate;
 import java.awt.Point;
 import java.awt.Cursor;
 
@@ -45,9 +49,11 @@ import javax.swing.JScrollPane;
 import datos.Producto;
 import exceptions.GestorExcepciones;
 import resources.fuentes.Fuentes;
+import users.Cliente;
 import users.Usuarie;
-import datos.Menu;
 import datos.NombrePrecio;
+import datos.Pedido;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
@@ -62,19 +68,31 @@ public class VPedido extends JDialog implements ActionListener {
 
 	private JButton btnAtras;
 	private JDialog vMenuMenu;
-	private int menu = 0;
+	private int tablaActual = 0;
 	private static JButton btnX;
 	private static JButton btnMenus;
 	private static JButton btnComida;
 	private static JButton btnAperitivos;
 	private static JButton btnBebida;
+	private static JButton btnAdd;
+	private static JButton btnDescuento;
+	private JLabel lblMenu;
+	private JLabel lblProducto1;
+	private JLabel lblProducto2;
+	private JLabel lblProducto3;
+	private JLabel lblDescuentoCantidad;
+	private JTextField textDescuento;
 	private JButton btnPedir;
 	private JScrollPane scrollPane;
 	private TreeMap<String, Establecimiento> listado;
 	private JComboBox<String> comboEstablecimiento;
 	private JTable table;
-	private String titulos[] = { "", "", "" };
+	private Producto prdAux;
+	private String[] arrayCodigos;
+	private String[] arrayCodPrd = new String[3];
+	private float[] arrayPrecios = new float[]{0,0,0};
 	private static Point point = new Point(0, 0);
+	private Cliente pUser;
 	private ImageIcon icon1 = new ImageIcon(getClass().getResource("/resources/icon_placeholder_menu.png"));
 	private ImageIcon icon2 = new ImageIcon(getClass().getResource("/resources/icon_placeholder_comida.png"));
 	private ImageIcon icon3 = new ImageIcon(getClass().getResource("/resources/icon_placeholder_aperitivo.png"));
@@ -83,14 +101,10 @@ public class VPedido extends JDialog implements ActionListener {
 	// private float descuento = 0;
 	private float precioTotal = 0;
 
-	private ArrayList<Menu> carritoMenus;
-	private ArrayList<Producto> carritoProductos;
-
 	// Definir colores
 	private static Color colorMoradoClaro = new Color(118, 38, 161);
 	private static Color colorAzulClaro = new Color(21, 131, 170);
 	private static Color colorVerdeClaro = new Color(30, 180, 132);
-	private JTextField textDescuento;
 
 	/**
 	 * Launch the application.
@@ -116,50 +130,13 @@ public class VPedido extends JDialog implements ActionListener {
 	}
 
 	/**
-	 * Actualizar pedido actual segun listas
-	 *
-	 * <p>
-	 * Lee la listas de productos y menus y devuelve una tabla con el listado.
-	 *
-	 * @return tabla con listado de pedidos
-	 */
-	private JTable actualizarPedido() {
-		Object[][] listadoCarrito = null;
-		String[] titulo = null;
-
-		float precioProductos = (float) carritoProductos.stream()
-				.mapToDouble(p -> p.getPrecio())
-				.sum();
-		float precioMenus = (float) carritoMenus.stream()
-				.mapToDouble(p -> p.getPrecio())
-				.sum();
-
-		int listSize = carritoMenus.size() + carritoProductos.size();
-		int menuSize = carritoMenus.size();
-		listadoCarrito = new Object[listSize][2];
-
-		for (int i = 0; i < listSize; i++) {
-			if (i > menuSize) {
-				listadoCarrito[i][0] = carritoMenus.get(i).getNombre();
-				listadoCarrito[i][1] = carritoMenus.get(i).getPrecio();
-			} else {
-				listadoCarrito[i][0] = carritoProductos.get(i - menuSize).getNombre();
-				listadoCarrito[i][1] = carritoProductos.get(i - menuSize).getPrecio();
-			}
-		}
-
-		precioTotal = precioMenus + precioProductos;
-
-		return null; // provisional
-	}
-
-	/**
 	 * Create the dialog.
 	 */
 	public VPedido(JDialog vMC, Usuarie pUsuarie) {
 		super(vMC, "Taco Bell", true);
 		setUndecorated(true);
 		vMenuMenu = vMC;
+		pUser = (Cliente)pUsuarie;
 
 		setBounds(100, 100, 1185, 685);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -306,7 +283,7 @@ public class VPedido extends JDialog implements ActionListener {
 		});
 
 		JPanel panelProductos = new JPanel();
-		panelProductos.setBounds(347, 141, 832, 514);
+		panelProductos.setBounds(347, 141, 832, 491);
 		contentPanel.add(panelProductos);
 		panelProductos.setLayout(new GridLayout(0, 1, 0, 0));
 
@@ -359,7 +336,7 @@ public class VPedido extends JDialog implements ActionListener {
 		JSeparator separator_1 = new JSeparator();
 		panelTextDescuento.add(separator_1);
 
-		JButton btnDescuento = new JButton("OK");
+		btnDescuento = new JButton("OK");
 		btnDescuento.setActionCommand("OK");
 		btnDescuento.setForeground(Color.WHITE);
 		btnDescuento.setFont(new Font("Dialog", Font.BOLD, 32));
@@ -367,6 +344,7 @@ public class VPedido extends JDialog implements ActionListener {
 		btnDescuento.setBackground(new Color(30, 180, 132));
 		btnDescuento.setBounds(209, 348, 81, 37);
 		panelSeleccion.add(btnDescuento);
+		btnDescuento.addActionListener(this);
 
 		JLabel lblEstablecimiento = new JLabel("Establecimiento");
 		lblEstablecimiento.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 20));
@@ -376,6 +354,27 @@ public class VPedido extends JDialog implements ActionListener {
 		comboEstablecimiento = new JComboBox<>();
 		comboEstablecimiento.setBounds(165, 310, 125, 27);
 		panelSeleccion.add(comboEstablecimiento);
+
+		lblMenu = new JLabel("- Menu personalizado");
+		lblMenu.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblMenu.setBounds(10, 11, 280, 44);
+		panelSeleccion.add(lblMenu);
+
+		lblProducto1 = new JLabel("- ");
+		lblProducto1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblProducto1.setBounds(38, 72, 252, 44);
+		panelSeleccion.add(lblProducto1);
+
+		lblProducto2 = new JLabel("- ");
+		lblProducto2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblProducto2.setBounds(38, 127, 252, 44);
+		panelSeleccion.add(lblProducto2);
+
+		lblProducto3 = new JLabel("- ");
+		lblProducto3.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblProducto3.setBounds(38, 187, 252, 44);
+		panelSeleccion.add(lblProducto3);
+
 		try {
 			listado = EstablecimientoADFactory.getAccessEstablecimiento().listarEstablecimientos();
 		} catch (GestorExcepciones ex) {
@@ -400,7 +399,7 @@ public class VPedido extends JDialog implements ActionListener {
 		lblDescuento.setBounds(10, 11, 146, 56);
 		panelDescuento.add(lblDescuento);
 
-		JLabel lblDescuentoCantidad = new JLabel("0");
+		lblDescuentoCantidad = new JLabel("0€");
 		lblDescuentoCantidad.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblDescuentoCantidad.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 24));
 		lblDescuentoCantidad.setForeground(colorAzulClaro);
@@ -447,9 +446,19 @@ public class VPedido extends JDialog implements ActionListener {
 		scrollPane.setBounds(24, 209, 583, 121);
 		panelProductos.add(scrollPane);
 
-		table = actualizarTabla(0);
+		table = actualizarTabla(tablaActual);
 		refreshTabla();
 		scrollPane.setViewportView(table);
+
+		btnAdd = new JButton("A\u00F1adir");
+		btnAdd.setForeground(Color.WHITE);
+		btnAdd.setFont(new Font("Iosevka Aile Heavy", Font.BOLD, 24));
+		btnAdd.setBorder(null);
+		btnAdd.setBackground(new Color(30, 180, 132));
+		btnAdd.setActionCommand("OK");
+		btnAdd.setBounds(1094, 637, 81, 37);
+		btnAdd.addActionListener(this);
+		contentPanel.add(btnAdd);
 		JTableHeader tableHeader = table.getTableHeader();
 		tableHeader.setBackground(colorVerdeClaro);
 		tableHeader.setForeground(Color.WHITE);
@@ -461,19 +470,18 @@ public class VPedido extends JDialog implements ActionListener {
 	private JTable actualizarTabla(int x) {
 		try {
 			switch (x) {
-				case 1:// Menús
+				case 0:// Menús
 					return cargarDatos(0);
-
-				case 2:// Comida
+				case 1:// Comida
 					return cargarDatos(1);
-				case 3:// Aperitivos
+				case 2:// Aperitivos
 					return cargarDatos(2);
 				default:// Bebida
 					return cargarDatos(3);
 			}
-		} catch (GestorExcepciones e) { // TODO Excepción bien
+		} catch (GestorExcepciones e) {
 			JOptionPane.showMessageDialog(this,
-					e.getMessage(),
+					e.getMsg(),
 					"Warning",
 					JOptionPane.WARNING_MESSAGE);
 			return null;
@@ -511,7 +519,7 @@ public class VPedido extends JDialog implements ActionListener {
 		if (menu == 0) {
 			Collection<Menu> menues = MenuADFactory.getAccessMenu().listarMenus().values();
 			nombrePrecio = menues.stream()
-					.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
+					.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio(), p.getCodMnu()))
 					.collect(Collectors.toList());
 		} else {
 			Collection<Producto> productos = ProductoADFactory.getAccessProductos().listarProductos().values();
@@ -519,21 +527,21 @@ public class VPedido extends JDialog implements ActionListener {
 			if (menu == 1) {
 				nombrePrecio = productos.stream()
 						.filter(p -> p.getTipo().equals("Comida"))
-						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
+						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio(), p.getCodPrd()))
 						.collect(Collectors.toList());
 			}
 			// aperitivos
 			else if (menu == 2) {
 				nombrePrecio = productos.stream()
 						.filter(p -> p.getTipo().equals("Aperitivo"))
-						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
+						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio(), p.getCodPrd()))
 						.collect(Collectors.toList());
 			}
 			// bebidas
 			else if (menu == 3) {
 				nombrePrecio = productos.stream()
 						.filter(p -> p.getTipo().equals("Bebida"))
-						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio()))
+						.map(p -> new NombrePrecio(p.getNombre(), p.getPrecio(), p.getCodPrd()))
 						.collect(Collectors.toList());
 			}
 			// error
@@ -542,14 +550,20 @@ public class VPedido extends JDialog implements ActionListener {
 		}
 
 		Object[][] listado = new Object[nombrePrecio.size()][3];
+		arrayCodigos = new String[nombrePrecio.size()];
 		for (int i = 0; i < nombrePrecio.size(); i++) {
-			listado[i][0] = new JLabel((menu==0)?icon1:(menu==1)?icon2:(menu==2)?icon3:icon4);
+			listado[i][0] = new JLabel((menu == 0) ? icon1 : (menu == 1) ? icon2 : (menu == 2) ? icon3 : icon4);
 			listado[i][1] = nombrePrecio.get(i).getFst();
 			listado[i][2] = nombrePrecio.get(i).getSnd() + "€";
+			arrayCodigos[i] = (String) nombrePrecio.get(i).getTrd();
 		}
 		String[] titulo = { "", "", "" };
 
 		return new JTable(listado, titulo);
+	}
+
+	public float calcularPrecioTotal() {
+		return arrayPrecios[0]+arrayPrecios[1]+arrayPrecios[2]-Float.parseFloat(lblDescuentoCantidad.getText().substring(0, lblDescuentoCantidad.getText().indexOf('€'))) ;
 	}
 
 	@Override
@@ -563,33 +577,148 @@ public class VPedido extends JDialog implements ActionListener {
 			vMenuMenu.dispose();
 		}
 		if (e.getSource().equals(btnMenus)) {
-			table = actualizarTabla(1);
+			tablaActual = 0;
+			table = actualizarTabla(tablaActual);
 			refreshTabla();
 		}
 		if (e.getSource().equals(btnComida)) {
-			table = actualizarTabla(2);
+			tablaActual = 1;
+			table = actualizarTabla(tablaActual);
 			refreshTabla();
 		}
 		if (e.getSource().equals(btnAperitivos)) {
-			table = actualizarTabla(3);
+			tablaActual = 2;
+			table = actualizarTabla(tablaActual);
 			refreshTabla();
 		}
 		if (e.getSource().equals(btnBebida)) {
-			table = actualizarTabla(4);
+			tablaActual = 3;
+			table = actualizarTabla(tablaActual);
 			refreshTabla();
 		}
 		if (e.getSource().equals(btnPedir)) {
+			try {
 			Optional<Establecimiento> est = listado.values().stream()
 					.filter(estab -> estab.getNombre()
 							.equalsIgnoreCase((String) comboEstablecimiento.getSelectedItem()))
 					.findFirst();
-
-			if (est.isPresent()) {
+			Menu pMenu;
+			if (lblMenu.getText().equals("- Menu personalizado")) {
+				pMenu = new Menu(MenuADFactory.getAccessMenu().generateCodigo(), textDescuento.getText().isEmpty()?null:textDescuento.getText(), arrayCodPrd, precioTotal, "Menu pesonalizado");
+				MenuADFactory.getAccessMenu().grabarMenu(pMenu);
+			} else {
+				pMenu = MenuADFactory.getAccessMenu().buscarMenuPorCodigo(arrayCodigos[table.getSelectedRow()]);
+			}
+			Pedido pPedido = new Pedido(PedidoADFactory.getAccessPedido().generateCodigo(), LocalDate.now(), pUser.getCodUsr(), "RE00003", est.get().getCodEst(), pMenu);
+			PedidoADFactory.getAccessPedido().grabarPedido(pPedido);
+			JOptionPane.showMessageDialog(this,
+						"Pedido realizado.",
+						"¡Genial!",
+						JOptionPane.OK_OPTION);
+		} catch (GestorExcepciones ex) {
 				JOptionPane.showMessageDialog(this,
-						est.get().getCodEst(),
+						ex.getMsg(),
 						"Warning",
 						JOptionPane.WARNING_MESSAGE);
 			}
+		}
+		if (e.getSource().equals(btnAdd)) {
+			try {
+				if (table.getSelectedRowCount() == 1) {
+					if (tablaActual == 0) {
+						for (int i = 0; i < arrayPrecios.length; i++) {
+							arrayPrecios[i] = 0;
+						}
+						lblMenu.setText((String) table.getValueAt(table.getSelectedRow(), 1));
+						String strAux = (String) table.getValueAt(table.getSelectedRow(), 2);
+						arrayCodPrd = MenuADFactory.getAccessMenu().getCodigosProductos(MenuADFactory.getAccessMenu()
+								.buscarMenuPorCodigo(arrayCodigos[table.getSelectedRow()]));
+						for (int i = 0; i < arrayCodPrd.length; i++) {
+							prdAux = ProductoADFactory.getAccessProductos().buscarProductoPorCodigo(arrayCodPrd[i]);
+							if (prdAux.getTipo().equals("Comida")) {
+								lblProducto1.setText(prdAux.getNombre());
+							} 
+							if (prdAux.getTipo().equals("Aperitivo")) {
+								lblProducto2.setText(prdAux.getNombre());
+							} else {
+								lblProducto3.setText(prdAux.getNombre());
+							}
+						}
+
+						precioTotal = Float.parseFloat(strAux.substring(0, strAux.indexOf('€'))) - Float.parseFloat(lblDescuentoCantidad.getText().substring(0, lblDescuentoCantidad.getText().indexOf('€')));
+						btnPedir.setText("TOTAL: " + Math.round(precioTotal*100.0) /100.0 + " \u20AC");
+					} else {
+						if (!lblMenu.getText().equals("- Menu personalizado")){
+							lblMenu.setText("- Menu personalizado");
+							lblProducto1.setText("- ");
+							lblProducto2.setText("- ");
+							lblProducto3.setText("- ");
+							precioTotal = 0;
+						}
+					}
+
+					if (tablaActual == 1) {
+						lblProducto1.setText(ProductoADFactory.getAccessProductos().buscarProductoPorCodigo(arrayCodigos[table.getSelectedRow()]).getNombre());
+						arrayCodPrd[0] = ProductoADFactory.getAccessProductos().buscarProductoPorCodigo(arrayCodigos[table.getSelectedRow()]).getCodPrd();
+						String strAux = (String) table.getValueAt(table.getSelectedRow(), 2);
+						arrayPrecios[0] = Float.parseFloat(strAux.substring(0, strAux.indexOf('€')));
+						precioTotal = calcularPrecioTotal();
+						btnPedir.setText("TOTAL: " + Math.round(precioTotal*100.0) /100.0 + " \u20AC");
+					}
+					if (tablaActual == 2) {
+						lblProducto2.setText(ProductoADFactory.getAccessProductos().buscarProductoPorCodigo(arrayCodigos[table.getSelectedRow()]).getNombre());
+						arrayCodPrd[1] = ProductoADFactory.getAccessProductos().buscarProductoPorCodigo(arrayCodigos[table.getSelectedRow()]).getCodPrd();
+						String strAux = (String) table.getValueAt(table.getSelectedRow(), 2);
+						arrayPrecios[1] = Float.parseFloat(strAux.substring(0, strAux.indexOf('€')));
+						precioTotal = calcularPrecioTotal();
+						btnPedir.setText("TOTAL: " + Math.round(precioTotal*100.0) /100.0 + " \u20AC");
+					}
+					if (tablaActual == 3) {
+						lblProducto3.setText(ProductoADFactory.getAccessProductos().buscarProductoPorCodigo(arrayCodigos[table.getSelectedRow()]).getNombre());
+						arrayCodPrd[2] = ProductoADFactory.getAccessProductos().buscarProductoPorCodigo(arrayCodigos[table.getSelectedRow()]).getCodPrd();
+						String strAux = (String) table.getValueAt(table.getSelectedRow(), 2);
+						arrayPrecios[2] =Float.parseFloat(strAux.substring(0, strAux.indexOf('€')));
+						precioTotal = calcularPrecioTotal();
+						btnPedir.setText("TOTAL: " + Math.round(precioTotal*100.0) /100.0 + " \u20AC");
+					}
+				} else {
+					if (table.getSelectedRowCount() == 0)
+						JOptionPane.showMessageDialog(this,
+								"Ninguna seleccionada.",
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
+					else
+						JOptionPane.showMessageDialog(this,
+								"Muchas seleccionadas.",
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
+				}
+			} catch (GestorExcepciones ex) {
+				JOptionPane.showMessageDialog(this,
+						ex.getMsg(),
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
+			}
+		}
+		if (e.getSource().equals(btnDescuento)) {
+			try {
+				Descuento descAux = DescuentoADFactory.getAccessDescuento().buscarDescuentoPorCodigo(textDescuento.getText());
+			if (textDescuento.getText().equals(descAux.getCodDsc())) {
+				lblDescuentoCantidad.setText((descAux).getCantidadDsc() + "€");
+				descAux.setUsos(descAux.getUsos()-1);
+				DescuentoADFactory.getAccessDescuento().modificarDescuento(descAux);
+			} else {
+				JOptionPane.showMessageDialog(this,
+								"No existe este descuento.",
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
+			}
+		} catch (GestorExcepciones ex) {
+			JOptionPane.showMessageDialog(this,
+								ex.getMsg(),
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
+		}
 		}
 	}
 }

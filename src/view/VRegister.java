@@ -6,6 +6,7 @@ import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
+import exceptions.GestorExcepciones;
 import resources.Fuentes;
 import users.Cliente;
 import users.Usuarie;
@@ -48,7 +49,7 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 	private JTextField txtNombre;
 	private JButton btnEntrar;
 	private JButton btnX;
-	JCheckBox chckbxTerminos;
+	private JCheckBox chckbxTerminos;
 	private VLogin vL;
 	private static Point point = new Point(0, 0);
 	private JTextField txtApellido;
@@ -210,7 +211,7 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 		txtContrasea2.setForeground(new Color(131, 132, 133));
 		txtContrasea2.setFont(new Font("Iosevka Aile Heavy", Font.PLAIN, 18));
 		txtContrasea2.setFocusable(true);
-		txtContrasea2.setEchoChar((char)0);
+		txtContrasea2.setEchoChar((char) 0);
 		txtContrasea2.setColumns(28);
 		txtContrasea2.setBorder(null);
 		panelPass2.add(txtContrasea2);
@@ -292,7 +293,7 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(btnEntrar)) {
-			Usuarie userAux;
+			Usuarie userAux = null;
 			String myPass = String.valueOf(txtContrasea1.getPassword());
 			String myPass2 = String.valueOf(txtContrasea2.getPassword());
 			if (txtNombre.getText().isEmpty()
@@ -311,33 +312,44 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 						JOptionPane.WARNING_MESSAGE);
 			} else {
 				if (myPass.equals(myPass2)) {
-				userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
-				if (userAux == null) {
-					userAux = new Cliente(UsuarieADFactory.getAccessUsuaries().generateCodigo("CL"), myPass, txtNombre.getText(), txtApellido.getText(), txtCorreoElectronico.getText());
-					UsuarieADFactory.getAccessUsuaries().addUsuarie(userAux);
-					JOptionPane.showMessageDialog(this,
-							"Usuario BIEEEEEEN.",
-							"Ole Betih ole",
-							JOptionPane.WARNING_MESSAGE);
-					this.dispose();
-					vL.setVisible(true);
-					txtCorreoElectronico.setText("Correo Electronico");
-					txtContrasea1.setText("Contrase\u00F1a");
-					txtContrasea1.setEchoChar((char) 0);
-					txtCorreoElectronico.setForeground(new Color(131, 132, 133));
-					txtContrasea1.setForeground(new Color(131, 132, 133));
+					try {
+						userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
+					}catch (GestorExcepciones ex) {
+					}
+					try {
+						if (userAux == null) {
+							userAux = new Cliente(UsuarieADFactory.getAccessUsuaries().generateCodigo("CL"), myPass,
+									txtNombre.getText(), txtApellido.getText(), txtCorreoElectronico.getText());
+							UsuarieADFactory.getAccessUsuaries().addUsuarie(userAux);
+							JOptionPane.showMessageDialog(this,
+									"Usuario registrado correctamente.",
+									"Satisfactorio",
+									JOptionPane.WARNING_MESSAGE);
+							this.dispose();
+							vL.setVisible(true);
+							txtCorreoElectronico.setText("Correo Electronico");
+							txtContrasea1.setText("Contrase\u00F1a");
+							txtContrasea1.setEchoChar((char) 0);
+							txtCorreoElectronico.setForeground(new Color(131, 132, 133));
+							txtContrasea1.setForeground(new Color(131, 132, 133));
+						} else {
+							JOptionPane.showMessageDialog(this,
+									"Usuario ya existente.",
+									"Warning",
+									JOptionPane.WARNING_MESSAGE);
+						}
+					} catch (GestorExcepciones ex) {
+						JOptionPane.showMessageDialog(this,
+								ex.getMsg(),
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
 				} else {
 					JOptionPane.showMessageDialog(this,
-							"Usuario ya existente.",
-							"Warning",
-							JOptionPane.WARNING_MESSAGE);
-				}
-			} else {
-				JOptionPane.showMessageDialog(this,
 							"Las contrase\u00F1as no coinciden.",
 							"Warning",
 							JOptionPane.WARNING_MESSAGE);
-			}
+				}
 
 			}
 		}
