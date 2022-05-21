@@ -30,7 +30,7 @@ import users.Repartidor;
 import users.Trabajador;
 
 import users.Usuarie;
-import resources.Fuentes;
+import resources.fuentes.Fuentes;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;

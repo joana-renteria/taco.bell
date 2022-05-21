@@ -276,7 +276,7 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource().equals(btnEntrar)) {
-			Usuarie userAux;
+			Usuarie userAux = null;
 			String myPass = String.valueOf(txtContrasea.getPassword());
 			if (txtCorreoElectronico.getText().isEmpty() || myPass.isEmpty()
 					|| txtCorreoElectronico.getText().equals("Correo Electronico") || myPass.equals("Contrase\u00F1a")) {
@@ -287,6 +287,9 @@ public class VLogin extends JFrame implements ActionListener, FocusListener {
 			} else {
 				try {
 					userAux = UsuarieADFactory.getAccessUsuaries().buscarCliente(txtCorreoElectronico.getText());
+				} catch (GestorExcepciones ex) {
+				}
+				try {
 					if (userAux == null) {
 						userAux = UsuarieADFactory.getAccessUsuaries().buscarUsuarie(txtCorreoElectronico.getText());
 						if (userAux != null && userAux.getPasswd().equals(myPass)) {
