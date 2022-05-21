@@ -7,7 +7,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.factorias.UsuarieADFactory;
 import exceptions.GestorExcepciones;
-import resources.Fuentes;
+import resources.fuentes.Fuentes;
 import users.Cliente;
 import users.Usuarie;
 
@@ -276,17 +276,15 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 		btnX.setBackground(Color.WHITE);
 		btnX.setIcon(new ImageIcon(VRegister.class.getResource("/resources/icon_x_inactive.png")));
 		btnX.setBorder(null);
-		panelBotonesSuperiores.add(btnX);
 		btnX.addActionListener(this);
+		panelBotonesSuperiores.add(btnX);
 		btnX.addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VRegister.class.getResource("/resources/icon_x_active.png")));
-				// btnX.setBackground(new Color(255,0,0));
 			}
 
 			public void mouseExited(MouseEvent evt) {
 				btnX.setIcon(new ImageIcon(VRegister.class.getResource("/resources/icon_x_inactive.png")));
-				// btnX.setBackground(new Color(255,255,255));
 			}
 		});
 	}
@@ -353,7 +351,6 @@ public class VRegister extends JDialog implements ActionListener, FocusListener 
 
 			}
 		}
-
 		if (e.getSource().equals(btnX)) {
 			this.dispose();
 		}
